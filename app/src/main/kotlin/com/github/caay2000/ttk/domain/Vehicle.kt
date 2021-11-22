@@ -1,5 +1,6 @@
 package com.github.caay2000.ttk.domain
 
+import com.github.caay2000.ttk.domain.event.VehicleEvent
 import java.util.UUID
 
 sealed class Vehicle(private val speed: Int) {
@@ -50,7 +51,7 @@ sealed class Vehicle(private val speed: Int) {
         this.status = VehicleStatus.IDLE
     }
 
-    fun update() {
+    fun update(): List<VehicleEvent> {
         _route?.let {
             if (it.shouldMove()) {
                 status = VehicleStatus.ON_ROUTE
@@ -66,6 +67,7 @@ sealed class Vehicle(private val speed: Int) {
                 }
             }
         }
+        return emptyList()
     }
 
     override fun toString(): String {

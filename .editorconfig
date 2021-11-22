@@ -7,6 +7,7 @@ end_of_line = lf
 charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = true
+wildcard_import_limit = 0
 
 [gradlew.bat]
 end_of_line = crlf

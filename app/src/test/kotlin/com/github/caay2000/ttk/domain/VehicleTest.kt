@@ -1,5 +1,6 @@
 package com.github.caay2000.ttk.domain
 
+import com.github.caay2000.ttk.domain.event.Departed
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -42,6 +43,7 @@ internal class VehicleTest {
 
             val sut = Truck(Location.FACTORY)
             assertThat(sut.route).isNull()
+            assertThat(sut.distanceToNextStop).isEqualTo(0)
         }
 
         @Test
@@ -126,6 +128,19 @@ internal class VehicleTest {
             sut.update()
             assertThat(sut.status).isEqualTo(VehicleStatus.ON_ROUTE)
             assertThat(sut.distanceToNextStop).isEqualTo(4)
+        }
+    }
+
+    @Nested
+    inner class VehicleEventTests {
+        @Test
+        fun `returns `() {
+            val sut = Truck(Location.FACTORY)
+            sut.assignRoute(Route(Location.FACTORY, Location.WAREHOUSE_B))
+            val events = sut.update()
+            assertThat(events).isEqualTo(
+                listOf(Departed(0, sut))
+            )
         }
     }
 }
