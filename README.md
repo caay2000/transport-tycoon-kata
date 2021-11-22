@@ -7,7 +7,10 @@ I modified some parts of it, to make it different, more challenging or just to m
 
 # Transport Tycoon Exercises for DDD
 
-This is a set of Domain-Driven Design (DDD) exercises. They take place in the universe of the [Transport Tycoon](https://en.wikipedia.org/wiki/Transport_Tycoon). It is a game "in which the player acts as an entrepreneur in control of a transport company, and can compete against rival companies to make as much profit as possible by transporting passengers and various goods by road, rail, sea and air."
+This is a set of Domain-Driven Design (DDD) exercises. They take place in the universe of
+the [Transport Tycoon](https://en.wikipedia.org/wiki/Transport_Tycoon). It is a game "in which the player acts as an
+entrepreneur in control of a transport company, and can compete against rival companies to make as much profit as
+possible by transporting passengers and various goods by road, rail, sea and air."
 
 - [Exercise 1](readme/transport-tycoon-1.md)
 

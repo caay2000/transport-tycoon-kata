@@ -1,6 +1,7 @@
 # trace.py
 
-This is a utility that takes domain event log format from the transport tycoon log and converts into the Chrome Trace Viewer format. 
+This is a utility that takes domain event log format from the transport tycoon log and converts into the Chrome Trace
+Viewer format.
 
 **You need to have python installed on your system.**
 
@@ -16,7 +17,7 @@ Or to write to the file, you just pipe the outputs there:
 $ python trace.py AB.log > AB.trace
 ```
 
-Once you have the trace file. You can launch Google Chrome and navigate to the `chrome://tracing` url. 
+Once you have the trace file. You can launch Google Chrome and navigate to the `chrome://tracing` url.
 
 Then to load the file:
 

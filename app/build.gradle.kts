@@ -29,7 +29,7 @@ dependencies {
 pitest {
     pitestVersion.set("1.7.0")
     junit5PluginVersion.set("0.15")
-    targetClasses.add("com.github.caay2000.mowers.*")
+    targetClasses.add("com.github.caay2000.ttk.*")
     outputFormats.add("HTML")
     timestampedReports.set(false)
     avoidCallsTo.add("kotlin.jvm.internal")
