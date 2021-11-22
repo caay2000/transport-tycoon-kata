@@ -1,6 +1,6 @@
 plugins {
     application
-    kotlin("jvm") version "1.5.31"
+    kotlin("jvm") version "1.6.0"
     id("info.solidsoft.pitest") version "1.7.0"
 }
 
@@ -11,13 +11,16 @@ repositories {
     mavenCentral()
 }
 
-tasks.named<Test>("test") {
+application {
+    mainClass.set("com.github.caay2000.ttk.AppKt")
+}
+
+tasks.test {
     useJUnitPlatform()
 }
 
 dependencies {
-    implementation(kotlin("stdlib"))
-
+    testImplementation(kotlin("test"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.1")
     testImplementation("org.assertj:assertj-core:3.21.0")
     testImplementation("io.mockk:mockk:1.12.1")

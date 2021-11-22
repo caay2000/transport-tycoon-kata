@@ -1,4 +1,4 @@
-[Back to index](../transport-tycoon.md)
+[Back to index](../README.md)
 
 # Exercise 1
 
@@ -30,25 +30,6 @@ Transport moves *in parallel*. First truck might be bringing container to a loca
 | ABB          | 7      |
 | AABABBAB     | ?      |
 | ABBBABAAABBB | ?      |
-
-When done, feel free to add link to your solution to the [solution list](https://github.com/Softwarepark/exercises/blob/master/transport-tycoon/README.md).
-
-## Exercise Notes
-
-- Don't worry about making the code extensible. We will evolve the codebase, but the deeper domain dive will have to start from the scratch.
-
-- Don't worry if your numbers don't exactly match answers from your colleagues. There is a small loop-hole in the exercise that makes it non-deterministic. We will address it later.
-
-- While picking the language for the exercise, pick whatever that would let you solve the problem quicker. If you are itching to try out a new fancy language that you are less familiar with, there will be a chance for that later.
-
-- Remember that all processes happen in parallel. Trucks and ship would be moving around the map at the same time, not sequentially.
-
-- Don't worry about applying any patterns (e.g. aggregates or events) at this point. Just get the job done. Implementation patterns will emerge in the codebase later.
-
-## Bonus points
-
-1. What is the possible reason for the different solutions to return different answers?
-2. Link your solution in the [solution list](https://github.com/Softwarepark/exercises/blob/master/transport-tycoon/README.md).
 
 ## Next
 

@@ -15,7 +15,7 @@ This is a set of Domain-Driven Design (DDD) exercises. They take place in the un
 
 - [Exercise 3](readme/transport-tycoon-3.md)
 
-![tt-1-the-game.png](readme/images/images/tt-1-openttd.png)
+![tt-1-the-game.png](readme/images/tt-1-openttd.png)
 
 > Screenshot is from the [OpenTTD showcase](https://www.openttd.org/screenshots.html) (an open source simulation game based upon Transport Tycoon Deluxe).
 
