@@ -1,4 +1,4 @@
-[Back to index](transport-tycoon.md)
+[Back to index](../transport-tycoon.md)
 
 # Exercise 2
 
@@ -56,7 +56,7 @@ Given that file, we could do two things with our event logs:
 
 1. Compare the reasoning of our solution to the reasoning from the another solution (even though they could be in different languages).
 
-2. Feed it to the [trace.py](transport-tycoon/trace/) script that will convert this log to Chrome Trace Viewer format file (also JSON, but a different format). That file could be loaded in Chrome to display the outline of our travel.
+2. Feed it to the [trace.py](trace-py/) script that will convert this log to Chrome Trace Viewer format file (also JSON, but a different format). That file could be loaded in Chrome to display the outline of our travel.
 
 Here is how the trace for the `AB` delivery might look like:
 
@@ -72,7 +72,7 @@ Now that we have tools, we could investigate and debug complex flows. The toolin
 
 - **Extend your solution** to print domain events.
 
-- Run the domain event log through the [trace.py](transport-tycoon/trace/) converter and then **display in the Chrome Trace tool**. Does the `AABABBAB` solution look right? Does it complete on the hour 29? What about `ABBBABAAABBB`?
+- Run the domain event log through the [trace.py](trace-py/) converter and then **display in the Chrome Trace tool**. Does the `AABABBAB` solution look right? Does it complete on the hour 29? What about `ABBBABAAABBB`?
 
 - Add a new rules to the code:
   

@@ -1,14 +1,22 @@
-# SoftwarePark Exercises
+# Transport Tycoon Kata
 
-SoftwarePark exercises and dojos:
+This is a kata proposed by SoftwarePark. You can find the original
+one [here](https://github.com/Softwarepark/exercises/blob/master/transport-tycoon.md)
 
-- [Transport Tycoon and DDD/ES](transport-tycoon.md) - COMPLETED.
-- [ML Ops on Mars](ml-ops-on-mars/readme.md) - IN PROGRESS.
+I modified some parts of it, to make it different, more challenging or just to make it nicer for me :)
 
-You can subscribe to the [mailing list](https://tinyletter.com/softwarepark) for the new exercises or just keep an eye on this repository. Updates are planned **once per week, at most**.
+# Transport Tycoon Exercises for DDD
 
-## Reason
+This is a set of Domain-Driven Design (DDD) exercises. They take place in the universe of the [Transport Tycoon](https://en.wikipedia.org/wiki/Transport_Tycoon). It is a game "in which the player acts as an entrepreneur in control of a transport company, and can compete against rival companies to make as much profit as possible by transporting passengers and various goods by road, rail, sea and air."
 
-Continuous learning is one of the essential things that make up the *ethos of SoftwarePark*. As we gain new experience from our work, we want to capture the lessons learned and spread them within the company. This includes Domain-Driven Design practices as well as software engineering ideas from the specific domains. To help with that, we are doing short series of exercises within the different domains.
+- [Exercise 1](readme/transport-tycoon-1.md)
 
-While doing that we will keep exercises public and transparent. Perhaps, somebody else would find them helpful or entertaining.
+- [Exercise 2](readme/transport-tycoon-2.md)
+
+- [Exercise 3](readme/transport-tycoon-3.md)
+
+![tt-1-the-game.png](readme/images/images/tt-1-openttd.png)
+
+> Screenshot is from the [OpenTTD showcase](https://www.openttd.org/screenshots.html) (an open source simulation game based upon Transport Tycoon Deluxe).
+
+

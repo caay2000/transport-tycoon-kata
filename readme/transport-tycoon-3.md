@@ -1,4 +1,4 @@
- [Back to index](transport-tycoon.md) | [Exercise 2](transport-tycoon-2.md)
+ [Back to index](../transport-tycoon.md) | [Exercise 2](transport-tycoon-2.md)
 
 # Exercise 3
 
