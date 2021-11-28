@@ -1,6 +1,6 @@
 package com.github.caay2000.ttk.infrastructure
 
-import com.github.caay2000.ttk.api.inbound.Destination
+import com.github.caay2000.ttk.api.inbound.Delivery
 import com.github.caay2000.ttk.api.inbound.Steps
 import com.github.caay2000.ttk.api.inbound.TransportTycoonApi
 
@@ -8,24 +8,22 @@ class StringAdapter(private val application: TransportTycoonApi) {
 
     internal fun execute(input: String): Steps {
 
-        val route = parseRoute(input)
-        return application.calculateSteps(route)
+        val destinations = parseRoute(input)
+        return application.execute(destinations)
     }
 
-    private fun parseRoute(input: String): List<Destination> {
+    private fun parseRoute(input: String): List<Delivery> {
         val regex = "^([AB])+\$".toRegex()
         val values = regex.find(input)!!.value
         return values.asIterable()
             .filterNot { it.isWhitespace() }
-            .map { it.toDestination() }
+            .map { it.toDelivery() }
     }
 
-    private fun Char.toDestination(): Destination =
+    private fun Char.toDelivery(): Delivery =
         when (this) {
-            'A' -> Destination.WAREHOUSE_A
-            'B' -> Destination.WAREHOUSE_B
+            'A' -> Delivery.WAREHOUSE_A
+            'B' -> Delivery.WAREHOUSE_B
             else -> throw IllegalArgumentException("Invalid input")
         }
 }
-
-

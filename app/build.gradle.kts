@@ -2,6 +2,7 @@ plugins {
     application
     kotlin("jvm") version "1.6.0"
     id("info.solidsoft.pitest") version "1.7.0"
+    id("org.jlleitschuh.gradle.ktlint") version "10.2.0"
 }
 
 group = "com.github.caay2000"
@@ -17,6 +18,7 @@ application {
 
 tasks.test {
     useJUnitPlatform()
+    dependsOn(tasks.ktlintFormat)
 }
 
 dependencies {
@@ -33,5 +35,5 @@ pitest {
     outputFormats.add("HTML")
     timestampedReports.set(false)
     avoidCallsTo.add("kotlin.jvm.internal")
-    mutators.add("STRONGER")
+    mutators.addAll("DEFAULTS", "STRONGER")
 }

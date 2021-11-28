@@ -22,9 +22,22 @@ internal class LocationTest {
     }
 
     @CsvSource(
+        "FACTORY, FACTORY",
+        "PORT, PORT",
+        "WAREHOUSE_A, WAREHOUSE_A",
+        "WAREHOUSE_B, WAREHOUSE_B"
+    )
+    @ParameterizedTest(name = "{index} - distance from {0} to {1} is 0")
+    fun `same location paths has 0 distance`(src: Location, dst: Location) {
+
+        val result = src.distanceTo(dst)
+        assertThat(result).isEqualTo(0)
+    }
+
+    @CsvSource(
         "FACTORY, WAREHOUSE_A",
         "PORT, WAREHOUSE_B",
-        "WAREHOUSE_A, WAREHOUSE_B, 5"
+        "WAREHOUSE_A, WAREHOUSE_B"
     )
     @ParameterizedTest(name = "{index} - distance from {0} to {1} is invalid")
     fun `invalid paths has -1 distance`(src: Location, dst: Location) {
@@ -32,5 +45,4 @@ internal class LocationTest {
         val result = src.distanceTo(dst)
         assertThat(result).isEqualTo(-1)
     }
-
 }

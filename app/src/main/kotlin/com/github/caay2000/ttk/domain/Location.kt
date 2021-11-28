@@ -7,7 +7,8 @@ enum class Location {
     WAREHOUSE_B;
 
     fun distanceTo(destination: Location): Distance =
-        distances[Pair(this, destination)] ?: distances[Pair(destination, this)] ?: -1
+        if (this == destination) 0
+        else distances[Pair(this, destination)] ?: distances[Pair(destination, this)] ?: -1
 }
 
 private val distances = mapOf(
@@ -15,5 +16,3 @@ private val distances = mapOf(
     Pair(Pair(Location.FACTORY, Location.PORT), 1),
     Pair(Pair(Location.PORT, Location.WAREHOUSE_A), 4)
 )
-
-typealias Distance = Int
