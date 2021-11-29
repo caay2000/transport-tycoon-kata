@@ -1,5 +1,6 @@
 package com.github.caay2000.ttk.domain
 
+import com.github.caay2000.ttk.domain.event.Arrived
 import com.github.caay2000.ttk.domain.event.Departed
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
@@ -67,7 +68,7 @@ internal class VehicleTest {
 
             val sut = Truck(Location.FACTORY)
 
-            sut.update()
+            sut.update(0)
             assertThat(sut.route).isEqualTo(null)
             assertThat(sut.location).isEqualTo(Location.FACTORY)
             assertThat(sut.status).isEqualTo(VehicleStatus.STOP)
@@ -79,21 +80,10 @@ internal class VehicleTest {
             val sut = Truck(Location.FACTORY)
             sut.assignRoute(Route(Location.FACTORY, Location.WAREHOUSE_B))
 
-            sut.update()
+            sut.update(0)
             assertThat(sut.location).isEqualTo(Location.FACTORY)
             assertThat(sut.status).isEqualTo(VehicleStatus.ON_ROUTE)
-            assertThat(sut.distanceToNextStop).isEqualTo(4)
-        }
-
-        @Test
-        fun `vehicle ON_ROUTE updates to IDLE when reaching Stop`() {
-
-            val sut = Truck(Location.FACTORY)
-            sut.assignRoute(Route(Location.FACTORY, Location.WAREHOUSE_B, Location.FACTORY))
-            repeat(sut.distanceToNextStop) { sut.update() }
-
-            assertThat(sut.status).isEqualTo(VehicleStatus.IDLE)
-            assertThat(sut.distanceToNextStop).isEqualTo(sut.distanceToNextStop)
+            assertThat(sut.distanceToNextStop).isEqualTo(5)
         }
 
         @Test
@@ -102,7 +92,8 @@ internal class VehicleTest {
             val sut = Truck(Location.FACTORY)
             sut.assignRoute(Route(Location.FACTORY, Location.PORT))
 
-            sut.update()
+            sut.update(0)
+            sut.update(1)
             assertThat(sut.location).isEqualTo(Location.PORT)
             assertThat(sut.status).isEqualTo(VehicleStatus.STOP)
             assertThat(sut.distanceToNextStop).isEqualTo(0)
@@ -114,8 +105,9 @@ internal class VehicleTest {
             val sut = Truck(Location.FACTORY)
             sut.assignRoute(Route(Location.FACTORY, Location.PORT, Location.FACTORY))
 
-            sut.update()
-            sut.update()
+            sut.update(0)
+            sut.update(1)
+            sut.update(2)
             assertThat(sut.location).isEqualTo(Location.FACTORY)
         }
 
@@ -124,22 +116,51 @@ internal class VehicleTest {
 
             val sut = Truck(Location.FACTORY)
             sut.assignRoute(Route(Location.FACTORY, Location.WAREHOUSE_B, Location.FACTORY))
-            repeat(sut.distanceToNextStop) { sut.update() }
-            sut.update()
+            var time = 0
+            repeat(sut.distanceToNextStop) { sut.update(time++) }
+            sut.update(time++)
             assertThat(sut.status).isEqualTo(VehicleStatus.ON_ROUTE)
-            assertThat(sut.distanceToNextStop).isEqualTo(4)
+            assertThat(sut.distanceToNextStop).isEqualTo(5)
         }
     }
 
     @Nested
     inner class VehicleEventTests {
         @Test
-        fun `returns `() {
+        fun `creates Depart event when starting a route`() {
             val sut = Truck(Location.FACTORY)
             sut.assignRoute(Route(Location.FACTORY, Location.WAREHOUSE_B))
-            val events = sut.update()
+            val events = sut.update(0)
             assertThat(events).isEqualTo(
-                listOf(Departed(0, sut))
+                listOf(Departed(0, Location.FACTORY, sut))
+            )
+        }
+
+        @Test
+        fun `creates Arrive event when reaching stop`() {
+            val sut = Truck(Location.FACTORY)
+            sut.assignRoute(Route(Location.FACTORY, Location.WAREHOUSE_B))
+            var time = 0
+            repeat(sut.distanceToNextStop) {
+                sut.update(time++)
+            }
+            val events = sut.update(time++)
+            assertThat(events).isEqualTo(
+                listOf(Arrived(5, Location.WAREHOUSE_B, sut))
+            )
+        }
+
+        @Test
+        fun `creates Arrive and depart event when reaching stop and continuing to next stop`() {
+            val sut = Truck(Location.FACTORY)
+            sut.assignRoute(Route(Location.FACTORY, Location.PORT, Location.FACTORY))
+            sut.update(0)
+            val events = sut.update(1)
+            assertThat(events).isEqualTo(
+                listOf(
+                    Arrived(1, Location.PORT, sut),
+                    Departed(1, Location.PORT, sut)
+                )
             )
         }
     }

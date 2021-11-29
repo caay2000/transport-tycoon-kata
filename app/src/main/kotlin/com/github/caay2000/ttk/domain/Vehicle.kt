@@ -1,5 +1,7 @@
 package com.github.caay2000.ttk.domain
 
+import com.github.caay2000.ttk.domain.event.Arrived
+import com.github.caay2000.ttk.domain.event.Departed
 import com.github.caay2000.ttk.domain.event.VehicleEvent
 import java.util.UUID
 
@@ -22,9 +24,6 @@ sealed class Vehicle(private val speed: Int) {
         get() = _route?.distanceToNextStop ?: 0
 
     private inner class VehicleRoute(val route: Route) {
-        fun shouldMove(): Boolean = listOf(VehicleStatus.IDLE, VehicleStatus.ON_ROUTE).contains(status)
-
-        fun reachedStation(): Boolean = distanceToNextStop == 0
         fun updateCurrentStop() {
             if (currentStop < route.stops.size - 1) currentStop++
         }
@@ -51,23 +50,40 @@ sealed class Vehicle(private val speed: Int) {
         this.status = VehicleStatus.IDLE
     }
 
-    fun update(): List<VehicleEvent> {
-        _route?.let {
-            if (it.shouldMove()) {
-                status = VehicleStatus.ON_ROUTE
-                _route!!.distanceTravelled += speed
-                if (it.reachedStation()) {
-                    status = VehicleStatus.IDLE
-                    _route!!.distanceTravelled = 0
-                    it.updateCurrentStop()
-                    this.location = it.lastStop.location
-                    if (it.isLastStop()) {
-                        this.status = VehicleStatus.STOP
-                    }
+    fun update(currentTime: Int): List<VehicleEvent> {
+        return when (status) {
+            VehicleStatus.IDLE -> idleHandler(currentTime)
+            VehicleStatus.ON_ROUTE -> onRouteHandler(currentTime)
+            else -> emptyList()
+        }
+    }
+
+    private fun idleHandler(currentTime: Int): List<VehicleEvent> {
+        status = VehicleStatus.ON_ROUTE
+        return listOf(Departed(currentTime, location, this))
+    }
+
+    private fun onRouteHandler(currentTime: Int): List<VehicleEvent> {
+        _route!!.distanceTravelled += speed
+        return when (distanceToNextStop) {
+            0 -> {
+                _route!!.distanceTravelled = 0
+                _route!!.updateCurrentStop()
+                location = _route!!.lastStop.location
+                if (_route!!.isLastStop()) {
+                    this.status = VehicleStatus.STOP
+                    listOf(Arrived(currentTime, location, this))
+                } else {
+                    listOf(
+                        Arrived(currentTime, location, this),
+                        Departed(currentTime, location, this)
+                    )
                 }
             }
+            else -> {
+                emptyList()
+            }
         }
-        return emptyList()
     }
 
     override fun toString(): String {
