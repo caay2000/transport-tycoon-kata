@@ -1,20 +1,18 @@
 package com.github.caay2000.ttk.domain
 
-data class Route private constructor(val stops: List<Stop>) {
-    constructor(startLocation: Location, vararg stops: Location) : this(listOf(Stop(startLocation)) + stops.map { Stop(it) })
+import java.util.concurrent.atomic.AtomicInteger
 
-    private val Stop.nextStop: Stop
-        get() {
-            val stopIndex = stops.indexOfFirst { it.id == this.id }
-            return if (stopIndex < numStops - 1) stops[stopIndex + 1]
-            else stops[stopIndex]
-        }
+data class Route(val start: Stop, val destination: Stop) {
 
-    var numStops: Int = stops.size
+    private val time: AtomicInteger = AtomicInteger(0)
 
-    val totalRouteDistance: Distance = stops.fold(initial = 0) { total, stop ->
-        total + stop.distanceTo(stop.nextStop)
+    private val distanceToDestination = start.distanceTo(destination)
+    private val totalRouteDistance = distanceToDestination * 2
+
+    fun update() {
+        time.incrementAndGet()
     }
 
-    fun nextStop(stop: Stop) = stop.nextStop
+    fun isStoppedInDestination() = time.get() == distanceToDestination
+    fun isFinished() = time.get() >= totalRouteDistance
 }

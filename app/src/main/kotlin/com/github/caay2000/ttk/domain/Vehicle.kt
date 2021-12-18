@@ -1,93 +1,76 @@
 package com.github.caay2000.ttk.domain
 
-import com.github.caay2000.ttk.domain.event.Arrived
-import com.github.caay2000.ttk.domain.event.Departed
-import com.github.caay2000.ttk.domain.event.VehicleEvent
+import com.github.caay2000.ttk.api.inbound.Cargo
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 import java.util.UUID
 
-sealed class Vehicle(private val speed: Int) {
+@Serializable
+sealed class Vehicle {
+    @Transient
+    abstract val initialStop: Stop
 
+    @Transient
     val id: UUID = UUID.randomUUID()
 
-    abstract var location: Location
-        internal set
+    private var cargo: Cargo? = null
+    fun isEmpty() = cargo == null
 
-    var status: VehicleStatus = VehicleStatus.STOP
-        internal set
+    @Serializable
+    private var status = VehicleStatus.IDLE
 
-    private var _route: VehicleRoute? = null
-    var route: Route? = null
-        get() = _route?.route
-        private set
+    @Transient
+    private var route: Route? = null
 
-    val distanceToNextStop: Int
-        get() = _route?.distanceToNextStop ?: 0
-
-    private inner class VehicleRoute(val route: Route) {
-        fun updateCurrentStop() {
-            if (currentStop < route.stops.size - 1) currentStop++
-        }
-
-        var currentStop: Int = 0
-        val lastStop: Stop
-            get() = route.stops[currentStop]
-        val nextStop: Stop
-            get() = route.nextStop(route.stops[currentStop])
-
-        var distanceTravelled = 0
-        val distanceToNextStop: Int
-            get() = lastStop.distanceTo(nextStop) - distanceTravelled
-
-        override fun toString(): String {
-            return "VehicleRoute(route=$route, currentStop=$currentStop, lastStop=$lastStop, nextStop=$nextStop, distanceTravelled=$distanceTravelled, distanceToNextStop=$distanceToNextStop)"
-        }
-
-        fun isLastStop(): Boolean = currentStop == route.numStops - 1
+    private fun load() {
+        val loadedCargo = this.initialStop.retrieveCargo()
+        this.cargo = loadedCargo
     }
 
-    fun assignRoute(route: Route) {
-        this._route = VehicleRoute(route)
+    fun unload() {
+        this.route!!.destination.deliverCargo(this.cargo!!)
+        this.cargo = null
+    }
+
+    fun start() {
+        this.route = Route(this.initialStop, getRouteDestination())
+        this.status = VehicleStatus.ON_ROUTE
+    }
+
+    private fun getRouteDestination(): Stop {
+        return when {
+            initialStop == stops[Location.FACTORY] && cargo!!.destination == Location.WAREHOUSE_A -> stops[Location.PORT]!!
+            else -> stops[cargo!!.destination]!!
+        }
+    }
+
+    fun move() {
+        this.route!!.update()
+    }
+
+    fun stop() {
         this.status = VehicleStatus.IDLE
+        this.route = null
     }
 
-    fun update(currentTime: Int): List<VehicleEvent> {
-        return when (status) {
-            VehicleStatus.IDLE -> idleHandler(currentTime)
-            VehicleStatus.ON_ROUTE -> onRouteHandler(currentTime)
-            else -> emptyList()
+    fun update() {
+        if (status == VehicleStatus.IDLE && initialStop.hasCargo()) {
+            load()
+            start()
         }
-    }
-
-    private fun idleHandler(currentTime: Int): List<VehicleEvent> {
-        status = VehicleStatus.ON_ROUTE
-        return listOf(Departed(currentTime, location, this))
-    }
-
-    private fun onRouteHandler(currentTime: Int): List<VehicleEvent> {
-        _route!!.distanceTravelled += speed
-        return when (distanceToNextStop) {
-            0 -> {
-                _route!!.distanceTravelled = 0
-                _route!!.updateCurrentStop()
-                location = _route!!.lastStop.location
-                if (_route!!.isLastStop()) {
-                    this.status = VehicleStatus.STOP
-                    listOf(Arrived(currentTime, location, this))
-                } else {
-                    listOf(
-                        Arrived(currentTime, location, this),
-                        Departed(currentTime, location, this)
-                    )
+        if (status == VehicleStatus.ON_ROUTE) {
+            when {
+                route!!.isStoppedInDestination() -> {
+                    unload()
+                    move()
                 }
-            }
-            else -> {
-                emptyList()
+                route!!.isFinished() -> {
+                    stop()
+                    update()
+                }
+                else -> move()
             }
         }
-    }
-
-    override fun toString(): String {
-        return "Vehicle(speed=$speed, id=$id, location=$location, status=$status, _route=$_route, route=$route)"
     }
 }
 
@@ -99,14 +82,8 @@ enum class VehicleStatus {
     UNLOADING
 }
 
-data class Boat(override var location: Location) : Vehicle(1) {
-    override fun toString(): String {
-        return super.toString()
-    }
-}
+@Serializable
+data class Boat(override val initialStop: Stop) : Vehicle()
 
-data class Truck(override var location: Location) : Vehicle(1) {
-    override fun toString(): String {
-        return super.toString()
-    }
-}
+@Serializable
+data class Truck(override val initialStop: Stop) : Vehicle()

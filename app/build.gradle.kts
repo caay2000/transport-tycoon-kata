@@ -1,6 +1,7 @@
 plugins {
     application
-    kotlin("jvm") version "1.6.0"
+    kotlin("jvm") version "1.6.10"
+    kotlin("plugin.serialization") version "1.6.10"
     id("info.solidsoft.pitest") version "1.7.0"
     id("org.jlleitschuh.gradle.ktlint") version "10.2.0"
 }
@@ -22,6 +23,7 @@ tasks.test {
 }
 
 dependencies {
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
     testImplementation(kotlin("test"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.1")
     testImplementation("org.assertj:assertj-core:3.21.0")
