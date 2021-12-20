@@ -31,7 +31,7 @@ back from A, while ship travels back to the Port.
 would take to get them delivered.
 
 | Input        | Output |
-| ------------ | ------ |
+|--------------|--------|
 | A            | 5      |
 | AB           | 5      |
 | BB           | 5      |

@@ -1,25 +1,16 @@
 package com.github.caay2000.ttk.domain
 
 import com.github.caay2000.ttk.api.inbound.Cargo
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
-import java.util.UUID
 
-@Serializable
 sealed class Vehicle {
-    @Transient
-    abstract val initialStop: Stop
 
-    @Transient
-    val id: UUID = UUID.randomUUID()
+    abstract val initialStop: Stop
 
     private var cargo: Cargo? = null
     fun isEmpty() = cargo == null
 
-    @Serializable
     private var status = VehicleStatus.IDLE
 
-    @Transient
     private var route: Route? = null
 
     private fun load() {
@@ -27,12 +18,12 @@ sealed class Vehicle {
         this.cargo = loadedCargo
     }
 
-    fun unload() {
+    private fun unload() {
         this.route!!.destination.deliverCargo(this.cargo!!)
         this.cargo = null
     }
 
-    fun start() {
+    private fun start() {
         this.route = Route(this.initialStop, getRouteDestination())
         this.status = VehicleStatus.ON_ROUTE
     }
@@ -44,11 +35,11 @@ sealed class Vehicle {
         }
     }
 
-    fun move() {
+    private fun move() {
         this.route!!.update()
     }
 
-    fun stop() {
+    private fun stop() {
         this.status = VehicleStatus.IDLE
         this.route = null
     }
@@ -76,14 +67,9 @@ sealed class Vehicle {
 
 enum class VehicleStatus {
     IDLE,
-    ON_ROUTE,
-    STOP,
-    LOADING,
-    UNLOADING
+    ON_ROUTE
 }
 
-@Serializable
 data class Boat(override val initialStop: Stop) : Vehicle()
 
-@Serializable
 data class Truck(override val initialStop: Stop) : Vehicle()

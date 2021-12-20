@@ -1,15 +1,8 @@
 package com.github.caay2000.ttk.domain
 
 import com.github.caay2000.ttk.api.inbound.Cargo
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
-import java.util.UUID
 
-@Serializable
 data class Stop(val location: Location) {
-
-    @Transient
-    val id: UUID = UUID.randomUUID()
 
     private var _cargo = mutableListOf<Cargo>()
     val cargo: List<Cargo>

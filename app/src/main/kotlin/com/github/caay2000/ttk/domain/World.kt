@@ -1,12 +1,9 @@
 package com.github.caay2000.ttk.domain
 
 import com.github.caay2000.ttk.api.inbound.Cargo
-import kotlinx.serialization.Serializable
 
-@Serializable
 data class World(val stops: List<Stop>, val vehicles: List<Vehicle>) {
 
-    @Serializable
     var time: Int = -1
         private set
 

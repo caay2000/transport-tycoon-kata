@@ -8,10 +8,8 @@ import com.github.caay2000.ttk.domain.Location.PORT
 import com.github.caay2000.ttk.domain.Truck
 import com.github.caay2000.ttk.domain.World
 import com.github.caay2000.ttk.domain.stops
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 
-internal class Application : TransportTycoonApi {
+internal class Application(private val MAX_NUM_ITERATIONS: Int = 200) : TransportTycoonApi {
 
     private val world = World(
         stops = stops.values.toList(),
@@ -22,13 +20,10 @@ internal class Application : TransportTycoonApi {
 
         world.addCargo(cargo)
 
-        while (world.isCompleted().not()) {
-
-            println(Json.encodeToString(world))
+        while (world.time < MAX_NUM_ITERATIONS && world.isCompleted().not()) {
             world.update()
-
-            if (world.time > 100) break
         }
+
         return world.time
     }
 }
