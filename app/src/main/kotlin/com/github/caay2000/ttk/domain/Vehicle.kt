@@ -1,6 +1,8 @@
 package com.github.caay2000.ttk.domain
 
 import com.github.caay2000.ttk.api.inbound.Cargo
+import com.github.caay2000.ttk.domain.Location.FACTORY
+import com.github.caay2000.ttk.domain.Location.PORT
 
 sealed class Vehicle {
 
@@ -30,8 +32,8 @@ sealed class Vehicle {
 
     private fun getRouteDestination(): Stop {
         return when {
-            initialStop == stops[Location.FACTORY] && cargo!!.destination == Location.WAREHOUSE_A -> stops[Location.PORT]!!
-            else -> stops[cargo!!.destination]!!
+            initialStop == Stop.get(FACTORY) && cargo!!.destination == Location.WAREHOUSE_A -> Stop.get(PORT)
+            else -> Stop.get(cargo!!.destination)
         }
     }
 

@@ -15,7 +15,7 @@ internal class LocationTest {
         "WAREHOUSE_B, FACTORY, 5"
     )
     @ParameterizedTest(name = "{index} - distance from {0} to {1} is {2}")
-    fun `distanceTo works`(src: Location, dst: Location, distance: Distance) {
+    internal fun `distanceTo works`(src: Location, dst: Location, distance: Distance) {
 
         val result = src.distanceTo(dst)
         assertThat(result).isEqualTo(distance)
@@ -28,7 +28,7 @@ internal class LocationTest {
         "WAREHOUSE_B, WAREHOUSE_B"
     )
     @ParameterizedTest(name = "{index} - distance from {0} to {1} is 0")
-    fun `same location paths has 0 distance`(src: Location, dst: Location) {
+    internal fun `same location paths has 0 distance`(src: Location, dst: Location) {
 
         val result = src.distanceTo(dst)
         assertThat(result).isEqualTo(0)
@@ -40,7 +40,7 @@ internal class LocationTest {
         "WAREHOUSE_A, WAREHOUSE_B"
     )
     @ParameterizedTest(name = "{index} - distance from {0} to {1} is invalid")
-    fun `invalid paths has -1 distance`(src: Location, dst: Location) {
+    internal fun `invalid paths has -1 distance`(src: Location, dst: Location) {
 
         val result = src.distanceTo(dst)
         assertThat(result).isEqualTo(-1)
