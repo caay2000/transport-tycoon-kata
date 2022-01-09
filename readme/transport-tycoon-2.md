@@ -2,14 +2,6 @@
 
 # Exercise 2
 
-> There is a [second podcast episode](https://storage.googleapis.com/swp-podcast/ethos/swp-ethos-podcast-02.mp3) in which Peter and Rinat share thoughts about first exercise and move forward to the second one.
-
-We've got more than 15 solutions at the moment of writing. They are in 9 different languages with completely different
-implementation styles and architectures. The answers to the problems are also different.
-
-**That diversity is a good thing**, but it makes difficult to compare the results. It is the time to open up the
-black-boxes without imposing too much constraints on the implementation details.
-
 Let's modify the solution so that it would log important events in the following format:
 
 - Log entries are in JSON, one JSON object per line
@@ -111,8 +103,3 @@ _ABBBABAAABBB_
 - Feel free to add domain logs and rendered trace files alongside your solution and **point to their folder** in
   the [solution list](https://github.com/Softwarepark/exercises/blob/master/transport-tycoon/README.md) ("*Ex 2*"
   column). For example, put domain logs for the `AB` scenario into `AB.log`. Solution list already has some references.
-- Check out the [exercise discussions](https://github.com/orgs/ddd-exercises/teams/tt/discussions).
-
-## Next
-
-[Exercise 3](transport-tycoon-3.md) is available!

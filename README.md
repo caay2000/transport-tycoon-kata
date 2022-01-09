@@ -3,7 +3,7 @@
 This is a kata proposed by SoftwarePark. You can find the original
 one [here](https://github.com/Softwarepark/exercises/blob/master/transport-tycoon.md)
 
-I modified some parts of it, to make it different, more challenging or just to make it nicer for me :)
+I modified some parts of it, to make it different, more challenging or just make it a playground for me :)
 
 # Transport Tycoon Exercises for DDD
 

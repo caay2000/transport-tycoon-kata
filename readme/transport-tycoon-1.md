@@ -2,8 +2,6 @@
 
 # Exercise 1
 
-> You can listen to [10-minute introduction by Peter Szarvas and Rinat Abdullin](https://storage.googleapis.com/swp-podcast/ethos/swp-ethos-podcast-01.mp3) or read the summary below.
-
 There is a map containing a Factory, Port, Warehouse A and Warehouse B. Factory has a small stock of containers that
 have to be delivered to these warehouses.
 
@@ -38,7 +36,3 @@ would take to get them delivered.
 | ABB          | 7      |
 | AABABBAB     | ?      |
 | ABBBABAAABBB | ?      |
-
-## Next
-
-Next exercise is [available](transport-tycoon-2.md).
