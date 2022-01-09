@@ -7,6 +7,9 @@ data class Stop(val location: Location) {
     companion object {
         fun get(location: Location) = stops[location]!!
         fun all() = stops.values.toList()
+        fun cleanAll() = stops.forEach {
+            it.value._cargo.clear()
+        }
 
         private val stops = mapOf(
             Location.FACTORY to Stop(Location.FACTORY),

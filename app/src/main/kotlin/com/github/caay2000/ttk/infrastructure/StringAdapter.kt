@@ -9,7 +9,7 @@ class StringAdapter(private val application: TransportTycoonApi) {
     internal fun execute(input: String): Int {
 
         val destinations = parseRoute(input)
-        return application.execute(destinations)
+        return application.execute(destinations).duration
     }
 
     private fun parseRoute(input: String): List<Cargo> {

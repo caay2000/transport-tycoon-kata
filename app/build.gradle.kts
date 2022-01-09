@@ -34,6 +34,7 @@ pitest {
     targetClasses.add("com.github.caay2000.ttk.*")
     outputFormats.add("HTML")
     timestampedReports.set(false)
+    excludedTestClasses.add("**.*IntegrationTest")
     avoidCallsTo.add("kotlin.jvm.internal")
     mutators.addAll("DEFAULTS", "STRONGER")
 }

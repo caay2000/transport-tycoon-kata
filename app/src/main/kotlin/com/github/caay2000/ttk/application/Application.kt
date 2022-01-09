@@ -1,6 +1,7 @@
 package com.github.caay2000.ttk.application
 
 import com.github.caay2000.ttk.api.inbound.Cargo
+import com.github.caay2000.ttk.api.inbound.Result
 import com.github.caay2000.ttk.api.inbound.TransportTycoonApi
 import com.github.caay2000.ttk.domain.Boat
 import com.github.caay2000.ttk.domain.Location.FACTORY
@@ -16,7 +17,7 @@ internal class Application(private val MAX_NUM_ITERATIONS: Int = 200) : Transpor
         vehicles = listOf(Truck(Stop.get(FACTORY)), Truck(Stop.get(FACTORY)), Boat(Stop.get(PORT)))
     )
 
-    override fun execute(cargo: List<Cargo>): Int {
+    override fun execute(cargo: List<Cargo>): Result {
 
         world.addCargo(cargo)
 
@@ -24,6 +25,6 @@ internal class Application(private val MAX_NUM_ITERATIONS: Int = 200) : Transpor
             world.update()
         }
 
-        return world.time
+        return Result(world.time, emptyList())
     }
 }
