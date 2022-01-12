@@ -26,7 +26,7 @@ class WorldTest {
         @Test
         internal fun `adds cargo to FACTORY`() {
 
-            val sut = World(Stop.all(), emptyList())
+            val sut = World(Stop.all())
             sut.addCargo(listOf(Cargo(WAREHOUSE_A), Cargo(WAREHOUSE_B), Cargo(WAREHOUSE_A)))
 
             assertThat(Stop.get(FACTORY).cargo).hasSize(3)
@@ -41,7 +41,7 @@ class WorldTest {
         @Test
         internal fun `is not completed while any stop has cargo`() {
 
-            val sut = World(Stop.all(), emptyList())
+            val sut = World(Stop.all())
             sut.addCargo(listOf(Cargo(WAREHOUSE_B)))
 
             assertThat(sut.isCompleted()).isFalse
@@ -50,7 +50,8 @@ class WorldTest {
         @Test
         internal fun `is not completed while any vehicle has cargo`() {
 
-            val sut = World(Stop.all(), listOf(Truck(Stop.get(FACTORY))))
+            val sut = World(Stop.all())
+            sut.createVehicle(VehicleType.TRUCK, FACTORY)
             sut.addCargo(listOf(Cargo(WAREHOUSE_B)))
             sut.update()
 
@@ -60,7 +61,8 @@ class WorldTest {
         @Test
         internal fun `is completed when all stops and all vehicles are empty`() {
 
-            val sut = World(Stop.all(), listOf(Truck(Stop.get(FACTORY))))
+            val sut = World(Stop.all())
+            sut.createVehicle(VehicleType.TRUCK, FACTORY)
             sut.addCargo(listOf(Cargo(PORT)))
             sut.update()
             sut.update()
@@ -74,14 +76,14 @@ class WorldTest {
 
         @Test
         internal fun `returns 0 for no updates`() {
-            val sut = World(Stop.all(), listOf())
+            val sut = World(Stop.all())
 
             assertThat(sut.time).isEqualTo(0)
         }
 
         @Test
         internal fun `returns x for x updates`() {
-            val sut = World(Stop.all(), listOf())
+            val sut = World(Stop.all())
             sut.addCargo(listOf(Cargo(PORT)))
             sut.update()
             sut.update()
@@ -95,7 +97,7 @@ class WorldTest {
 
         @Test
         internal fun `returns no events for empty map`() {
-            val sut = World(Stop.all(), listOf())
+            val sut = World(Stop.all())
             val events = sut.update()
 
             assertThat(events).hasSize(0)

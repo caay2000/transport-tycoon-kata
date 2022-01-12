@@ -19,7 +19,7 @@ data class Stop(val location: Location) {
         )
     }
 
-    private var _cargo = mutableListOf<Cargo>()
+    private val _cargo = mutableListOf<Cargo>()
     val cargo: List<Cargo>
         get() = _cargo.toList()
 

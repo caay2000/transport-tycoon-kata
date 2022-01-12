@@ -3,10 +3,24 @@ package com.github.caay2000.ttk.domain
 import com.github.caay2000.ttk.api.inbound.Cargo
 import com.github.caay2000.ttk.api.inbound.Event
 
-data class World(val stops: List<Stop>, val vehicles: List<Vehicle>) {
+class World(val stops: List<Stop>) {
+
+    private val _vehicles: MutableList<Vehicle> = mutableListOf()
+    val vehicles: List<Vehicle>
+        get() = _vehicles.toList()
+
+    var events: List<Event> = emptyList()
+        get() = field.toList()
+        private set
 
     var time: Int = 0
         private set
+
+    fun getStop(location: Location) = this.stops.first { it.location == location }
+
+    fun createVehicle(type: VehicleType, startingLocation: Location) {
+        _vehicles.add(Vehicle.create(this, type, startingLocation))
+    }
 
     fun addCargo(cargos: List<Cargo>) {
         cargos.forEach { cargo ->
@@ -22,5 +36,8 @@ data class World(val stops: List<Stop>, val vehicles: List<Vehicle>) {
         operation = { list, vehicle ->
             list + vehicle.update()
         }
-    ).also { if (this.isCompleted().not()) time++ }
+    ).also {
+        this.events = this.events + it
+        if (this.isCompleted().not()) time++
+    }
 }

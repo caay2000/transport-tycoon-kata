@@ -8,7 +8,17 @@ import com.github.caay2000.ttk.domain.Location.FACTORY
 import com.github.caay2000.ttk.domain.Location.PORT
 import java.util.UUID
 
-sealed class Vehicle {
+sealed class Vehicle(val type: VehicleType) {
+
+    companion object {
+        fun create(world: World, type: VehicleType, startingLocation: Location) =
+            when (type) {
+                VehicleType.TRUCK -> Truck(world, world.getStop(startingLocation))
+                VehicleType.BOAT -> Boat(world, world.getStop(startingLocation))
+            }
+    }
+
+    abstract val world: World
 
     abstract val initialStop: Stop
 
@@ -25,8 +35,9 @@ sealed class Vehicle {
         val loadedCargo = this.initialStop.retrieveCargo()
         this.cargo = loadedCargo
         return DepartEvent(
+            time = world.time,
             vehicleId = this.id,
-            type = this::class,
+            type = type,
             location = this.initialStop.location,
             destination = this.cargo!!.destination,
             cargo = this.cargo!!
@@ -36,8 +47,9 @@ sealed class Vehicle {
     private fun unload(): Event {
         this.route!!.destination.deliverCargo(this.cargo!!)
         return ArriveEvent(
+            time = world.time,
             vehicleId = this.id,
-            type = this::class,
+            type = type,
             location = this.route!!.destination.location,
             cargo = this.cargo!!
         ).also { this.cargo = null }
@@ -93,6 +105,6 @@ enum class VehicleStatus {
     IDLE, ON_ROUTE
 }
 
-data class Boat(override val initialStop: Stop) : Vehicle()
+data class Boat(override val world: World, override val initialStop: Stop) : Vehicle(VehicleType.BOAT)
 
-data class Truck(override val initialStop: Stop) : Vehicle()
+data class Truck(override val world: World, override val initialStop: Stop) : Vehicle(VehicleType.TRUCK)

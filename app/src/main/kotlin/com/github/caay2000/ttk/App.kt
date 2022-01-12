@@ -8,9 +8,9 @@ class App {
     private val application: TransportTycoonApi = Application()
     private val adapter = StringAdapter(application)
 
-    fun invoke(input: String): Int = adapter.execute(input)
+    fun invoke(input: String) = adapter.execute(input)
 }
 
 fun main(args: Array<String>) {
-    println(App().invoke(args[0]))
+    println(App().invoke(args[0]).duration)
 }

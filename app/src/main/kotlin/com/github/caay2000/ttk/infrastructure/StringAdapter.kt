@@ -1,15 +1,16 @@
 package com.github.caay2000.ttk.infrastructure
 
 import com.github.caay2000.ttk.api.inbound.Cargo
+import com.github.caay2000.ttk.api.inbound.Result
 import com.github.caay2000.ttk.api.inbound.TransportTycoonApi
 import com.github.caay2000.ttk.domain.Location
 
 class StringAdapter(private val application: TransportTycoonApi) {
 
-    internal fun execute(input: String): Int {
+    internal fun execute(input: String): Result {
 
         val destinations = parseRoute(input)
-        return application.execute(destinations).duration
+        return application.execute(destinations)
     }
 
     private fun parseRoute(input: String): List<Cargo> {

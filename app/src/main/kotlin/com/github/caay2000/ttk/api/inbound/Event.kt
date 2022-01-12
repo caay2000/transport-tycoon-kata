@@ -1,27 +1,28 @@
 package com.github.caay2000.ttk.api.inbound
 
 import com.github.caay2000.ttk.domain.Location
-import com.github.caay2000.ttk.domain.Vehicle
-import java.time.LocalDateTime
+import com.github.caay2000.ttk.domain.VehicleType
 import java.util.UUID
-import kotlin.reflect.KClass
 
-sealed class Event(
-    val id: UUID,
-    val time: LocalDateTime
-)
+sealed class Event(val id: UUID) {
+    abstract val time: Int
+}
+
+sealed class VehicleEvent(id: UUID) : Event(id)
 
 data class DepartEvent(
+    override val time: Int,
     val vehicleId: UUID,
-    val type: KClass<out Vehicle>,
+    val type: VehicleType,
     val location: Location,
     val destination: Location,
     val cargo: Cargo
-) : Event(UUID.randomUUID(), LocalDateTime.now())
+) : VehicleEvent(UUID.randomUUID())
 
 data class ArriveEvent(
+    override val time: Int,
     val vehicleId: UUID,
-    val type: KClass<out Vehicle>,
+    val type: VehicleType,
     val location: Location,
     val cargo: Cargo
-) : Event(UUID.randomUUID(), LocalDateTime.now())
+) : VehicleEvent(UUID.randomUUID())
