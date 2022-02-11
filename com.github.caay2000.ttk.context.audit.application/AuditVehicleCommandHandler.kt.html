@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+<body>
+
+
+<h1>AuditVehicleCommandHandler.kt</h1>
+
+<table class="src">
+
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@34c53688_1'/>
+1
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@34c53688_1'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>package com.github.caay2000.ttk.context.audit.application</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@34c53688_2'/>
+2
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@34c53688_2'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@34c53688_3'/>
+3
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@34c53688_3'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import com.github.caay2000.ttk.context.audit.domain.repository.EventRepository</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@34c53688_4'/>
+4
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@34c53688_4'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import com.github.caay2000.ttk.context.audit.domain.service.VehicleAuditorService</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@34c53688_5'/>
+5
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@34c53688_5'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import com.github.caay2000.ttk.context.core.command.CommandHandler</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@34c53688_6'/>
+6
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@34c53688_6'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.util.UUID</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@34c53688_7'/>
+7
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@34c53688_7'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@34c53688_8'/>
+8
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@34c53688_8'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>class AuditVehicleCommandHandler(eventRepository: EventRepository) : CommandHandler&#60;AuditVehicleCommand&#62; {</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@34c53688_9'/>
+9
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@34c53688_9'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@34c53688_10'/>
+10
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@34c53688_10'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    private val vehicleAuditor = VehicleAuditorService(eventRepository)</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@34c53688_11'/>
+11
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@34c53688_11'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@34c53688_12'/>
+12
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@34c53688_12'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    override fun invoke(command: AuditVehicleCommand) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@34c53688_13'/>
+13
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@34c53688_13'>1</a>
+<span>
+1. invoke : removed call to com/github/caay2000/ttk/context/audit/domain/service/VehicleAuditorService::invoke &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        vehicleAuditor.invoke(command.event)</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@34c53688_14'/>
+14
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@34c53688_14'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@34c53688_15'/>
+15
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@34c53688_15'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>}</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@34c53688_16'/>
+16
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@34c53688_16'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@34c53688_17'/>
+17
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@34c53688_17'>1</a>
+<span>
+1. type : replaced return value with &#34;&#34; for com/github/caay2000/ttk/context/audit/application/AuditVehicleCommand::type &rarr; NO_COVERAGE<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='survived'>data class AuditVehicleCommand(val event: EventPayload) : AuditCommand {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@34c53688_18'/>
+18
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@34c53688_18'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    override val commandId: UUID = UUID.randomUUID()</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@34c53688_19'/>
+19
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@34c53688_19'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>}</span></pre></td></tr>
+
+
+
+<tr><td></td><td></td><td><h2>Mutations</h2></td></tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@34c53688_13'>13</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@34c53688_13'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>invoke<br/><b>Killed by : </b>com.github.caay2000.ttk.integration.AppIntegrationTest.[engine:junit-jupiter]/[class:com.github.caay2000.ttk.integration.AppIntegrationTest]/[test-template:route returns the correct events(java.lang.String, java.util.List)]/[test-template-invocation:#1]</span></span> removed call to com/github/caay2000/ttk/context/audit/domain/service/VehicleAuditorService::invoke &rarr; KILLED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@34c53688_17'>17</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@34c53688_17'/> 
+
+<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>type<br/><b>Killed by : </b>none</span></span> replaced return value with &#34;&#34; for com/github/caay2000/ttk/context/audit/application/AuditVehicleCommand::type &rarr; NO_COVERAGE</p> 
+</td>
+</tr>
+
+</table>
+
+
+<h2>Active mutators</h2>
+<ul>
+<li class='mutator'>CONDITIONALS_BOUNDARY</li>
+<li class='mutator'>EMPTY_RETURNS</li>
+<li class='mutator'>FALSE_RETURNS</li>
+<li class='mutator'>INCREMENTS</li>
+<li class='mutator'>INVERT_NEGS</li>
+<li class='mutator'>MATH</li>
+<li class='mutator'>NEGATE_CONDITIONALS</li>
+<li class='mutator'>NULL_RETURNS</li>
+<li class='mutator'>PRIMITIVE_RETURNS</li>
+<li class='mutator'>TRUE_RETURNS</li>
+<li class='mutator'>VOID_METHOD_CALLS</li>
+
+</ul>
+
+<h2>Tests examined</h2>
+<ul>
+<li>com.github.caay2000.ttk.integration.AppIntegrationTest.[engine:junit-jupiter]/[class:com.github.caay2000.ttk.integration.AppIntegrationTest]/[test-template:route takes the correct steps(java.lang.String, int)]/[test-template-invocation:#1] (11 ms)</li><li>com.github.caay2000.ttk.integration.AppIntegrationTest.[engine:junit-jupiter]/[class:com.github.caay2000.ttk.integration.AppIntegrationTest]/[test-template:route takes the correct steps(java.lang.String, int)]/[test-template-invocation:#4] (17 ms)</li><li>com.github.caay2000.ttk.integration.AppIntegrationTest.[engine:junit-jupiter]/[class:com.github.caay2000.ttk.integration.AppIntegrationTest]/[test-template:route takes the correct steps(java.lang.String, int)]/[test-template-invocation:#5] (16 ms)</li><li>com.github.caay2000.ttk.integration.AppIntegrationTest.[engine:junit-jupiter]/[class:com.github.caay2000.ttk.integration.AppIntegrationTest]/[test-template:route returns the correct events(java.lang.String, java.util.List)]/[test-template-invocation:#1] (10 ms)</li><li>com.github.caay2000.ttk.integration.AppIntegrationTest.[engine:junit-jupiter]/[class:com.github.caay2000.ttk.integration.AppIntegrationTest]/[test-template:route takes the correct steps(java.lang.String, int)]/[test-template-invocation:#2] (22 ms)</li><li>com.github.caay2000.ttk.integration.AppIntegrationTest.[engine:junit-jupiter]/[class:com.github.caay2000.ttk.integration.AppIntegrationTest]/[test-template:route takes the correct steps(java.lang.String, int)]/[test-template-invocation:#3] (17 ms)</li><li>com.github.caay2000.ttk.context.time.application.UpdateDateTimeCommandHandlerTest.[engine:junit-jupiter]/[class:com.github.caay2000.ttk.context.time.application.UpdateDateTimeCommandHandlerTest]/[method:UpdateDateTimeCommand updates the time correctly()] (17 ms)</li><li>com.github.caay2000.ttk.integration.AppIntegrationTest.[engine:junit-jupiter]/[class:com.github.caay2000.ttk.integration.AppIntegrationTest]/[test-template:route takes the correct steps(java.lang.String, int)]/[test-template-invocation:#8] (12 ms)</li><li>com.github.caay2000.ttk.integration.AppIntegrationTest.[engine:junit-jupiter]/[class:com.github.caay2000.ttk.integration.AppIntegrationTest]/[test-template:route takes the correct steps(java.lang.String, int)]/[test-template-invocation:#6] (24 ms)</li><li>com.github.caay2000.ttk.integration.AppIntegrationTest.[engine:junit-jupiter]/[class:com.github.caay2000.ttk.integration.AppIntegrationTest]/[test-template:route takes the correct steps(java.lang.String, int)]/[test-template-invocation:#7] (13 ms)</li>
+</ul>
+
+<br/>
+
+Report generated by <a href='http://pitest.org'>PIT</a> 1.7.0
+
+</body>
+</html>
