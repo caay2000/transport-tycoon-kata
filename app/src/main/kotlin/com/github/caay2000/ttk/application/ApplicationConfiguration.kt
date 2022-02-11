@@ -1,7 +1,8 @@
 package com.github.caay2000.ttk.application
 
+import com.github.caay2000.ttk.context.audit.application.AuditVehicleCommand
+import com.github.caay2000.ttk.context.audit.application.AuditVehicleCommandHandler
 import com.github.caay2000.ttk.context.audit.domain.repository.EventRepository
-import com.github.caay2000.ttk.context.audit.domain.service.VehicleAuditorService
 import com.github.caay2000.ttk.context.audit.inbound.VehicleEventSubscriber
 import com.github.caay2000.ttk.context.audit.outbound.InMemoryEventRepository
 import com.github.caay2000.ttk.context.core.command.Command
@@ -13,7 +14,6 @@ import com.github.caay2000.ttk.context.core.event.EventPublisherImpl
 import com.github.caay2000.ttk.context.core.event.EventSubscriber
 import com.github.caay2000.ttk.context.time.application.UpdateDateTimeCommand
 import com.github.caay2000.ttk.context.time.application.UpdateDateTimeCommandHandler
-import com.github.caay2000.ttk.context.time.domain.service.DateTimeUpdaterService
 import com.github.caay2000.ttk.context.vehicle.domain.VehicleEvent
 import com.github.caay2000.ttk.context.world.application.AddCargoCommand
 import com.github.caay2000.ttk.context.world.application.AddCargoCommandHandler
@@ -23,8 +23,6 @@ import com.github.caay2000.ttk.context.world.application.UpdateWorldCommand
 import com.github.caay2000.ttk.context.world.application.UpdateWorldCommandHandler
 import com.github.caay2000.ttk.context.world.domain.WorldUpdatedEvent
 import com.github.caay2000.ttk.context.world.domain.repository.WorldRepository
-import com.github.caay2000.ttk.context.world.domain.service.WorldConfiguratorService
-import com.github.caay2000.ttk.context.world.domain.service.WorldUpdaterService
 import com.github.caay2000.ttk.context.world.outbound.InMemoryWorldRepository
 import com.github.caay2000.ttk.lib.database.InMemoryDatabase
 import com.github.caay2000.ttk.lib.datetime.DateTimeProviderImpl
@@ -32,8 +30,8 @@ import com.github.caay2000.ttk.lib.eventbus.KTCommandHandler
 import com.github.caay2000.ttk.lib.eventbus.KTEventBus
 import com.github.caay2000.ttk.lib.eventbus.KTEventSubscriber
 import kotlin.reflect.KClass
-import com.github.caay2000.ttk.context.time.inbound.WorldUpdatedEventSubscriber as WorldUpdatedTimeContextEventSubscriber
-import com.github.caay2000.ttk.context.world.inbound.WorldUpdatedEventSubscriber as WorldUpdatedWorldContextEventSubscriber
+import com.github.caay2000.ttk.context.time.inbound.WorldUpdatedEventSubscriber as TimeContextWorldUpdatedEventSubscriber
+import com.github.caay2000.ttk.context.world.inbound.WorldUpdatedEventSubscriber as WorldContextWorldUpdatedEventSubscriber
 
 class ApplicationConfiguration {
 
@@ -43,26 +41,21 @@ class ApplicationConfiguration {
     private val eventPublisher = EventPublisherImpl()
 
     private val database: InMemoryDatabase = InMemoryDatabase()
-    val worldRepository: WorldRepository = InMemoryWorldRepository(database)
+    private val worldRepository: WorldRepository = InMemoryWorldRepository(database)
     val eventRepository: EventRepository = InMemoryEventRepository(database)
-
-    private val worldConfigurator = WorldConfiguratorService(worldRepository)
-    private val worldUpdater = WorldUpdaterService(eventPublisher, worldRepository, dateTimeProvider)
-    private val vehicleAuditor = VehicleAuditorService(eventRepository)
-    private val dateTimeUpdaterService = DateTimeUpdaterService(dateTimeProvider)
 
     init {
         KTEventBus.init<Command, Event>()
 
-        instantiateCommandHandler(UpdateDateTimeCommand::class, UpdateDateTimeCommandHandler(dateTimeUpdaterService))
-        instantiateCommandHandler(CreateWorldCommand::class, CreateWorldCommandHandler(worldConfigurator))
-        instantiateCommandHandler(AddCargoCommand::class, AddCargoCommandHandler(worldConfigurator))
-        instantiateCommandHandler(UpdateWorldCommand::class, UpdateWorldCommandHandler(worldUpdater))
+        instantiateCommandHandler(UpdateDateTimeCommand::class, UpdateDateTimeCommandHandler(dateTimeProvider))
+        instantiateCommandHandler(CreateWorldCommand::class, CreateWorldCommandHandler(worldRepository))
+        instantiateCommandHandler(AddCargoCommand::class, AddCargoCommandHandler(worldRepository))
+        instantiateCommandHandler(UpdateWorldCommand::class, UpdateWorldCommandHandler(eventPublisher, worldRepository, dateTimeProvider))
+        instantiateCommandHandler(AuditVehicleCommand::class, AuditVehicleCommandHandler(eventRepository))
 
-        instantiateEventSubscriber(VehicleEvent::class, VehicleEventSubscriber(vehicleAuditor))
-
-        instantiateEventSubscriber(WorldUpdatedEvent::class, WorldUpdatedTimeContextEventSubscriber(commandBus))
-        instantiateEventSubscriber(WorldUpdatedEvent::class, WorldUpdatedWorldContextEventSubscriber(commandBus))
+        instantiateEventSubscriber(WorldUpdatedEvent::class, TimeContextWorldUpdatedEventSubscriber(commandBus))
+        instantiateEventSubscriber(WorldUpdatedEvent::class, WorldContextWorldUpdatedEventSubscriber(commandBus))
+        instantiateEventSubscriber(VehicleEvent::class, VehicleEventSubscriber(commandBus))
     }
 
     private fun <T : Command> instantiateCommandHandler(clazz: KClass<T>, commandHandler: CommandHandler<T>): KTCommandHandler<T> =

@@ -8,14 +8,12 @@ import com.github.caay2000.ttk.context.vehicle.domain.VehicleType
 
 class World(val id: WorldId, val stops: List<Stop>) : Aggregate() {
 
-    private val _vehicles: MutableList<Vehicle> = mutableListOf()
-    private val vehicles: List<Vehicle>
-        get() = _vehicles.toList()
+    private val vehicles: MutableList<Vehicle> = mutableListOf()
 
     fun getStop(location: Location) = this.stops.first { it.location == location }
 
     fun createVehicle(type: VehicleType, startingLocation: Location) {
-        _vehicles.add(Vehicle.create(this, type, startingLocation))
+        vehicles.add(Vehicle.create(this, type, startingLocation))
     }
 
     fun addCargo(cargo: Cargo) {

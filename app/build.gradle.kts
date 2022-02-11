@@ -28,7 +28,7 @@ dependencies {
     testImplementation(kotlin("test"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.1")
     testImplementation("org.assertj:assertj-core:3.21.0")
-    testImplementation("io.mockk:mockk:1.12.1")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
 }
 
 pitest {
@@ -37,7 +37,7 @@ pitest {
     targetClasses.add("com.github.caay2000.ttk.*")
     outputFormats.add("HTML")
     timestampedReports.set(false)
-    excludedTestClasses.add("**.*IntegrationTest")
+//    excludedTestClasses.add("**.*IntegrationTest")
     avoidCallsTo.add("kotlin.jvm.internal")
-    mutators.addAll("DEFAULTS", "STRONGER")
+    mutators.addAll("DEFAULTS")
 }
