@@ -18,10 +18,13 @@ application {
 
 tasks.test {
     useJUnitPlatform()
-    dependsOn(tasks.ktlintFormat)
+//    dependsOn(tasks.ktlintFormat)
 }
 
 dependencies {
+    implementation("org.jgrapht:jgrapht-core:1.5.1")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
+
     testImplementation(kotlin("test"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.1")
     testImplementation("org.assertj:assertj-core:3.21.0")

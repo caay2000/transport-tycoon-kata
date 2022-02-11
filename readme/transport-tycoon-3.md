@@ -14,27 +14,27 @@ Let us take a moment and review what we already have:
 
 *How does this even relate to the Domain-Driven Design?*
 
-First of all, **our event logging is a simple form of publishing domain events**. We capture important state transitions
+First of all, **our core logging is a simple form of publishing domain events**. We capture important state transitions
 in a predefined format. It is done in such a form that:
 
 - downstream teams or domains could consume these events independently from the publishing code or its language. For
   example, trace.py is written in Python, while most of the DDD solutions are in C#.
 
-- changes in the domain behavior may enrich, but don't break existing event log format; we've observed that while
+- changes in the domain behavior may enrich, but don't break existing core log format; we've observed that while
   introducing complexity to the SHIP.
 
 Second, **the domain language found its way into each and every codebase**, even though we didn't mention any coding
 patterns. Regardless, of the implementation language, exercise solutions would make sense to anybody familiar with the
 domain.
 
-Third, **we have a form of event-driven specifications for our domain**. Each specification could be represented by:
+Third, **we have a form of core-driven specifications for our domain**. Each specification could be represented by:
 
 - **WHEN scenario** (e.g. when scenario "AB")
 
 - **THEN EXPECT events** (e.g. truck1 loads A and departs to port, truck2 loads B and departs to the B etc)
 
 If you think of it, our **domain implementation could be considered valid as long as for each scenario it emits the same
-event logs**. In other words, *the event logs specify the exepected behavior for each scenario*.
+core logs**. In other words, *the core logs specify the exepected behavior for each scenario*.
 
 We could test the validity of the implementation by running different scenarios and comparing resulting events with a
 well-known standard.

@@ -1,12 +1,14 @@
 package com.github.caay2000.ttk.integration
 
 import com.github.caay2000.ttk.App
-import com.github.caay2000.ttk.api.inbound.ArriveEvent
-import com.github.caay2000.ttk.api.inbound.Cargo
-import com.github.caay2000.ttk.api.inbound.DepartEvent
-import com.github.caay2000.ttk.api.inbound.Event
-import com.github.caay2000.ttk.domain.Location
-import com.github.caay2000.ttk.domain.VehicleType
+import com.github.caay2000.ttk.context.core.domain.VehicleId
+import com.github.caay2000.ttk.context.core.event.Event
+import com.github.caay2000.ttk.context.time.domain.DateTime
+import com.github.caay2000.ttk.context.vehicle.domain.ArrivedEvent
+import com.github.caay2000.ttk.context.vehicle.domain.DepartedEvent
+import com.github.caay2000.ttk.context.vehicle.domain.VehicleType
+import com.github.caay2000.ttk.context.world.domain.Cargo
+import com.github.caay2000.ttk.context.world.domain.Location
 import org.assertj.core.api.AbstractAssert
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.TestInstance
@@ -37,6 +39,7 @@ class AppIntegrationTest {
         assertThat(result.duration).isEqualTo(steps)
     }
 
+    //    @Disabled
     @MethodSource("routesAndEvents")
     @ParameterizedTest(name = "{index} - {0} route returns correct events")
     fun `route returns the correct events`(deliveries: String, events: List<Event>) {
@@ -77,25 +80,25 @@ class AppIntegrationTest {
         location: Location,
         destination: Location,
         cargoDestination: Location
-    ) = DepartEvent(
-        time = time,
-        vehicleId = UUID.randomUUID(),
+    ) = DepartedEvent(
+        time = DateTime(time),
+        vehicleId = VehicleId(UUID.randomUUID()),
         type = VehicleType.TRUCK,
         location = location,
         destination = destination,
-        cargo = Cargo(cargoDestination)
+        cargo = Cargo(destination = cargoDestination)
     )
 
     private fun arriveEvent(
         time: Int,
         location: Location,
         cargoDestination: Location
-    ) = ArriveEvent(
-        time = time,
-        vehicleId = UUID.randomUUID(),
+    ) = ArrivedEvent(
+        time = DateTime(time),
+        vehicleId = VehicleId(UUID.randomUUID()),
         type = VehicleType.TRUCK,
         location = location,
-        cargo = Cargo(cargoDestination)
+        cargo = Cargo(destination = cargoDestination)
     )
 }
 
@@ -107,15 +110,15 @@ class EventAssert(actual: Event) : AbstractAssert<EventAssert, Event>(actual, Ev
         return assertThat(actual).isInstanceOfSatisfying(Event::class.java) {
             assertThat(actual.time).isEqualTo(it.time)
             when (it) {
-                is DepartEvent -> {
-                    assertThat(expected).isInstanceOfSatisfying(DepartEvent::class.java) { exp ->
+                is DepartedEvent -> {
+                    assertThat(expected).isInstanceOfSatisfying(DepartedEvent::class.java) { exp ->
                         assertThat(it.type).isEqualTo(exp.type)
                         assertThat(it.location).isEqualTo(exp.location)
                         assertThat(it.destination).isEqualTo(exp.destination)
                     }
                 }
-                is ArriveEvent -> {
-                    assertThat(expected).isInstanceOfSatisfying(ArriveEvent::class.java) { exp ->
+                is ArrivedEvent -> {
+                    assertThat(expected).isInstanceOfSatisfying(ArrivedEvent::class.java) { exp ->
                         assertThat(it.type).isEqualTo(exp.type)
                         assertThat(it.location).isEqualTo(exp.location)
                     }

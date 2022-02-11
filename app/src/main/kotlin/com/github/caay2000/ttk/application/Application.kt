@@ -1,30 +1,46 @@
 package com.github.caay2000.ttk.application
 
-import com.github.caay2000.ttk.api.inbound.Cargo
-import com.github.caay2000.ttk.api.inbound.Result
-import com.github.caay2000.ttk.api.inbound.TransportTycoonApi
-import com.github.caay2000.ttk.domain.Location.FACTORY
-import com.github.caay2000.ttk.domain.Location.PORT
-import com.github.caay2000.ttk.domain.Stop
-import com.github.caay2000.ttk.domain.VehicleType
-import com.github.caay2000.ttk.domain.World
+import com.github.caay2000.ttk.context.audit.domain.repository.EventRepository
+import com.github.caay2000.ttk.context.core.command.Command
+import com.github.caay2000.ttk.context.core.command.CommandBus
+import com.github.caay2000.ttk.context.core.domain.DateTimeProvider
+import com.github.caay2000.ttk.context.core.domain.WorldId
+import com.github.caay2000.ttk.context.core.event.Event
+import com.github.caay2000.ttk.context.world.application.AddCargoCommand
+import com.github.caay2000.ttk.context.world.application.CreateWorldCommand
+import com.github.caay2000.ttk.context.world.application.UpdateWorldCommand
+import com.github.caay2000.ttk.context.world.domain.Location
+import com.github.caay2000.ttk.context.world.domain.repository.WorldRepository
 
-internal class Application(private val MAX_NUM_ITERATIONS: Int = 200) : TransportTycoonApi {
+internal class Application(
+    private val commandBus: CommandBus<Command>,
+    private val eventRepository: EventRepository,
+    private val worldRepository: WorldRepository,
+    private val dateTimeProvider: DateTimeProvider
+) {
 
-    private val world = World(stops = Stop.all())
+    fun execute(cargoDestinations: List<Location>): Result {
 
-    override fun execute(cargo: List<Cargo>): Result {
+        val worldId = WorldId()
 
-        world.createVehicle(VehicleType.TRUCK, FACTORY)
-        world.createVehicle(VehicleType.TRUCK, FACTORY)
-        world.createVehicle(VehicleType.BOAT, PORT)
-
-        world.addCargo(cargo)
-
-        while (world.time < MAX_NUM_ITERATIONS && world.isCompleted().not()) {
-            world.update()
+        commandBus.publish(CreateWorldCommand(worldId.id))
+        cargoDestinations.forEach { destination ->
+            commandBus.publish(AddCargoCommand(worldId.id, Location.FACTORY.name, destination.name))
         }
 
-        return Result(world.time, world.events)
+        while (true) {
+            val world = worldRepository.get(worldId)
+            if (world.isCompleted().not()) {
+                commandBus.publish(UpdateWorldCommand(worldId.id))
+            } else break
+        }
+
+        val events = eventRepository.getAll()
+        return Result(dateTimeProvider.now().value(), events)
     }
 }
+
+data class Result(
+    val duration: Int,
+    val events: List<Event>
+)

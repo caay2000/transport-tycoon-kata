@@ -42,7 +42,7 @@ with open(input_file, 'rt') as log:
             continue
 
         e = json.loads(l)
-        kind = e['event']
+        kind = e['core']
         if kind == 'DEPART':
             headers = extract_common_headers(e)
             headers.update({'ph': 'B', 'name': "{0}-{1}".format(e['location'], e['destination']), })

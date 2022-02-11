@@ -1,14 +1,22 @@
 package com.github.caay2000.ttk
 
-import com.github.caay2000.ttk.api.inbound.TransportTycoonApi
 import com.github.caay2000.ttk.application.Application
-import com.github.caay2000.ttk.infrastructure.StringAdapter
+import com.github.caay2000.ttk.application.ApplicationConfiguration
+import com.github.caay2000.ttk.lib.stringadapter.StringAdapter
 
 class App {
-    private val application: TransportTycoonApi = Application()
-    private val adapter = StringAdapter(application)
 
-    fun invoke(input: String) = adapter.execute(input)
+    private val configuration = ApplicationConfiguration()
+
+    private val application = Application(
+        configuration.commandBus,
+        configuration.eventRepository,
+        configuration.worldRepository,
+        configuration.dateTimeProvider
+    )
+    private val adapter = StringAdapter()
+
+    fun invoke(input: String) = application.execute(adapter.execute(input))
 }
 
 fun main(args: Array<String>) {

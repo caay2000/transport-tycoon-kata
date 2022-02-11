@@ -1,6 +1,6 @@
 # trace.py
 
-This is a utility that takes domain event log format from the transport tycoon log and converts into the Chrome Trace
+This is a utility that takes domain core log format from the transport tycoon log and converts into the Chrome Trace
 Viewer format.
 
 **You need to have python installed on your system.**
