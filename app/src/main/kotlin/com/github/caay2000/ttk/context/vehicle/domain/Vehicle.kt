@@ -2,27 +2,20 @@ package com.github.caay2000.ttk.context.vehicle.domain
 
 import com.github.caay2000.ttk.context.core.domain.Aggregate
 import com.github.caay2000.ttk.context.core.domain.VehicleId
-import com.github.caay2000.ttk.context.time.domain.DateTime
-import com.github.caay2000.ttk.context.world.domain.Cargo
+import com.github.caay2000.ttk.context.vehicle.application.repository.WorldRepository
 import com.github.caay2000.ttk.context.world.domain.Location
-import com.github.caay2000.ttk.context.world.domain.Location.FACTORY
-import com.github.caay2000.ttk.context.world.domain.Location.PORT
-import com.github.caay2000.ttk.context.world.domain.Stop
-import com.github.caay2000.ttk.context.world.domain.World
 
-sealed class Vehicle(val type: VehicleType) : Aggregate() {
+sealed class Vehicle(val id: VehicleId, val type: VehicleType, private val worldRepository: WorldRepository) : Aggregate() {
 
     private val vehicleId = VehicleId()
 
     companion object {
-        fun create(world: World, type: VehicleType, startingLocation: Location) =
+        fun create(id: VehicleId, type: VehicleType, stop: Stop, worldRepository: WorldRepository) =
             when (type) {
-                VehicleType.TRUCK -> Truck(world, world.getStop(startingLocation))
-                VehicleType.BOAT -> Boat(world, world.getStop(startingLocation))
+                VehicleType.TRUCK -> Truck(id, stop, worldRepository)
+                VehicleType.BOAT -> Boat(id, stop, worldRepository)
             }
     }
-
-    abstract val world: World
 
     abstract val initialStop: Stop
 
@@ -33,29 +26,27 @@ sealed class Vehicle(val type: VehicleType) : Aggregate() {
 
     private var route: Route? = null
 
-    private fun load(dateTime: DateTime) {
+    private fun load() {
         val loadedCargo = this.initialStop.retrieveCargo()
         this.cargo = loadedCargo
         this.pushEvent(
             DepartedEvent(
-                time = dateTime,
                 vehicleId = this.vehicleId,
                 type = this.type,
-                location = this.initialStop.location,
-                destination = this.cargo!!.destination,
+                location = Location.valueOf(this.initialStop.name),
+                destination = Location.valueOf(this.cargo!!.targetStopName),
                 cargo = this.cargo!!
             )
         )
     }
 
-    private fun unload(dateTime: DateTime) {
+    private fun unload() {
         this.route!!.destination.deliverCargo(this.cargo!!)
         this.pushEvent(
             ArrivedEvent(
-                time = dateTime,
                 vehicleId = this.vehicleId,
                 type = type,
-                location = this.route!!.destination.location,
+                location = Location.valueOf(this.route!!.destination.name),
                 cargo = this.cargo!!
             )
         )
@@ -69,6 +60,7 @@ sealed class Vehicle(val type: VehicleType) : Aggregate() {
 
     private fun getRouteDestination(): Stop {
         return when {
+            worldRepository.get(this.)
             initialStop == Stop.get(FACTORY) && cargo!!.destination == Location.WAREHOUSE_A -> Stop.get(PORT)
             else -> Stop.get(cargo!!.destination)
         }
@@ -83,21 +75,21 @@ sealed class Vehicle(val type: VehicleType) : Aggregate() {
         this.route = null
     }
 
-    fun update(dateTime: DateTime) {
+    fun update() {
 
         if (status == VehicleStatus.IDLE && initialStop.hasCargo()) {
-            load(dateTime)
+            load()
             start()
         }
         if (status == VehicleStatus.ON_ROUTE) {
             when {
                 route!!.isStoppedInDestination() -> {
-                    unload(dateTime)
+                    unload()
                     move()
                 }
                 route!!.isFinished() -> {
                     stop()
-                    update(dateTime)
+                    update()
                 }
                 else -> move()
             }
@@ -109,6 +101,6 @@ enum class VehicleStatus {
     IDLE, ON_ROUTE
 }
 
-data class Boat(override val world: World, override val initialStop: Stop) : Vehicle(VehicleType.BOAT)
+data class Boat(val vehicleId: VehicleId, override val initialStop: Stop, private val repo:WorldRepository) : Vehicle(vehicleId, VehicleType.BOAT, repo)
 
-data class Truck(override val world: World, override val initialStop: Stop) : Vehicle(VehicleType.TRUCK)
+data class Truck(val vehicleId: VehicleId, override val initialStop: Stop, private val repo:WorldRepository) : Vehicle(vehicleId, VehicleType.TRUCK, repo)

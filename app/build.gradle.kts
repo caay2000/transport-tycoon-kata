@@ -24,6 +24,7 @@ tasks.test {
 dependencies {
     implementation("org.jgrapht:jgrapht-core:1.5.1")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
+    implementation("io.arrow-kt:arrow-core:1.0.1")
 
     testImplementation(kotlin("test"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.1")

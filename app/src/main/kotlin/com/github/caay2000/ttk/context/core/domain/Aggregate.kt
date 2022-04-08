@@ -12,6 +12,5 @@ abstract class Aggregate {
     }
 
     fun <E : Event> pushEvent(event: E) = this.events.add(event)
-
     fun <E : Event> pushEvents(events: List<E>) = this.events.addAll(events)
 }

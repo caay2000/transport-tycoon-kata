@@ -1,8 +1,8 @@
 package com.github.caay2000.ttk.context.world.outbound
 
 import com.github.caay2000.ttk.context.core.domain.WorldId
+import com.github.caay2000.ttk.context.world.application.repository.WorldRepository
 import com.github.caay2000.ttk.context.world.domain.World
-import com.github.caay2000.ttk.context.world.domain.repository.WorldRepository
 import com.github.caay2000.ttk.lib.database.InMemoryDatabase
 
 class InMemoryWorldRepository(private val database: InMemoryDatabase) : WorldRepository {

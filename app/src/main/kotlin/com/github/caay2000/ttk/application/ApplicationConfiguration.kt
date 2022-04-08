@@ -12,17 +12,17 @@ import com.github.caay2000.ttk.context.core.domain.DateTimeProvider
 import com.github.caay2000.ttk.context.core.event.Event
 import com.github.caay2000.ttk.context.core.event.EventPublisherImpl
 import com.github.caay2000.ttk.context.core.event.EventSubscriber
+import com.github.caay2000.ttk.context.core.event.WorldUpdatedEvent
 import com.github.caay2000.ttk.context.time.application.UpdateDateTimeCommand
 import com.github.caay2000.ttk.context.time.application.UpdateDateTimeCommandHandler
 import com.github.caay2000.ttk.context.vehicle.domain.VehicleEvent
-import com.github.caay2000.ttk.context.world.application.AddCargoCommand
-import com.github.caay2000.ttk.context.world.application.AddCargoCommandHandler
-import com.github.caay2000.ttk.context.world.application.CreateWorldCommand
-import com.github.caay2000.ttk.context.world.application.CreateWorldCommandHandler
-import com.github.caay2000.ttk.context.world.application.UpdateWorldCommand
-import com.github.caay2000.ttk.context.world.application.UpdateWorldCommandHandler
-import com.github.caay2000.ttk.context.world.domain.WorldUpdatedEvent
-import com.github.caay2000.ttk.context.world.domain.repository.WorldRepository
+import com.github.caay2000.ttk.context.world.application.handler.AddCargoCommand
+import com.github.caay2000.ttk.context.world.application.handler.AddCargoCommandHandler
+import com.github.caay2000.ttk.context.world.application.handler.CreateWorldCommand
+import com.github.caay2000.ttk.context.world.application.handler.CreateWorldCommandHandler
+import com.github.caay2000.ttk.context.world.application.handler.UpdateWorldCommand
+import com.github.caay2000.ttk.context.world.application.handler.UpdateWorldCommandHandler
+import com.github.caay2000.ttk.context.world.application.repository.WorldRepository
 import com.github.caay2000.ttk.context.world.outbound.InMemoryWorldRepository
 import com.github.caay2000.ttk.lib.database.InMemoryDatabase
 import com.github.caay2000.ttk.lib.datetime.DateTimeProviderImpl
@@ -48,9 +48,9 @@ class ApplicationConfiguration {
         KTEventBus.init<Command, Event>()
 
         instantiateCommandHandler(UpdateDateTimeCommand::class, UpdateDateTimeCommandHandler(dateTimeProvider))
-        instantiateCommandHandler(CreateWorldCommand::class, CreateWorldCommandHandler(worldRepository))
-        instantiateCommandHandler(AddCargoCommand::class, AddCargoCommandHandler(worldRepository))
-        instantiateCommandHandler(UpdateWorldCommand::class, UpdateWorldCommandHandler(eventPublisher, worldRepository, dateTimeProvider))
+        instantiateCommandHandler(CreateWorldCommand::class, CreateWorldCommandHandler(eventPublisher, worldRepository))
+        instantiateCommandHandler(AddCargoCommand::class, AddCargoCommandHandler(eventPublisher, worldRepository))
+        instantiateCommandHandler(UpdateWorldCommand::class, UpdateWorldCommandHandler(eventPublisher, worldRepository))
         instantiateCommandHandler(AuditVehicleCommand::class, AuditVehicleCommandHandler(eventRepository))
 
         instantiateEventSubscriber(WorldUpdatedEvent::class, TimeContextWorldUpdatedEventSubscriber(commandBus))

@@ -1,6 +1,11 @@
 package com.github.caay2000.ttk.context.world.domain
 
-data class Stop(val location: Location) {
+import com.github.caay2000.ttk.context.core.domain.StopId
+import com.github.caay2000.ttk.context.core.domain.randomDomainId
+import com.github.caay2000.ttk.context.core.domain.toDomainId
+import java.util.UUID
+
+data class Stop(val id: StopId = UUID.randomUUID().toDomainId(), val location: Location) {
 
     companion object {
         fun get(location: Location) = stops[location]!!
@@ -10,10 +15,10 @@ data class Stop(val location: Location) {
         }
 
         private val stops = mapOf(
-            Location.FACTORY to Stop(Location.FACTORY),
-            Location.PORT to Stop(Location.PORT),
-            Location.WAREHOUSE_A to Stop(Location.WAREHOUSE_A),
-            Location.WAREHOUSE_B to Stop(Location.WAREHOUSE_B)
+            Location.FACTORY to Stop(randomDomainId(), Location.FACTORY),
+            Location.PORT to Stop(randomDomainId(), Location.PORT),
+            Location.WAREHOUSE_A to Stop(randomDomainId(), Location.WAREHOUSE_A),
+            Location.WAREHOUSE_B to Stop(randomDomainId(), Location.WAREHOUSE_B)
         )
     }
 
@@ -30,10 +35,4 @@ data class Stop(val location: Location) {
 
     fun distanceTo(stop: Stop) = this.location.distanceTo(stop.location)
 
-    fun retrieveCargo(): Cargo = _cargo.removeFirst()
-    fun deliverCargo(cargo: Cargo) {
-        if (cargo.destination != this.location) {
-            addCargo(cargo)
-        }
-    }
 }
