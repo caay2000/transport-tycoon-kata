@@ -14,7 +14,5 @@ data class Stop(val id: StopId, val name: String, var cargo: MutableList<Cargo>)
         }
     }
 
-
     fun distanceTo(stop: Stop) = Location.valueOf(this.name).distanceTo(Location.valueOf(stop.name))
-
 }

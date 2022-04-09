@@ -34,5 +34,4 @@ data class Stop(val id: StopId = UUID.randomUUID().toDomainId(), val location: L
     }
 
     fun distanceTo(stop: Stop) = this.location.distanceTo(stop.location)
-
 }

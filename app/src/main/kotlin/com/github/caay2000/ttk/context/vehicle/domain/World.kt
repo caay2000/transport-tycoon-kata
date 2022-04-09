@@ -6,4 +6,5 @@ data class World(val id: WorldId, val stops: Set<Stop>) {
 
     fun addStop(stop: Stop): World = this.copy(stops = stops + stop)
 
+    fun getStop(stopName: String) = stops.first { it.name == stopName }
 }

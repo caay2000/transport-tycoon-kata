@@ -3,7 +3,6 @@ package com.github.caay2000.ttk.application
 import com.github.caay2000.ttk.context.core.domain.VehicleId
 import com.github.caay2000.ttk.context.core.domain.WorldId
 import com.github.caay2000.ttk.context.core.domain.randomDomainId
-import com.github.caay2000.ttk.context.core.event.Event
 import com.github.caay2000.ttk.context.vehicle.application.handler.vehicle.CreateVehicleCommand
 import com.github.caay2000.ttk.context.vehicle.domain.VehicleType
 import com.github.caay2000.ttk.context.world.application.handler.AddCargoCommand
@@ -18,7 +17,7 @@ internal class Application(configuration: ApplicationConfiguration) {
     private val eventRepository = configuration.eventRepository
     private val dateTimeProvider = configuration.dateTimeProvider
 
-    fun execute(cargoDestinations: List<Location>): Result {
+    fun execute(cargoDestinations: List<Location>): Resulte {
 
         val worldId = WorldId()
 
@@ -34,17 +33,11 @@ internal class Application(configuration: ApplicationConfiguration) {
 
         commandBus.publish(UpdateWorldCommand(worldId.uuid))
 
-        return Result(
+        return Resulte(
             duration = dateTimeProvider.now().value(),
             events = eventRepository.getAll()
         )
     }
 
     private fun randomVehicleId(): UUID = randomDomainId<VehicleId>().uuid
-
 }
-
-data class Result(
-    val duration: Int,
-    val events: List<Event>
-)

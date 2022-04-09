@@ -1,10 +1,10 @@
-//package com.github.caay2000.ttk.context.world.domain
+// package com.github.caay2000.ttk.context.world.domain
 //
-//import org.assertj.core.api.Assertions.assertThat
-//import org.junit.jupiter.params.ParameterizedTest
-//import org.junit.jupiter.params.provider.CsvSource
+// import org.assertj.core.api.Assertions.assertThat
+// import org.junit.jupiter.params.ParameterizedTest
+// import org.junit.jupiter.params.provider.CsvSource
 //
-//internal class LocationTest {
+// internal class LocationTest {
 //
 //    @CsvSource(
 //        "FACTORY, PORT, 1",
@@ -45,4 +45,4 @@
 //        val result = src.distanceTo(dst)
 //        assertThat(result).isEqualTo(-1)
 //    }
-//}
+// }

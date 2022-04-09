@@ -1,19 +1,21 @@
 package com.github.caay2000.ttk.context.vehicle.domain
 
+import arrow.core.getOrElse
 import com.github.caay2000.ttk.context.core.domain.Aggregate
 import com.github.caay2000.ttk.context.core.domain.VehicleId
+import com.github.caay2000.ttk.context.core.domain.WorldId
 import com.github.caay2000.ttk.context.vehicle.application.repository.WorldRepository
 import com.github.caay2000.ttk.context.world.domain.Location
 
-sealed class Vehicle(val id: VehicleId, val type: VehicleType, private val worldRepository: WorldRepository) : Aggregate() {
+sealed class Vehicle(val worldId: WorldId, val id: VehicleId, val type: VehicleType, private val worldRepository: WorldRepository) : Aggregate() {
 
     private val vehicleId = VehicleId()
 
     companion object {
-        fun create(id: VehicleId, type: VehicleType, stop: Stop, worldRepository: WorldRepository) =
+        fun create(worldId: WorldId, id: VehicleId, type: VehicleType, stop: Stop, worldRepository: WorldRepository) =
             when (type) {
-                VehicleType.TRUCK -> Truck(id, stop, worldRepository)
-                VehicleType.BOAT -> Boat(id, stop, worldRepository)
+                VehicleType.TRUCK -> Truck(worldId, id, stop, worldRepository)
+                VehicleType.BOAT -> Boat(worldId, id, stop, worldRepository)
             }
     }
 
@@ -59,10 +61,10 @@ sealed class Vehicle(val id: VehicleId, val type: VehicleType, private val world
     }
 
     private fun getRouteDestination(): Stop {
+        val world = worldRepository.get(this.worldId).getOrElse { throw RuntimeException("WorldNotFound") }
         return when {
-            worldRepository.get(this.)
-            initialStop == Stop.get(FACTORY) && cargo!!.destination == Location.WAREHOUSE_A -> Stop.get(PORT)
-            else -> Stop.get(cargo!!.destination)
+            initialStop == world.getStop("FACTORY") && cargo!!.targetStopName == "WAREHOUSE_A" -> world.getStop("PORT")
+            else -> world.getStop(cargo!!.targetStopName)
         }
     }
 
@@ -101,6 +103,8 @@ enum class VehicleStatus {
     IDLE, ON_ROUTE
 }
 
-data class Boat(val vehicleId: VehicleId, override val initialStop: Stop, private val repo:WorldRepository) : Vehicle(vehicleId, VehicleType.BOAT, repo)
+data class Boat(val idWorld: WorldId, val vehicleId: VehicleId, override val initialStop: Stop, private val repo: WorldRepository) :
+    Vehicle(idWorld, vehicleId, VehicleType.BOAT, repo)
 
-data class Truck(val vehicleId: VehicleId, override val initialStop: Stop, private val repo:WorldRepository) : Vehicle(vehicleId, VehicleType.TRUCK, repo)
+data class Truck(val idWorld: WorldId, val vehicleId: VehicleId, override val initialStop: Stop, private val repo: WorldRepository) :
+    Vehicle(idWorld, vehicleId, VehicleType.TRUCK, repo)

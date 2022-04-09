@@ -1,9 +1,9 @@
-//package com.github.caay2000.ttk.lib.eventbus
+// package com.github.caay2000.ttk.lib.eventbus
 //
-//import org.assertj.core.api.Assertions.assertThat
-//import org.junit.jupiter.api.Test
+// import org.assertj.core.api.Assertions.assertThat
+// import org.junit.jupiter.api.Test
 //
-//internal class KTEventBusTest {
+// internal class KTEventBusTest {
 //
 //    @Test
 //    internal fun `event is published to event bus`() {
@@ -63,4 +63,4 @@
 //            events.add(event)
 //        }
 //    }
-//}
+// }

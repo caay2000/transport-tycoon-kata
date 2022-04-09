@@ -28,4 +28,4 @@ data class CargoAddedEvent(
     val cargoId: UUID,
     val sourceId: UUID,
     val targetId: UUID
-): WorldEvent()
+) : WorldEvent()

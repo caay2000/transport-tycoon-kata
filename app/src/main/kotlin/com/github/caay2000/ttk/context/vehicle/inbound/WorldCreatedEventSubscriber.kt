@@ -9,5 +9,4 @@ import com.github.caay2000.ttk.context.vehicle.application.handler.world.CreateW
 class WorldCreatedEventSubscriber(private val commandBus: CommandBus<Command>) : EventSubscriber<WorldCreatedEvent> {
 
     override fun handle(event: WorldCreatedEvent) = commandBus.publish(CreateWorldCommand(event.worldId))
-
 }

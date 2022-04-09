@@ -9,5 +9,4 @@ import com.github.caay2000.ttk.context.vehicle.application.handler.world.CreateS
 class StopCreatedEventSubscriber(private val commandBus: CommandBus<Command>) : EventSubscriber<StopCreatedEvent> {
 
     override fun handle(event: StopCreatedEvent) = commandBus.publish(CreateStopCommand(event.worldId, event.stopId, event.stopName))
-
 }

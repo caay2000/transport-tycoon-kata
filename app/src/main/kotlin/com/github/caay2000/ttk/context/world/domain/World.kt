@@ -27,7 +27,7 @@ class World(val id: WorldId, val stops: Set<Stop>) : Aggregate() {
         stop.addCargo(cargo)
     }
 
-    fun getStop(location: Location) = this.stops.first { it.location == location}
+    fun getStop(location: Location) = this.stops.first { it.location == location }
 
     fun isCompleted(): Boolean = stops.all { it.cargo.isEmpty() } && vehicles.all { it.isEmpty() }
 

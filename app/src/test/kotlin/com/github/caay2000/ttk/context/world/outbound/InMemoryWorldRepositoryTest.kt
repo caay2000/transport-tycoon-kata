@@ -1,12 +1,12 @@
-//package com.github.caay2000.ttk.context.world.outbound
+// package com.github.caay2000.ttk.context.world.outbound
 //
-//import com.github.caay2000.ttk.context.core.domain.WorldId
-//import com.github.caay2000.ttk.context.world.domain.World
-//import com.github.caay2000.ttk.lib.database.InMemoryDatabase
-//import org.assertj.core.api.Assertions.assertThat
-//import org.junit.jupiter.api.Test
+// import com.github.caay2000.ttk.context.core.domain.WorldId
+// import com.github.caay2000.ttk.context.world.domain.World
+// import com.github.caay2000.ttk.lib.database.InMemoryDatabase
+// import org.assertj.core.api.Assertions.assertThat
+// import org.junit.jupiter.api.Test
 //
-//internal class InMemoryWorldRepositoryTest {
+// internal class InMemoryWorldRepositoryTest {
 //
 //    private val sut = InMemoryWorldRepository(InMemoryDatabase())
 //
@@ -20,4 +20,4 @@
 //
 //        assertThat(sut.get(id)).isEqualTo(world)
 //    }
-//}
+// }

@@ -1,10 +1,10 @@
-//package com.github.caay2000.ttk.lib.datetime
+// package com.github.caay2000.ttk.lib.datetime
 //
-//import com.github.caay2000.ttk.context.time.domain.DateTime
-//import org.assertj.core.api.Assertions.assertThat
-//import org.junit.jupiter.api.Test
+// import com.github.caay2000.ttk.context.time.domain.DateTime
+// import org.assertj.core.api.Assertions.assertThat
+// import org.junit.jupiter.api.Test
 //
-//internal class DateTimeProviderImplTest {
+// internal class DateTimeProviderImplTest {
 //
 //    @Test
 //    fun `date time is not shared`() {
@@ -15,4 +15,4 @@
 //
 //        assertThat(dateTime).isEqualTo(DateTime(0))
 //    }
-//}
+// }

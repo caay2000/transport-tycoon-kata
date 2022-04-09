@@ -17,7 +17,7 @@ class VehicleCreatorService(private val eventPublisher: EventPublisher, private 
 
     fun invoke(worldId: WorldId, vehicleId: VehicleId, vehicleType: VehicleType, stopName: String): Either<Throwable, Unit> =
         guardWorldExists(worldId)
-            .flatMap { world -> createVehicle(vehicleId, vehicleType, world.getStop(stopName)) }
+            .flatMap { world -> createVehicle(worldId, vehicleId, vehicleType, world.getStop(stopName)) }
             .flatMap { vehicle -> vehicle.save() }
             .flatMap { vehicle -> vehicle.publishEvents() }
 
@@ -26,12 +26,10 @@ class VehicleCreatorService(private val eventPublisher: EventPublisher, private 
 
     private fun World.getStop(stopName: String): Stop = this.stops.first { it.name == stopName }
 
-    private fun createVehicle(id: VehicleId, type: VehicleType, stop: Stop) =
-        Vehicle.create(id, type, stop).right()
+    private fun createVehicle(worldId: WorldId, id: VehicleId, type: VehicleType, stop: Stop) =
+        Vehicle.create(worldId, id, type, stop, worldRepository).right()
 
     private fun Vehicle.save() = vehicleRepository.save(this).flatMap { this.right() }
 
     private fun Vehicle.publishEvents() = eventPublisher.publish(this.pullEvents()).right()
-
-
 }

@@ -24,5 +24,4 @@ class StopCreatorService(private val worldRepository: WorldRepository) {
     }
 
     private fun World.save() = worldRepository.save(this).flatMap { Unit.right() }
-
 }

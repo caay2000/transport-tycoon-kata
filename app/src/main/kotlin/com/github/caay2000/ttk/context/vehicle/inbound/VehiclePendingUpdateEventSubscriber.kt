@@ -9,5 +9,4 @@ import com.github.caay2000.ttk.context.vehicle.application.handler.vehicle.Updat
 class VehiclePendingUpdateEventSubscriber(private val commandBus: CommandBus<Command>) : EventSubscriber<VehiclePendingUpdateEvent> {
 
     override fun handle(event: VehiclePendingUpdateEvent) = commandBus.publish(UpdateVehicleCommand(event.vehicleId))
-
 }

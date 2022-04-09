@@ -1,21 +1,21 @@
-//package com.github.caay2000.ttk.context.world.domain
+// package com.github.caay2000.ttk.context.world.domain
 //
-//import com.github.caay2000.ttk.context.core.domain.WorldId
-//import com.github.caay2000.ttk.context.time.domain.DateTime
-//import com.github.caay2000.ttk.context.vehicle.domain.VehicleType
-//import com.github.caay2000.ttk.context.world.domain.Location.FACTORY
-//import com.github.caay2000.ttk.context.world.domain.Location.PORT
-//import com.github.caay2000.ttk.context.world.domain.Location.WAREHOUSE_A
-//import com.github.caay2000.ttk.context.world.domain.Location.WAREHOUSE_B
-//import org.assertj.core.api.Assertions.assertThat
-//import org.junit.jupiter.api.BeforeEach
-//import org.junit.jupiter.api.Nested
-//import org.junit.jupiter.api.Test
-//import org.junit.jupiter.api.TestInstance
-//import org.junit.jupiter.api.TestInstance.Lifecycle
+// import com.github.caay2000.ttk.context.core.domain.WorldId
+// import com.github.caay2000.ttk.context.time.domain.DateTime
+// import com.github.caay2000.ttk.context.vehicle.domain.VehicleType
+// import com.github.caay2000.ttk.context.world.domain.Location.FACTORY
+// import com.github.caay2000.ttk.context.world.domain.Location.PORT
+// import com.github.caay2000.ttk.context.world.domain.Location.WAREHOUSE_A
+// import com.github.caay2000.ttk.context.world.domain.Location.WAREHOUSE_B
+// import org.assertj.core.api.Assertions.assertThat
+// import org.junit.jupiter.api.BeforeEach
+// import org.junit.jupiter.api.Nested
+// import org.junit.jupiter.api.Test
+// import org.junit.jupiter.api.TestInstance
+// import org.junit.jupiter.api.TestInstance.Lifecycle
 //
-//@TestInstance(Lifecycle.PER_CLASS)
-//class WorldTest {
+// @TestInstance(Lifecycle.PER_CLASS)
+// class WorldTest {
 //
 //    @BeforeEach
 //    fun setUp() {
@@ -78,4 +78,4 @@
 //    private companion object {
 //        private val dateTime = DateTime(0)
 //    }
-//}
+// }

@@ -1,12 +1,12 @@
-//package com.github.caay2000.ttk.context.time.application
+// package com.github.caay2000.ttk.context.time.application
 //
-//import com.github.caay2000.ttk.context.core.domain.DateTimeProvider
-//import com.github.caay2000.ttk.context.time.domain.DateTime
-//import com.github.caay2000.ttk.lib.datetime.DateTimeProviderImpl
-//import org.assertj.core.api.Assertions.assertThat
-//import org.junit.jupiter.api.Test
+// import com.github.caay2000.ttk.context.core.domain.DateTimeProvider
+// import com.github.caay2000.ttk.context.time.domain.DateTime
+// import com.github.caay2000.ttk.lib.datetime.DateTimeProviderImpl
+// import org.assertj.core.api.Assertions.assertThat
+// import org.junit.jupiter.api.Test
 //
-//internal class UpdateDateTimeCommandHandlerTest {
+// internal class UpdateDateTimeCommandHandlerTest {
 //
 //    private val dateTimeProvider: DateTimeProvider = DateTimeProviderImpl()
 //
@@ -21,4 +21,4 @@
 //
 //        assertThat(dateTimeProvider.now()).isEqualTo(DateTime(1))
 //    }
-//}
+// }

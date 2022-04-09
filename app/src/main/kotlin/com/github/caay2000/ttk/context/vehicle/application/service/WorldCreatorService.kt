@@ -7,5 +7,4 @@ import com.github.caay2000.ttk.context.vehicle.domain.World
 class WorldCreatorService(private val worldRepository: WorldRepository) {
 
     fun invoke(worldId: WorldId) = worldRepository.save(World(worldId, emptySet()))
-
 }

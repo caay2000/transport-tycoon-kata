@@ -87,13 +87,13 @@ class AppIntegrationTest {
 //    )
 }
 //
-//class EventAssert(actual: Event) : AbstractAssert<EventAssert, Event>(actual, EventAssert::class.java) {
+// class EventAssert(actual: Event) : AbstractAssert<EventAssert, Event>(actual, EventAssert::class.java) {
 //
 //    override fun isEqualTo(expected: Any?): EventAssert {
 //
 //        assertThat(expected).isInstanceOf(Event::class.java)
 //        return assertThat(actual).isInstanceOfSatisfying(Event::class.java) {
-////            assertThat(actual.time).isEqualTo(it.time)
+// //            assertThat(actual.time).isEqualTo(it.time)
 //            when (it) {
 //                is DepartedEvent -> {
 //                    assertThat(expected).isInstanceOfSatisfying(DepartedEvent::class.java) { exp ->
@@ -115,4 +115,4 @@ class AppIntegrationTest {
 //    companion object {
 //        fun assertThat(actual: Event) = EventAssert(actual)
 //    }
-//}
+// }
