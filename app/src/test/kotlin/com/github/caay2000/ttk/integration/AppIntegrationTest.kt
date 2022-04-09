@@ -17,7 +17,7 @@ class AppIntegrationTest {
         "BB, 5",
         "BBB, 15",
         "ABB, 7",
-        "AABABBAB, 29",
+        "AABABBAB, 21",
         "ABBBABAAABBB, 41"
     )
     @ParameterizedTest(name = "{index} - {0} route takes {1} steps")

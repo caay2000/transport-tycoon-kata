@@ -8,7 +8,7 @@ import com.github.caay2000.ttk.context.vehicle.application.repository.WorldRepos
 import com.github.caay2000.ttk.context.vehicle.application.service.StopCreatorService
 import java.util.UUID
 
-class CreateStopCommandHandler(private val worldRepository: WorldRepository) : CommandHandler<CreateStopCommand> {
+class CreateStopCommandHandler(worldRepository: WorldRepository) : CommandHandler<CreateStopCommand> {
 
     private val stopCreatorService = StopCreatorService(worldRepository)
 

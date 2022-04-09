@@ -4,5 +4,7 @@ import com.github.caay2000.ttk.context.core.domain.DateTimeProvider
 
 class DateTimeUpdaterService(private val dateTimeProvider: DateTimeProvider) {
 
-    fun invoke() = dateTimeProvider.inc()
+    fun invoke() = dateTimeProvider.inc().also {
+        println("Time Increased to ${this.dateTimeProvider.now()}")
+    }
 }

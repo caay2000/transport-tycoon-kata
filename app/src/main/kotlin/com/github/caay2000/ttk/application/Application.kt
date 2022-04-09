@@ -23,13 +23,13 @@ internal class Application(configuration: ApplicationConfiguration) {
 
         commandBus.publish(CreateWorldCommand(worldId.uuid))
 
-        commandBus.publish(CreateVehicleCommand(worldId.uuid, randomVehicleId(), VehicleType.TRUCK.name, "FACTORY"))
-        commandBus.publish(CreateVehicleCommand(worldId.uuid, randomVehicleId(), VehicleType.TRUCK.name, "FACTORY"))
-        commandBus.publish(CreateVehicleCommand(worldId.uuid, randomVehicleId(), VehicleType.BOAT.name, "PORT"))
-
         cargoDestinations.forEach { destination ->
             commandBus.publish(AddCargoCommand(worldId.uuid, Location.FACTORY.name, destination.name))
         }
+
+        commandBus.publish(CreateVehicleCommand(worldId.uuid, randomVehicleId(), VehicleType.TRUCK.name, "FACTORY"))
+        commandBus.publish(CreateVehicleCommand(worldId.uuid, randomVehicleId(), VehicleType.TRUCK.name, "FACTORY"))
+        commandBus.publish(CreateVehicleCommand(worldId.uuid, randomVehicleId(), VehicleType.BOAT.name, "PORT"))
 
         commandBus.publish(UpdateWorldCommand(worldId.uuid))
 

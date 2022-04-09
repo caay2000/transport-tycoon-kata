@@ -8,5 +8,9 @@ class EventPublisherImpl : EventPublisher {
 
     override fun <E : Event> publish(event: E) = this.publish(listOf(event))
     override fun <E : Event> publish(events: List<E>) =
-        events.forEach { event -> eventPublisher.publish(event) }
+        events.forEach { event ->
+
+            println(event)
+            eventPublisher.publish(event)
+        }
 }

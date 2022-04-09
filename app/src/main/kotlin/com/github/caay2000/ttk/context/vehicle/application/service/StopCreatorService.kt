@@ -19,8 +19,8 @@ class StopCreatorService(private val worldRepository: WorldRepository) {
     private fun findWorld(worldId: WorldId) = worldRepository.get(worldId).toEither { RuntimeException("") }
 
     private fun World.createStop(stopId: StopId, stopName: String): Either<Nothing, World> {
-        this.addStop(Stop(stopId, stopName, mutableListOf()))
-        return this.right()
+        val world = this.addStop(Stop(stopId, stopName, mutableListOf()))
+        return world.right()
     }
 
     private fun World.save() = worldRepository.save(this).flatMap { Unit.right() }

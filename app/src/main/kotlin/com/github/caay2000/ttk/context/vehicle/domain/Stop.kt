@@ -8,9 +8,13 @@ data class Stop(val id: StopId, val name: String, var cargo: MutableList<Cargo>)
     fun hasCargo() = cargo.isNotEmpty()
     fun retrieveCargo(): Cargo = cargo.removeFirst()
 
-    fun deliverCargo(delivery: Cargo) {
-        if (delivery.targetStopName != this.name) {
-            cargo.add(delivery)
+    fun addCargo(cargo: Cargo) {
+        this.cargo.add(cargo)
+    }
+
+    fun deliverCargo(cargo: Cargo) {
+        if (cargo.targetStopName != this.name) {
+            this.cargo.add(cargo)
         }
     }
 

@@ -4,6 +4,7 @@ import arrow.core.getOrElse
 import com.github.caay2000.ttk.context.core.domain.Aggregate
 import com.github.caay2000.ttk.context.core.domain.VehicleId
 import com.github.caay2000.ttk.context.core.domain.WorldId
+import com.github.caay2000.ttk.context.core.event.VehicleCreatedEvent
 import com.github.caay2000.ttk.context.vehicle.application.repository.WorldRepository
 import com.github.caay2000.ttk.context.world.domain.Location
 
@@ -16,15 +17,17 @@ sealed class Vehicle(val worldId: WorldId, val id: VehicleId, val type: VehicleT
             when (type) {
                 VehicleType.TRUCK -> Truck(worldId, id, stop, worldRepository)
                 VehicleType.BOAT -> Boat(worldId, id, stop, worldRepository)
+            }.also {
+                it.pushEvent(VehicleCreatedEvent(worldId.uuid, id.uuid, type.name, it.status.name))
             }
     }
 
     abstract val initialStop: Stop
 
-    private var cargo: Cargo? = null
+    var cargo: Cargo? = null
     fun isEmpty() = cargo == null
 
-    private var status = VehicleStatus.IDLE
+    var status = VehicleStatus.IDLE
 
     private var route: Route? = null
 

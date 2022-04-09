@@ -1,5 +1,6 @@
 package com.github.caay2000.ttk.context.world.domain
 
+import com.github.caay2000.ttk.context.core.domain.CargoId
 import com.github.caay2000.ttk.context.core.domain.StopId
 import com.github.caay2000.ttk.context.core.domain.randomDomainId
 import com.github.caay2000.ttk.context.core.domain.toDomainId
@@ -32,6 +33,8 @@ data class Stop(val id: StopId = UUID.randomUUID().toDomainId(), val location: L
         _cargo.add(cargo)
         return this
     }
+
+    fun removeCargo(cargoId: CargoId): Boolean = _cargo.removeIf { it.id == cargoId.uuid }
 
     fun distanceTo(stop: Stop) = this.location.distanceTo(stop.location)
 }
