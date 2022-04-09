@@ -13,7 +13,6 @@ class InMemoryVehicleRepository(private val database: InMemoryDatabase) : Vehicl
 
     override fun save(vehicle: Vehicle) = Either.catch { database.save(DATABASE_TABLE, vehicle.id.rawId, vehicle) as Vehicle }
     override fun get(id: VehicleId) = (database.getById(DATABASE_TABLE, id.rawId) as Vehicle).toOption()
-    override fun getAll(): List<Vehicle> = database.getAll(DATABASE_TABLE) as List<Vehicle>
 
     companion object {
         private const val DATABASE_TABLE = "VEHICLE_CTX_vehicle"

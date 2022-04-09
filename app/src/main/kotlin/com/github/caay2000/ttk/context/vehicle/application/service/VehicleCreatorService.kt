@@ -24,8 +24,6 @@ class VehicleCreatorService(private val eventPublisher: EventPublisher, private 
     private fun guardWorldExists(worldId: WorldId): Either<Throwable, World> =
         worldRepository.get(worldId).toEither { RuntimeException("") }
 
-    private fun World.getStop(stopName: String): Stop = this.stops.first { it.name == stopName }
-
     private fun createVehicle(worldId: WorldId, id: VehicleId, type: VehicleType, stop: Stop) =
         Vehicle.create(worldId, id, type, stop, worldRepository).right()
 
