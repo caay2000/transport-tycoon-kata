@@ -1,13 +1,14 @@
 package com.github.caay2000.ttk.context.world.application.handler
 
-import com.github.caay2000.ttk.context.core.command.CommandHandler
 import com.github.caay2000.ttk.context.core.domain.toDomainId
-import com.github.caay2000.ttk.context.core.event.EventPublisher
 import com.github.caay2000.ttk.context.world.application.repository.WorldRepository
 import com.github.caay2000.ttk.context.world.application.service.VehicleUpdaterService
+import com.github.caay2000.ttk.lib.eventbus.command.CommandHandler
+import com.github.caay2000.ttk.lib.eventbus.event.Event
+import com.github.caay2000.ttk.lib.eventbus.event.EventPublisher
 import java.util.UUID
 
-class UpdateVehicleCommandHandler(eventPublisher: EventPublisher, worldRepository: WorldRepository) : CommandHandler<UpdateVehicleCommand> {
+class UpdateVehicleCommandHandler(eventPublisher: EventPublisher<Event>, worldRepository: WorldRepository) : CommandHandler<UpdateVehicleCommand> {
 
     private val vehicleUpdaterService = VehicleUpdaterService(eventPublisher, worldRepository)
 

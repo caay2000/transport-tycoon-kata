@@ -1,6 +1,6 @@
 package com.github.caay2000.ttk.context.time.domain.service
 
-import com.github.caay2000.ttk.context.core.domain.DateTimeProvider
+import com.github.caay2000.ttk.lib.datetime.DateTimeProvider
 
 class DateTimeUpdaterService(private val dateTimeProvider: DateTimeProvider) {
 

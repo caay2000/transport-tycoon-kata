@@ -17,7 +17,7 @@ internal class Application(configuration: ApplicationConfiguration) {
     private val eventRepository = configuration.eventRepository
     private val dateTimeProvider = configuration.dateTimeProvider
 
-    fun execute(cargoDestinations: List<Location>): Resulte {
+    fun execute(cargoDestinations: List<Location>): Result {
 
         val worldId = WorldId()
 
@@ -33,7 +33,7 @@ internal class Application(configuration: ApplicationConfiguration) {
 
         commandBus.publish(UpdateWorldCommand(worldId.uuid))
 
-        return Resulte(
+        return Result(
             duration = dateTimeProvider.now().value(),
             events = eventRepository.getAll()
         )

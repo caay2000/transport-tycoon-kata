@@ -1,12 +1,12 @@
 package com.github.caay2000.ttk.context.world.domain
 
-import com.github.caay2000.ttk.context.core.domain.Aggregate
 import com.github.caay2000.ttk.context.core.domain.CargoId
 import com.github.caay2000.ttk.context.core.domain.VehicleId
 import com.github.caay2000.ttk.context.core.domain.WorldId
-import com.github.caay2000.ttk.context.core.event.StopCreatedEvent
-import com.github.caay2000.ttk.context.core.event.VehiclePendingUpdateEvent
-import com.github.caay2000.ttk.context.core.event.WorldCreatedEvent
+import com.github.caay2000.ttk.lib.event.StopCreatedEvent
+import com.github.caay2000.ttk.lib.event.VehiclePendingUpdateEvent
+import com.github.caay2000.ttk.lib.event.WorldCreatedEvent
+import com.github.caay2000.ttk.lib.eventbus.domain.Aggregate
 
 data class World(val id: WorldId, val stops: Set<Stop>) : Aggregate() {
 

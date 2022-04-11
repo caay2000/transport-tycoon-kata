@@ -6,13 +6,14 @@ import arrow.core.right
 import com.github.caay2000.ttk.context.core.domain.CargoId
 import com.github.caay2000.ttk.context.core.domain.VehicleId
 import com.github.caay2000.ttk.context.core.domain.WorldId
-import com.github.caay2000.ttk.context.core.event.EventPublisher
-import com.github.caay2000.ttk.context.core.event.WorldUpdatedEvent
 import com.github.caay2000.ttk.context.world.application.repository.WorldRepository
 import com.github.caay2000.ttk.context.world.domain.World
+import com.github.caay2000.ttk.lib.event.WorldUpdatedEvent
+import com.github.caay2000.ttk.lib.eventbus.event.Event
+import com.github.caay2000.ttk.lib.eventbus.event.EventPublisher
 
 class VehicleUpdaterService(
-    private val eventPublisher: EventPublisher,
+    private val eventPublisher: EventPublisher<Event>,
     private val worldRepository: WorldRepository
 ) {
 

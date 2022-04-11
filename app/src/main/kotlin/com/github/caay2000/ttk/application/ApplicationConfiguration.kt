@@ -4,22 +4,22 @@ import com.github.caay2000.ttk.context.audit.application.AuditVehicleCommand
 import com.github.caay2000.ttk.context.audit.application.AuditVehicleCommandHandler
 import com.github.caay2000.ttk.context.audit.domain.repository.EventRepository
 import com.github.caay2000.ttk.context.audit.outbound.InMemoryEventRepository
-import com.github.caay2000.ttk.context.core.command.Command
-import com.github.caay2000.ttk.context.core.command.CommandBusImpl
-import com.github.caay2000.ttk.context.core.command.CommandHandler
-import com.github.caay2000.ttk.context.core.domain.DateTimeProvider
-import com.github.caay2000.ttk.context.core.event.Event
-import com.github.caay2000.ttk.context.core.event.EventPublisherImpl
-import com.github.caay2000.ttk.context.core.event.EventSubscriber
-import com.github.caay2000.ttk.context.core.event.WorldUpdatedEvent
 import com.github.caay2000.ttk.context.time.application.UpdateDateTimeCommand
 import com.github.caay2000.ttk.context.time.application.UpdateDateTimeCommandHandler
 import com.github.caay2000.ttk.context.time.inbound.WorldUpdatedEventSubscriber
 import com.github.caay2000.ttk.lib.database.InMemoryDatabase
+import com.github.caay2000.ttk.lib.datetime.DateTimeProvider
 import com.github.caay2000.ttk.lib.datetime.DateTimeProviderImpl
-import com.github.caay2000.ttk.lib.eventbus.KTCommandHandler
-import com.github.caay2000.ttk.lib.eventbus.KTEventBus
-import com.github.caay2000.ttk.lib.eventbus.KTEventSubscriber
+import com.github.caay2000.ttk.lib.event.WorldUpdatedEvent
+import com.github.caay2000.ttk.lib.eventbus.command.Command
+import com.github.caay2000.ttk.lib.eventbus.command.CommandBusImpl
+import com.github.caay2000.ttk.lib.eventbus.command.CommandHandler
+import com.github.caay2000.ttk.lib.eventbus.event.Event
+import com.github.caay2000.ttk.lib.eventbus.event.EventPublisherImpl
+import com.github.caay2000.ttk.lib.eventbus.event.EventSubscriber
+import com.github.caay2000.ttk.lib.eventbus.impl.KTCommandHandler
+import com.github.caay2000.ttk.lib.eventbus.impl.KTEventBus
+import com.github.caay2000.ttk.lib.eventbus.impl.KTEventSubscriber
 import kotlin.reflect.KClass
 
 class ApplicationConfiguration {
@@ -35,9 +35,10 @@ class ApplicationConfiguration {
     init {
         KTEventBus.init<Command, Event>()
 
-        instantiateEventSubscriber(WorldUpdatedEvent::class, WorldUpdatedEventSubscriber(commandBus))
         instantiateCommandHandler(UpdateDateTimeCommand::class, UpdateDateTimeCommandHandler(dateTimeProvider))
         instantiateCommandHandler(AuditVehicleCommand::class, AuditVehicleCommandHandler(eventRepository))
+
+        instantiateEventSubscriber(WorldUpdatedEvent::class, WorldUpdatedEventSubscriber(commandBus))
 
         WorldContextConfiguration(commandBus, eventPublisher, database)
         VehicleContextConfiguration(commandBus, eventPublisher, database)

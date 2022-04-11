@@ -9,3 +9,4 @@
 
 rootProject.name = "transport-tycoon-kata"
 include("app")
+include("lib")

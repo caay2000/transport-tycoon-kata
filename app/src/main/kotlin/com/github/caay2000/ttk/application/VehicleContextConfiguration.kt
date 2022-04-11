@@ -1,12 +1,5 @@
 package com.github.caay2000.ttk.application
 
-import com.github.caay2000.ttk.context.core.command.Command
-import com.github.caay2000.ttk.context.core.command.CommandBus
-import com.github.caay2000.ttk.context.core.event.CargoAddedEvent
-import com.github.caay2000.ttk.context.core.event.EventPublisher
-import com.github.caay2000.ttk.context.core.event.StopCreatedEvent
-import com.github.caay2000.ttk.context.core.event.VehiclePendingUpdateEvent
-import com.github.caay2000.ttk.context.core.event.WorldCreatedEvent
 import com.github.caay2000.ttk.context.vehicle.application.handler.vehicle.CreateVehicleCommand
 import com.github.caay2000.ttk.context.vehicle.application.handler.vehicle.CreateVehicleCommandHandler
 import com.github.caay2000.ttk.context.vehicle.application.handler.vehicle.UpdateVehicleCommand
@@ -24,8 +17,16 @@ import com.github.caay2000.ttk.context.vehicle.inbound.WorldCreatedEventSubscrib
 import com.github.caay2000.ttk.context.vehicle.outbound.InMemoryVehicleRepository
 import com.github.caay2000.ttk.context.vehicle.outbound.InMemoryWorldRepository
 import com.github.caay2000.ttk.lib.database.InMemoryDatabase
+import com.github.caay2000.ttk.lib.event.CargoAddedEvent
+import com.github.caay2000.ttk.lib.event.StopCreatedEvent
+import com.github.caay2000.ttk.lib.event.VehiclePendingUpdateEvent
+import com.github.caay2000.ttk.lib.event.WorldCreatedEvent
+import com.github.caay2000.ttk.lib.eventbus.command.Command
+import com.github.caay2000.ttk.lib.eventbus.command.CommandBus
+import com.github.caay2000.ttk.lib.eventbus.event.Event
+import com.github.caay2000.ttk.lib.eventbus.event.EventPublisher
 
-class VehicleContextConfiguration(val commandBus: CommandBus<Command>, val eventPublisher: EventPublisher, database: InMemoryDatabase) {
+class VehicleContextConfiguration(val commandBus: CommandBus<Command>, val eventPublisher: EventPublisher<Event>, database: InMemoryDatabase) {
 
     private val worldRepository = InMemoryWorldRepository(database)
     private val vehicleRepository = InMemoryVehicleRepository(database)

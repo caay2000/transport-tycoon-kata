@@ -1,6 +1,6 @@
 // package com.github.caay2000.ttk.context.time.application
 //
-// import com.github.caay2000.ttk.context.core.domain.DateTimeProvider
+// import com.github.caay2000.ttk.lib.eventbus.domain.DateTimeProvider
 // import com.github.caay2000.ttk.context.time.domain.DateTime
 // import com.github.caay2000.ttk.lib.datetime.DateTimeProviderImpl
 // import org.assertj.core.api.Assertions.assertThat

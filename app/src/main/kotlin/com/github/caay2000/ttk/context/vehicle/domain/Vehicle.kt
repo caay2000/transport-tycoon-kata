@@ -1,12 +1,12 @@
 package com.github.caay2000.ttk.context.vehicle.domain
 
 import arrow.core.getOrElse
-import com.github.caay2000.ttk.context.core.domain.Aggregate
 import com.github.caay2000.ttk.context.core.domain.VehicleId
 import com.github.caay2000.ttk.context.core.domain.WorldId
-import com.github.caay2000.ttk.context.core.event.VehicleCreatedEvent
 import com.github.caay2000.ttk.context.vehicle.application.repository.WorldRepository
 import com.github.caay2000.ttk.context.world.domain.Location
+import com.github.caay2000.ttk.lib.event.VehicleCreatedEvent
+import com.github.caay2000.ttk.lib.eventbus.domain.Aggregate
 
 sealed class Vehicle(val worldId: WorldId, val id: VehicleId, val type: VehicleType, private val worldRepository: WorldRepository) : Aggregate() {
 

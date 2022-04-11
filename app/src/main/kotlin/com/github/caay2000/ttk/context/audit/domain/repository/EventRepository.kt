@@ -1,6 +1,6 @@
 package com.github.caay2000.ttk.context.audit.domain.repository
 
-import com.github.caay2000.ttk.context.core.event.Event
+import com.github.caay2000.ttk.lib.eventbus.event.Event
 
 interface EventRepository {
 

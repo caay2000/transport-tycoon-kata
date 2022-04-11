@@ -1,15 +1,16 @@
 package com.github.caay2000.ttk.context.world.application.handler
 
-import com.github.caay2000.ttk.context.core.command.CommandHandler
 import com.github.caay2000.ttk.context.core.domain.toDomainId
-import com.github.caay2000.ttk.context.core.event.EventPublisher
 import com.github.caay2000.ttk.context.world.application.repository.WorldRepository
 import com.github.caay2000.ttk.context.world.application.service.WorldConfiguratorService
 import com.github.caay2000.ttk.context.world.domain.Cargo
 import com.github.caay2000.ttk.context.world.domain.Location
+import com.github.caay2000.ttk.lib.eventbus.command.CommandHandler
+import com.github.caay2000.ttk.lib.eventbus.event.Event
+import com.github.caay2000.ttk.lib.eventbus.event.EventPublisher
 import java.util.UUID
 
-class AddCargoCommandHandler(eventPublisher: EventPublisher, worldRepository: WorldRepository) : CommandHandler<AddCargoCommand> {
+class AddCargoCommandHandler(eventPublisher: EventPublisher<Event>, worldRepository: WorldRepository) : CommandHandler<AddCargoCommand> {
 
     private val worldConfigurator = WorldConfiguratorService(eventPublisher, worldRepository)
 

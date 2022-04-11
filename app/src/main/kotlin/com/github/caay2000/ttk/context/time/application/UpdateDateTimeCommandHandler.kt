@@ -1,8 +1,8 @@
 package com.github.caay2000.ttk.context.time.application
 
-import com.github.caay2000.ttk.context.core.command.CommandHandler
-import com.github.caay2000.ttk.context.core.domain.DateTimeProvider
 import com.github.caay2000.ttk.context.time.domain.service.DateTimeUpdaterService
+import com.github.caay2000.ttk.lib.datetime.DateTimeProvider
+import com.github.caay2000.ttk.lib.eventbus.command.CommandHandler
 import java.util.UUID
 
 class UpdateDateTimeCommandHandler(dateTimeProvider: DateTimeProvider) : CommandHandler<UpdateDateTimeCommand> {

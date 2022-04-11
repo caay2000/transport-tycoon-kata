@@ -1,12 +1,12 @@
 package com.github.caay2000.ttk.context.vehicle.domain
 
-import com.github.caay2000.ttk.context.core.domain.EventId
 import com.github.caay2000.ttk.context.core.domain.VehicleId
-import com.github.caay2000.ttk.context.core.event.Event
 import com.github.caay2000.ttk.context.world.domain.Location
+import com.github.caay2000.ttk.lib.eventbus.event.Event
+import java.util.UUID
 
 sealed class VehicleEvent : Event {
-    override val eventId: EventId = EventId()
+    override val eventId: UUID = randomUUID()
     abstract val vehicleId: VehicleId
 }
 
