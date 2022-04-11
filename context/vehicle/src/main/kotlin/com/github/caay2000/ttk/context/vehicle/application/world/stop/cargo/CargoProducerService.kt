@@ -5,27 +5,23 @@ import arrow.core.flatMap
 import arrow.core.right
 import com.github.caay2000.ttk.context.shared.domain.CargoId
 import com.github.caay2000.ttk.context.shared.domain.StopId
-import com.github.caay2000.ttk.context.shared.domain.WorldId
-import com.github.caay2000.ttk.context.vehicle.application.repository.WorldRepository
+import com.github.caay2000.ttk.context.vehicle.application.repository.StopRepository
 import com.github.caay2000.ttk.context.vehicle.domain.cargo.Cargo
-import com.github.caay2000.ttk.context.vehicle.domain.world.World
+import com.github.caay2000.ttk.context.vehicle.domain.world.Stop
 
-class CargoProducerService(private val worldRepository: WorldRepository) {
+class CargoProducerService(private val stopRepository: StopRepository) {
 
-    fun invoke(worldId: WorldId, cargoId: CargoId, sourceId: StopId, targetId: StopId): Either<Throwable, Unit> =
-        findWorld(worldId)
-            .flatMap { world -> world.produceCargo(cargoId, sourceId, targetId) }
-            .flatMap { world -> world.save() }
+    fun invoke(cargoId: CargoId, sourceId: StopId, targetId: StopId): Either<Throwable, Unit> =
+        findStop(sourceId)
+            .flatMap { stop -> stop.produceCargo(cargoId, sourceId, targetId) }
+            .flatMap { stop -> stop.save() }
+            .mapLeft { error -> error.mapError() }
 
-    private fun findWorld(worldId: WorldId) = worldRepository.get(worldId)
-        .toEither { CargoProducerServiceException.WorldDoesNotExists(worldId) }
+    private fun findStop(stopId: StopId) = stopRepository.get(stopId)
+        .toEither { CargoProducerServiceException.StopDoesNotExists(stopId) }
 
-    private fun World.produceCargo(cargoId: CargoId, sourceId: StopId, targetId: StopId): Either<Throwable, World> {
-        val sourceStop = this.getStop(sourceId)
-        val targetStop = this.getStop(targetId)
-        sourceStop.addCargo(Cargo(cargoId, sourceStop.id, sourceStop.name, targetStop.id, targetStop.name))
-        return this.right()
-    }
+    private fun Stop.produceCargo(cargoId: CargoId, sourceId: StopId, targetId: StopId): Either<Throwable, Stop> =
+        this.copy(cargo = this.cargo + Cargo.create(cargoId, sourceId, targetId)).right()
 
-    private fun World.save() = Either.catch { worldRepository.save(this) }.flatMap { Unit.right() }
+    private fun Stop.save() = stopRepository.save(this).flatMap { Unit.right() }
 }

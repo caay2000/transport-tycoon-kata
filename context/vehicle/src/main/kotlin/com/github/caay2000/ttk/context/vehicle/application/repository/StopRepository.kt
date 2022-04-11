@@ -10,4 +10,6 @@ interface StopRepository {
     fun save(stop: Stop): Either<Throwable, Stop>
     fun get(id: StopId): Option<Stop>
     fun exists(id: StopId): Boolean
+
+    fun findByName(name: String): Option<Stop>
 }

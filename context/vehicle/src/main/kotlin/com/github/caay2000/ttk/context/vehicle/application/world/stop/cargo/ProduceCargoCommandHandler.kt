@@ -3,16 +3,16 @@ package com.github.caay2000.ttk.context.vehicle.application.world.stop.cargo
 import arrow.core.getOrHandle
 import com.github.caay2000.ttk.context.shared.domain.toDomainId
 import com.github.caay2000.ttk.context.vehicle.application.handler.VehicleCommand
-import com.github.caay2000.ttk.context.vehicle.application.repository.WorldRepository
+import com.github.caay2000.ttk.context.vehicle.application.repository.StopRepository
 import com.github.caay2000.ttk.lib.eventbus.command.CommandHandler
 import java.util.UUID
 
-class ProduceCargoCommandHandler(worldRepository: WorldRepository) : CommandHandler<ProduceCargoCommand> {
+class ProduceCargoCommandHandler(stopRepository: StopRepository) : CommandHandler<ProduceCargoCommand> {
 
-    private val cargoProducerService = CargoProducerService(worldRepository)
+    private val cargoProducerService = CargoProducerService(stopRepository)
 
     override fun invoke(command: ProduceCargoCommand) {
-        cargoProducerService.invoke(command.worldId.toDomainId(), command.cargoId.toDomainId(), command.sourceId.toDomainId(), command.targetId.toDomainId())
+        cargoProducerService.invoke(command.cargoId.toDomainId(), command.sourceId.toDomainId(), command.targetId.toDomainId())
             .getOrHandle { throw it }
     }
 }

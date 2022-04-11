@@ -8,7 +8,7 @@ internal class KTEventBusTest {
     @Test
     internal fun `event is published to event bus`() {
 
-        val eventBus = KTEventBus.init<String, String>()
+        val eventBus = KTEventBus.init<String, String, String>()
         val sut = KTEventPublisher<String>()
         sut.publish("hi")
 
@@ -19,7 +19,7 @@ internal class KTEventBusTest {
     @Test
     internal fun `subscribers receive the published event`() {
 
-        KTEventBus.init<String, String>()
+        KTEventBus.init<String, String, String>()
         val sut = StringSubscriber()
         KTEventPublisher<String>().publish("hi")
 
@@ -29,7 +29,7 @@ internal class KTEventBusTest {
     @Test
     internal fun `multiple subscribers receive the published event`() {
 
-        val eventBus = KTEventBus.init<String, String>()
+        val eventBus = KTEventBus.init<String, String, String>()
         val subscriber1 = StringSubscriber()
         val subscriber2 = StringSubscriber()
         KTEventPublisher<String>().publish("hi")
@@ -42,7 +42,7 @@ internal class KTEventBusTest {
     @Test
     internal fun `subscriber of different type does not receive the event`() {
 
-        val eventBus = KTEventBus.init<String, String>()
+        val eventBus = KTEventBus.init<String, String, String>()
         val sut = IntSubscriber()
         KTEventPublisher<Number>().publish(Double.MAX_VALUE)
 

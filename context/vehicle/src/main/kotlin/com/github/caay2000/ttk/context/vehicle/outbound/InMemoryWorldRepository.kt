@@ -2,6 +2,7 @@ package com.github.caay2000.ttk.context.vehicle.outbound
 
 import arrow.core.Either
 import arrow.core.Option
+import com.github.caay2000.ttk.context.shared.domain.StopId
 import com.github.caay2000.ttk.context.shared.domain.WorldId
 import com.github.caay2000.ttk.context.vehicle.application.repository.WorldRepository
 import com.github.caay2000.ttk.context.vehicle.domain.world.World
@@ -28,6 +29,8 @@ class InMemoryWorldRepository(private val database: InMemoryDatabase) : WorldRep
         }
 
     override fun exists(id: WorldId): Boolean = database.exists(DATABASE_TABLE, id.rawId)
+
+    override fun getStop(stopId: StopId) = stopRepository.get(stopId)
 
     companion object {
         private const val DATABASE_TABLE = "VEHICLE_CTX_world"

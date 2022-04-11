@@ -9,7 +9,7 @@ abstract class KTCommandHandler<in COMMAND>(type: KClass<*>) {
     }
 
     private fun subscribeTo(type: KClass<*>) {
-        KTEventBus.getInstance<COMMAND, Any>().subscribe(this, type)
+        KTEventBus.getInstance<COMMAND, Any, Any>().subscribe(this, type)
     }
 
     internal fun execute(command: Any) {

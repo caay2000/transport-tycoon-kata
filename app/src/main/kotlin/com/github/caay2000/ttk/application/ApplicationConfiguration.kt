@@ -16,6 +16,10 @@ import com.github.caay2000.ttk.lib.eventbus.event.EventSubscriber
 import com.github.caay2000.ttk.lib.eventbus.impl.KTCommandHandler
 import com.github.caay2000.ttk.lib.eventbus.impl.KTEventBus
 import com.github.caay2000.ttk.lib.eventbus.impl.KTEventSubscriber
+import com.github.caay2000.ttk.lib.eventbus.impl.KTQueryHandler
+import com.github.caay2000.ttk.lib.eventbus.query.Query
+import com.github.caay2000.ttk.lib.eventbus.query.QueryBusImpl
+import com.github.caay2000.ttk.lib.eventbus.query.QueryHandler
 import kotlin.reflect.KClass
 
 class ApplicationConfiguration {
@@ -24,27 +28,33 @@ class ApplicationConfiguration {
 
     val commandBus = CommandBusImpl()
     private val eventPublisher = EventPublisherImpl()
+    private val queryBus = QueryBusImpl()
 
     private val database: InMemoryDatabase = InMemoryDatabase()
 
     init {
-        KTEventBus.init<Command, Event>()
+        KTEventBus.init<Command, Query, Event>()
 
         instantiateCommandHandler(UpdateDateTimeCommand::class, UpdateDateTimeCommandHandler(dateTimeProvider))
 
         instantiateEventSubscriber(WorldUpdatedEvent::class, WorldUpdatedEventSubscriber(commandBus))
 
         WorldContextConfiguration(commandBus, eventPublisher, database)
-        VehicleContextConfiguration(commandBus, eventPublisher, database)
+        VehicleContextConfiguration(commandBus, queryBus, eventPublisher, database)
     }
 }
 
-internal fun <T : Command> instantiateCommandHandler(clazz: KClass<T>, commandHandler: CommandHandler<T>): KTCommandHandler<T> =
-    object : KTCommandHandler<T>(clazz) {
-        override fun invoke(command: T) = commandHandler.invoke(command)
+internal fun <COMMAND : Command> instantiateCommandHandler(clazz: KClass<COMMAND>, commandHandler: CommandHandler<COMMAND>): KTCommandHandler<COMMAND> =
+    object : KTCommandHandler<COMMAND>(clazz) {
+        override fun invoke(command: COMMAND) = commandHandler.invoke(command)
     }
 
-internal fun <T : Event> instantiateEventSubscriber(clazz: KClass<T>, eventSubscriber: EventSubscriber<T>): KTEventSubscriber<T> =
-    object : KTEventSubscriber<T>(clazz) {
-        override fun handle(event: T) = eventSubscriber.handle(event)
+internal fun <EVENT : Event> instantiateEventSubscriber(clazz: KClass<EVENT>, eventSubscriber: EventSubscriber<EVENT>): KTEventSubscriber<EVENT> =
+    object : KTEventSubscriber<EVENT>(clazz) {
+        override fun handle(event: EVENT) = eventSubscriber.handle(event)
+    }
+
+internal fun <QUERY : Query, RESPONSE : Any> instantiateQueryHandler(clazz: KClass<QUERY>, queryHandler: QueryHandler<QUERY, RESPONSE>): KTQueryHandler<QUERY, RESPONSE> =
+    object : KTQueryHandler<QUERY, RESPONSE>(clazz) {
+        override fun handle(query: QUERY): RESPONSE = queryHandler.handle(query)
     }

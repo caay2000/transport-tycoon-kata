@@ -9,12 +9,13 @@ import com.github.caay2000.ttk.context.vehicle.application.service.VehicleCreato
 import com.github.caay2000.ttk.lib.eventbus.command.CommandHandler
 import com.github.caay2000.ttk.lib.eventbus.event.Event
 import com.github.caay2000.ttk.lib.eventbus.event.EventPublisher
+import com.github.caay2000.ttk.lib.eventbus.query.QueryBus
 import java.util.UUID
 
-class CreateVehicleCommandHandler(eventPublisher: EventPublisher<Event>, worldRepository: WorldRepository, vehicleRepository: VehicleRepository) :
+class CreateVehicleCommandHandler(eventPublisher: EventPublisher<Event>, queryBus: QueryBus, worldRepository: WorldRepository, vehicleRepository: VehicleRepository) :
     CommandHandler<CreateVehicleCommand> {
 
-    private val vehicleCreatorService = VehicleCreatorService(eventPublisher, worldRepository, vehicleRepository)
+    private val vehicleCreatorService = VehicleCreatorService(eventPublisher, queryBus, worldRepository, vehicleRepository)
 
     override fun invoke(command: CreateVehicleCommand) {
         vehicleCreatorService.invoke(command.worldId.toDomainId(), command.vehicleId.toDomainId(), VehicleType.valueOf(command.vehicleType), command.stopName)
