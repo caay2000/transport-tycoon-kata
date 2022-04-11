@@ -2,10 +2,10 @@ package com.github.caay2000.ttk.application
 
 import com.github.caay2000.ttk.context.shared.domain.Location
 import com.github.caay2000.ttk.context.shared.domain.VehicleId
+import com.github.caay2000.ttk.context.shared.domain.VehicleType
 import com.github.caay2000.ttk.context.shared.domain.WorldId
 import com.github.caay2000.ttk.context.shared.domain.randomDomainId
 import com.github.caay2000.ttk.context.vehicle.application.handler.vehicle.CreateVehicleCommand
-import com.github.caay2000.ttk.context.vehicle.domain.VehicleType
 import com.github.caay2000.ttk.context.world.application.handler.AddCargoCommand
 import com.github.caay2000.ttk.context.world.application.handler.CreateWorldCommand
 import com.github.caay2000.ttk.context.world.application.handler.UpdateWorldCommand

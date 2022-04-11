@@ -4,12 +4,12 @@ import com.github.caay2000.ttk.context.vehicle.application.handler.vehicle.Creat
 import com.github.caay2000.ttk.context.vehicle.application.handler.vehicle.CreateVehicleCommandHandler
 import com.github.caay2000.ttk.context.vehicle.application.handler.vehicle.UpdateVehicleCommand
 import com.github.caay2000.ttk.context.vehicle.application.handler.vehicle.UpdateVehicleCommandHandler
-import com.github.caay2000.ttk.context.vehicle.application.handler.world.AddCargoCommand
-import com.github.caay2000.ttk.context.vehicle.application.handler.world.AddCargoCommandHandler
-import com.github.caay2000.ttk.context.vehicle.application.handler.world.CreateStopCommand
-import com.github.caay2000.ttk.context.vehicle.application.handler.world.CreateStopCommandHandler
-import com.github.caay2000.ttk.context.vehicle.application.handler.world.CreateWorldCommand
-import com.github.caay2000.ttk.context.vehicle.application.handler.world.CreateWorldCommandHandler
+import com.github.caay2000.ttk.context.vehicle.application.world.create.CreateWorldCommand
+import com.github.caay2000.ttk.context.vehicle.application.world.create.CreateWorldCommandHandler
+import com.github.caay2000.ttk.context.vehicle.application.world.stop.cargo.ProduceCargoCommand
+import com.github.caay2000.ttk.context.vehicle.application.world.stop.cargo.ProduceCargoCommandHandler
+import com.github.caay2000.ttk.context.vehicle.application.world.stop.create.CreateStopCommand
+import com.github.caay2000.ttk.context.vehicle.application.world.stop.create.CreateStopCommandHandler
 import com.github.caay2000.ttk.context.vehicle.inbound.CargoAddedEventSubscriber
 import com.github.caay2000.ttk.context.vehicle.inbound.StopCreatedEventSubscriber
 import com.github.caay2000.ttk.context.vehicle.inbound.VehiclePendingUpdateEventSubscriber
@@ -36,7 +36,7 @@ class VehicleContextConfiguration(commandBus: CommandBus<Command>, eventPublishe
         instantiateCommandHandler(UpdateVehicleCommand::class, UpdateVehicleCommandHandler(eventPublisher, vehicleRepository))
         instantiateCommandHandler(CreateStopCommand::class, CreateStopCommandHandler(worldRepository))
         instantiateCommandHandler(CreateWorldCommand::class, CreateWorldCommandHandler(worldRepository))
-        instantiateCommandHandler(AddCargoCommand::class, AddCargoCommandHandler(worldRepository))
+        instantiateCommandHandler(ProduceCargoCommand::class, ProduceCargoCommandHandler(worldRepository))
 
         instantiateEventSubscriber(StopCreatedEvent::class, StopCreatedEventSubscriber(commandBus))
         instantiateEventSubscriber(VehiclePendingUpdateEvent::class, VehiclePendingUpdateEventSubscriber(commandBus))

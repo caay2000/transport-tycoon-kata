@@ -1,10 +1,12 @@
-package com.github.caay2000.ttk.context.vehicle.domain
+package com.github.caay2000.ttk.context.vehicle.domain.vehicle
 
 import arrow.core.getOrElse
-import com.github.caay2000.ttk.context.shared.domain.Location
 import com.github.caay2000.ttk.context.shared.domain.VehicleId
+import com.github.caay2000.ttk.context.shared.domain.VehicleType
 import com.github.caay2000.ttk.context.shared.domain.WorldId
 import com.github.caay2000.ttk.context.vehicle.application.repository.WorldRepository
+import com.github.caay2000.ttk.context.vehicle.domain.cargo.Cargo
+import com.github.caay2000.ttk.context.vehicle.domain.world.Stop
 import com.github.caay2000.ttk.lib.event.VehicleCreatedEvent
 import com.github.caay2000.ttk.lib.eventbus.domain.Aggregate
 
@@ -39,27 +41,27 @@ sealed class Vehicle(
     private fun load() {
         val loadedCargo = this.initialStop.retrieveCargo()
         this.cargo = loadedCargo
-        this.pushEvent(
-            DepartedEvent(
-                vehicleId = this.vehicleId,
-                type = this.type,
-                location = Location.valueOf(this.initialStop.name),
-                destination = Location.valueOf(this.cargo!!.targetStopName),
-                cargo = this.cargo!!
-            )
-        )
+//        this.pushEvent(
+//            DepartedEvent(
+//                vehicleId = this.vehicleId,
+//                type = this.type,
+//                location = Location.valueOf(this.initialStop.name),
+//                destination = Location.valueOf(this.cargo!!.targetStopName),
+//                cargo = this.cargo!!
+//            )
+//        )
     }
 
     private fun unload() {
         this.route!!.destination.deliverCargo(this.cargo!!)
-        this.pushEvent(
-            ArrivedEvent(
-                vehicleId = this.vehicleId,
-                type = type,
-                location = Location.valueOf(this.route!!.destination.name),
-                cargo = this.cargo!!
-            )
-        )
+//        this.pushEvent(
+//            ArrivedEvent(
+//                vehicleId = this.vehicleId,
+//                type = type,
+//                location = Location.valueOf(this.route!!.destination.name),
+//                cargo = this.cargo!!
+//            )
+//        )
         this.cargo = null
     }
 

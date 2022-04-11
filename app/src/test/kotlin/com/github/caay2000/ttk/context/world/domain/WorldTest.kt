@@ -2,7 +2,7 @@
 //
 // import com.github.caay2000.ttk.context.shared.domain.WorldId
 // import com.github.caay2000.ttk.context.time.domain.DateTime
-// import com.github.caay2000.ttk.context.vehicle.domain.VehicleType
+// import com.github.caay2000.ttk.context.shared.domain.VehicleType
 // import com.github.caay2000.ttk.context.shared.domain.Location.FACTORY
 // import com.github.caay2000.ttk.context.shared.domain.Location.PORT
 // import com.github.caay2000.ttk.context.shared.domain.Location.WAREHOUSE_A

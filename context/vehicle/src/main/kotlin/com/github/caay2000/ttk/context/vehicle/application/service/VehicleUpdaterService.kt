@@ -5,7 +5,7 @@ import arrow.core.flatMap
 import arrow.core.right
 import com.github.caay2000.ttk.context.shared.domain.VehicleId
 import com.github.caay2000.ttk.context.vehicle.application.repository.VehicleRepository
-import com.github.caay2000.ttk.context.vehicle.domain.Vehicle
+import com.github.caay2000.ttk.context.vehicle.domain.vehicle.Vehicle
 import com.github.caay2000.ttk.lib.event.VehicleUpdatedEvent
 import com.github.caay2000.ttk.lib.eventbus.event.Event
 import com.github.caay2000.ttk.lib.eventbus.event.EventPublisher

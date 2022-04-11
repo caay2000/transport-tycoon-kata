@@ -1,6 +1,6 @@
 package com.github.caay2000.ttk.context.vehicle.inbound
 
-import com.github.caay2000.ttk.context.vehicle.application.handler.world.CreateStopCommand
+import com.github.caay2000.ttk.context.vehicle.application.world.stop.create.CreateStopCommand
 import com.github.caay2000.ttk.lib.event.StopCreatedEvent
 import com.github.caay2000.ttk.lib.eventbus.command.Command
 import com.github.caay2000.ttk.lib.eventbus.command.CommandBus

@@ -1,5 +1,6 @@
-package com.github.caay2000.ttk.context.vehicle.domain
+package com.github.caay2000.ttk.context.vehicle.domain.vehicle
 
+import com.github.caay2000.ttk.context.vehicle.domain.world.Stop
 import java.util.concurrent.atomic.AtomicInteger
 
 data class Route(val start: Stop, val destination: Stop) {

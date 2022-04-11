@@ -1,4 +1,4 @@
-package com.github.caay2000.ttk.context.vehicle.domain
+package com.github.caay2000.ttk.context.vehicle.domain.cargo
 
 import com.github.caay2000.ttk.context.shared.domain.CargoId
 import com.github.caay2000.ttk.context.shared.domain.StopId

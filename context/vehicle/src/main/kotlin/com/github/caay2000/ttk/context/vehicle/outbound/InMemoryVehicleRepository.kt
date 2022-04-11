@@ -4,7 +4,7 @@ import arrow.core.Either
 import arrow.core.toOption
 import com.github.caay2000.ttk.context.shared.domain.VehicleId
 import com.github.caay2000.ttk.context.vehicle.application.repository.VehicleRepository
-import com.github.caay2000.ttk.context.vehicle.domain.Vehicle
+import com.github.caay2000.ttk.context.vehicle.domain.vehicle.Vehicle
 import com.github.caay2000.ttk.lib.database.InMemoryDatabase
 
 class InMemoryVehicleRepository(private val database: InMemoryDatabase) : VehicleRepository {

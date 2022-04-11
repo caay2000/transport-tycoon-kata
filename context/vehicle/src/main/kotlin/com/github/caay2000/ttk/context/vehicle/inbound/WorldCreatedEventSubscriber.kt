@@ -1,6 +1,6 @@
 package com.github.caay2000.ttk.context.vehicle.inbound
 
-import com.github.caay2000.ttk.context.vehicle.application.handler.world.CreateWorldCommand
+import com.github.caay2000.ttk.context.vehicle.application.world.create.CreateWorldCommand
 import com.github.caay2000.ttk.lib.event.WorldCreatedEvent
 import com.github.caay2000.ttk.lib.eventbus.command.Command
 import com.github.caay2000.ttk.lib.eventbus.command.CommandBus

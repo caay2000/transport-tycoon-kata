@@ -4,13 +4,13 @@ import arrow.core.Either
 import arrow.core.flatMap
 import arrow.core.right
 import com.github.caay2000.ttk.context.shared.domain.VehicleId
+import com.github.caay2000.ttk.context.shared.domain.VehicleType
 import com.github.caay2000.ttk.context.shared.domain.WorldId
 import com.github.caay2000.ttk.context.vehicle.application.repository.VehicleRepository
 import com.github.caay2000.ttk.context.vehicle.application.repository.WorldRepository
-import com.github.caay2000.ttk.context.vehicle.domain.Stop
-import com.github.caay2000.ttk.context.vehicle.domain.Vehicle
-import com.github.caay2000.ttk.context.vehicle.domain.VehicleType
-import com.github.caay2000.ttk.context.vehicle.domain.World
+import com.github.caay2000.ttk.context.vehicle.domain.vehicle.Vehicle
+import com.github.caay2000.ttk.context.vehicle.domain.world.Stop
+import com.github.caay2000.ttk.context.vehicle.domain.world.World
 import com.github.caay2000.ttk.lib.eventbus.event.Event
 import com.github.caay2000.ttk.lib.eventbus.event.EventPublisher
 
