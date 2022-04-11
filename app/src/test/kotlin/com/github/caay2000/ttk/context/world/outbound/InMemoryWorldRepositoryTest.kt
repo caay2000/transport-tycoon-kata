@@ -1,6 +1,6 @@
 // package com.github.caay2000.ttk.context.world.outbound
 //
-// import com.github.caay2000.ttk.context.core.domain.WorldId
+// import com.github.caay2000.ttk.context.shared.domain.WorldId
 // import com.github.caay2000.ttk.context.world.domain.World
 // import com.github.caay2000.ttk.lib.database.InMemoryDatabase
 // import org.assertj.core.api.Assertions.assertThat

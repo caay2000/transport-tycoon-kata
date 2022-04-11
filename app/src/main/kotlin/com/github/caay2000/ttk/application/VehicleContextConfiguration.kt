@@ -26,7 +26,7 @@ import com.github.caay2000.ttk.lib.eventbus.command.CommandBus
 import com.github.caay2000.ttk.lib.eventbus.event.Event
 import com.github.caay2000.ttk.lib.eventbus.event.EventPublisher
 
-class VehicleContextConfiguration(val commandBus: CommandBus<Command>, val eventPublisher: EventPublisher<Event>, database: InMemoryDatabase) {
+class VehicleContextConfiguration(commandBus: CommandBus<Command>, eventPublisher: EventPublisher<Event>, database: InMemoryDatabase) {
 
     private val worldRepository = InMemoryWorldRepository(database)
     private val vehicleRepository = InMemoryVehicleRepository(database)

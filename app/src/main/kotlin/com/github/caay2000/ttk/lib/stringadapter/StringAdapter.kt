@@ -1,6 +1,6 @@
 package com.github.caay2000.ttk.lib.stringadapter
 
-import com.github.caay2000.ttk.context.world.domain.Location
+import com.github.caay2000.ttk.context.shared.domain.Location
 
 class StringAdapter {
 

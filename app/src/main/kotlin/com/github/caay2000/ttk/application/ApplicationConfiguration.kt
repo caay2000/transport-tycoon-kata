@@ -1,9 +1,5 @@
 package com.github.caay2000.ttk.application
 
-import com.github.caay2000.ttk.context.audit.application.AuditVehicleCommand
-import com.github.caay2000.ttk.context.audit.application.AuditVehicleCommandHandler
-import com.github.caay2000.ttk.context.audit.domain.repository.EventRepository
-import com.github.caay2000.ttk.context.audit.outbound.InMemoryEventRepository
 import com.github.caay2000.ttk.context.time.application.UpdateDateTimeCommand
 import com.github.caay2000.ttk.context.time.application.UpdateDateTimeCommandHandler
 import com.github.caay2000.ttk.context.time.inbound.WorldUpdatedEventSubscriber
@@ -30,13 +26,11 @@ class ApplicationConfiguration {
     private val eventPublisher = EventPublisherImpl()
 
     private val database: InMemoryDatabase = InMemoryDatabase()
-    val eventRepository: EventRepository = InMemoryEventRepository(database)
 
     init {
         KTEventBus.init<Command, Event>()
 
         instantiateCommandHandler(UpdateDateTimeCommand::class, UpdateDateTimeCommandHandler(dateTimeProvider))
-        instantiateCommandHandler(AuditVehicleCommand::class, AuditVehicleCommandHandler(eventRepository))
 
         instantiateEventSubscriber(WorldUpdatedEvent::class, WorldUpdatedEventSubscriber(commandBus))
 

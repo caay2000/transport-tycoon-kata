@@ -1,20 +1,20 @@
 package com.github.caay2000.ttk.application
 
-import com.github.caay2000.ttk.context.core.domain.VehicleId
-import com.github.caay2000.ttk.context.core.domain.WorldId
-import com.github.caay2000.ttk.context.core.domain.randomDomainId
+import com.github.caay2000.ttk.context.shared.domain.Location
+import com.github.caay2000.ttk.context.shared.domain.VehicleId
+import com.github.caay2000.ttk.context.shared.domain.WorldId
+import com.github.caay2000.ttk.context.shared.domain.randomDomainId
 import com.github.caay2000.ttk.context.vehicle.application.handler.vehicle.CreateVehicleCommand
 import com.github.caay2000.ttk.context.vehicle.domain.VehicleType
 import com.github.caay2000.ttk.context.world.application.handler.AddCargoCommand
 import com.github.caay2000.ttk.context.world.application.handler.CreateWorldCommand
 import com.github.caay2000.ttk.context.world.application.handler.UpdateWorldCommand
-import com.github.caay2000.ttk.context.world.domain.Location
+import com.github.caay2000.ttk.lib.eventbus.event.Event
 import java.util.UUID
 
-internal class Application(configuration: ApplicationConfiguration) {
+class Application(configuration: ApplicationConfiguration) {
 
     private val commandBus = configuration.commandBus
-    private val eventRepository = configuration.eventRepository
     private val dateTimeProvider = configuration.dateTimeProvider
 
     fun execute(cargoDestinations: List<Location>): Result {
@@ -35,9 +35,14 @@ internal class Application(configuration: ApplicationConfiguration) {
 
         return Result(
             duration = dateTimeProvider.now().value(),
-            events = eventRepository.getAll()
+            events = emptyList()
         )
     }
 
     private fun randomVehicleId(): UUID = randomDomainId<VehicleId>().uuid
+
+    class Result(
+        val duration: Int,
+        val events: List<Event>
+    )
 }
