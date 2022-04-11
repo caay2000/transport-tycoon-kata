@@ -6,7 +6,7 @@
 <body>
 
 
-<h1>DateTimeUpdaterService.kt</h1>
+<h1>Result.kt</h1>
 
 <table class="src">
 
@@ -14,27 +14,27 @@
 
 <tr>
 <td class='na'>
-<a name='org.pitest.mutationtest.report.html.SourceFile@7e28f150_1'/>
+<a name='org.pitest.mutationtest.report.html.SourceFile@697b48e4_1'/>
 1
 </td>
 <td class=''>
 <span class='pop'>
-<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7e28f150_1'></a>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@697b48e4_1'></a>
 <span>
 </span>
 </span>
 </td>
-<td class=''><pre><span  class=''>package com.github.caay2000.ttk.context.time.domain.service</span></pre></td></tr>
+<td class=''><pre><span  class=''>package com.github.caay2000.ttk.application</span></pre></td></tr>
 
 
 <tr>
 <td class='na'>
-<a name='org.pitest.mutationtest.report.html.SourceFile@7e28f150_2'/>
+<a name='org.pitest.mutationtest.report.html.SourceFile@697b48e4_2'/>
 2
 </td>
 <td class=''>
 <span class='pop'>
-<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7e28f150_2'></a>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@697b48e4_2'></a>
 <span>
 </span>
 </span>
@@ -44,27 +44,27 @@
 
 <tr>
 <td class='na'>
-<a name='org.pitest.mutationtest.report.html.SourceFile@7e28f150_3'/>
+<a name='org.pitest.mutationtest.report.html.SourceFile@697b48e4_3'/>
 3
 </td>
 <td class=''>
 <span class='pop'>
-<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7e28f150_3'></a>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@697b48e4_3'></a>
 <span>
 </span>
 </span>
 </td>
-<td class=''><pre><span  class=''>import com.github.caay2000.ttk.lib.datetime.DateTimeProvider</span></pre></td></tr>
+<td class=''><pre><span  class=''>import com.github.caay2000.ttk.lib.eventbus.event.Event</span></pre></td></tr>
 
 
 <tr>
 <td class='na'>
-<a name='org.pitest.mutationtest.report.html.SourceFile@7e28f150_4'/>
+<a name='org.pitest.mutationtest.report.html.SourceFile@697b48e4_4'/>
 4
 </td>
 <td class=''>
 <span class='pop'>
-<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7e28f150_4'></a>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@697b48e4_4'></a>
 <span>
 </span>
 </span>
@@ -74,107 +74,89 @@
 
 <tr>
 <td class='covered'>
-<a name='org.pitest.mutationtest.report.html.SourceFile@7e28f150_5'/>
+<a name='org.pitest.mutationtest.report.html.SourceFile@697b48e4_5'/>
 5
 </td>
 <td class=''>
 <span class='pop'>
-<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7e28f150_5'></a>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@697b48e4_5'></a>
 <span>
 </span>
 </span>
 </td>
-<td class='covered'><pre><span  class=''>class DateTimeUpdaterService(private val dateTimeProvider: DateTimeProvider) {</span></pre></td></tr>
+<td class='covered'><pre><span  class=''>class Result(</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@697b48e4_6'/>
+6
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@697b48e4_6'>1</a>
+<span>
+1. getDuration : replaced int return with 0 for com/github/caay2000/ttk/application/Result::getDuration &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>    val duration: Int,</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@697b48e4_7'/>
+7
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@697b48e4_7'>1</a>
+<span>
+1. getEvents : replaced return value with Collections.emptyList for com/github/caay2000/ttk/application/Result::getEvents &rarr; NO_COVERAGE<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='survived'>    val events: List&#60;Event&#62;</span></pre></td></tr>
 
 
 <tr>
 <td class='na'>
-<a name='org.pitest.mutationtest.report.html.SourceFile@7e28f150_6'/>
-6
-</td>
-<td class=''>
-<span class='pop'>
-<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7e28f150_6'></a>
-<span>
-</span>
-</span>
-</td>
-<td class=''><pre><span  class=''></span></pre></td></tr>
-
-
-<tr>
-<td class='covered'>
-<a name='org.pitest.mutationtest.report.html.SourceFile@7e28f150_7'/>
-7
-</td>
-<td class='killed'>
-<span class='pop'>
-<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7e28f150_7'>1</a>
-<span>
-1. invoke : removed call to com/github/caay2000/ttk/lib/datetime/DateTimeProvider::inc &rarr; KILLED<br/>
-
-</span>
-</span>
-</td>
-<td class='covered'><pre><span  class='killed'>    fun invoke() = dateTimeProvider.inc().also {</span></pre></td></tr>
-
-
-<tr>
-<td class='covered'>
-<a name='org.pitest.mutationtest.report.html.SourceFile@7e28f150_8'/>
+<a name='org.pitest.mutationtest.report.html.SourceFile@697b48e4_8'/>
 8
 </td>
 <td class=''>
 <span class='pop'>
-<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7e28f150_8'></a>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@697b48e4_8'></a>
 <span>
 </span>
 </span>
 </td>
-<td class='covered'><pre><span  class=''>        println(&#34;Time Increased to ${this.dateTimeProvider.now()}&#34;)</span></pre></td></tr>
-
-
-<tr>
-<td class='covered'>
-<a name='org.pitest.mutationtest.report.html.SourceFile@7e28f150_9'/>
-9
-</td>
-<td class=''>
-<span class='pop'>
-<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7e28f150_9'></a>
-<span>
-</span>
-</span>
-</td>
-<td class='covered'><pre><span  class=''>    }</span></pre></td></tr>
-
-
-<tr>
-<td class='na'>
-<a name='org.pitest.mutationtest.report.html.SourceFile@7e28f150_10'/>
-10
-</td>
-<td class=''>
-<span class='pop'>
-<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7e28f150_10'></a>
-<span>
-</span>
-</span>
-</td>
-<td class=''><pre><span  class=''>}</span></pre></td></tr>
+<td class=''><pre><span  class=''>)</span></pre></td></tr>
 
 
 
 <tr><td></td><td></td><td><h2>Mutations</h2></td></tr>
 
 <tr>
-<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7e28f150_7'>7</a></td> 
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@697b48e4_6'>6</a></td> 
 <td></td>
 <td>
 
-<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7e28f150_7'/> 
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@697b48e4_6'/> 
 
-<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>invoke<br/><b>Killed by : </b>com.github.caay2000.ttk.integration.AppIntegrationTest.[engine:junit-jupiter]/[class:com.github.caay2000.ttk.integration.AppIntegrationTest]/[test-template:route takes the correct steps(java.lang.String, int)]/[test-template-invocation:#2]</span></span> removed call to com/github/caay2000/ttk/lib/datetime/DateTimeProvider::inc &rarr; KILLED</p> 
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>getDuration<br/><b>Killed by : </b>com.github.caay2000.ttk.integration.AppIntegrationTest.[engine:junit-jupiter]/[class:com.github.caay2000.ttk.integration.AppIntegrationTest]/[test-template:route takes the correct steps(java.lang.String, int)]/[test-template-invocation:#2]</span></span> replaced int return with 0 for com/github/caay2000/ttk/application/Result::getDuration &rarr; KILLED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@697b48e4_7'>7</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@697b48e4_7'/> 
+
+<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>getEvents<br/><b>Killed by : </b>none</span></span> replaced return value with Collections.emptyList for com/github/caay2000/ttk/application/Result::getEvents &rarr; NO_COVERAGE</p> 
 </td>
 </tr>
 
