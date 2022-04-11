@@ -1,7 +1,7 @@
 plugins {
     application
     kotlin("jvm") version "1.6.10"
-    id("info.solidsoft.pitest") version "1.7.0"
+    id("info.solidsoft.pitest") version "1.7.4"
     id("org.jlleitschuh.gradle.ktlint") version "10.2.0"
 }
 
@@ -34,7 +34,7 @@ dependencies {
 }
 
 pitest {
-    pitestVersion.set("1.7.0")
+    pitestVersion.set("1.7.4")
     junit5PluginVersion.set("0.15")
     targetClasses.add("com.github.caay2000.ttk.*")
     outputFormats.add("HTML")

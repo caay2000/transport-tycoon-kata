@@ -29,7 +29,7 @@ dependencies {
 
 apply(plugin = "info.solidsoft.pitest.aggregator")
 pitest {
-    pitestVersion.set("1.7.0")
+    pitestVersion.set("1.7.4")
     junit5PluginVersion.set("0.15")
     targetClasses.add("com.github.caay2000.ttk.*")
     outputFormats.addAll("HTML", "XML")
