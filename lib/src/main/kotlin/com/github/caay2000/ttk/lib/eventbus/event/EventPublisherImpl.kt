@@ -13,5 +13,4 @@ class EventPublisherImpl : EventPublisher<Event> {
             println(event)
             eventPublisher.publish(event)
         }
-
 }
