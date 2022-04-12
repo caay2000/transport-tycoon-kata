@@ -3,6 +3,7 @@ package com.github.caay2000.ttk.context.vehicle.outbound
 import arrow.core.Either
 import arrow.core.Option
 import arrow.core.toOption
+import com.github.caay2000.ttk.context.shared.domain.Distance
 import com.github.caay2000.ttk.context.shared.domain.StopId
 import com.github.caay2000.ttk.context.shared.domain.WorldId
 import com.github.caay2000.ttk.context.vehicle.application.repository.StopRepository
@@ -21,6 +22,13 @@ class InMemoryStopRepository(private val database: InMemoryDatabase) : StopRepos
             .map { it as Stop }
             .first { it.name == name }
     }
+
+    override fun findDistanceBetween(sourceId: StopId, targetId: StopId): Option<Distance> =
+        Option.catch {
+            val sourceStop = database.getById(DATABASE_TABLE, sourceId.rawId) as Stop
+            val targetStop = database.getById(DATABASE_TABLE, targetId.rawId) as Stop
+            sourceStop.distanceTo(targetStop)
+        }
 
     fun findAllByWorldId(worldId: WorldId): List<Stop> = database.getAll(DATABASE_TABLE)
         .map { it as Stop }

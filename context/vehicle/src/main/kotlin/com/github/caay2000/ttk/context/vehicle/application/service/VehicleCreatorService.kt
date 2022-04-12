@@ -13,11 +13,9 @@ import com.github.caay2000.ttk.context.vehicle.domain.world.Stop
 import com.github.caay2000.ttk.context.vehicle.domain.world.World
 import com.github.caay2000.ttk.lib.eventbus.event.Event
 import com.github.caay2000.ttk.lib.eventbus.event.EventPublisher
-import com.github.caay2000.ttk.lib.eventbus.query.QueryBus
 
 class VehicleCreatorService(
     private val eventPublisher: EventPublisher<Event>,
-    private val queryBus: QueryBus,
     private val worldRepository: WorldRepository,
     private val vehicleRepository: VehicleRepository
 ) {
@@ -32,7 +30,7 @@ class VehicleCreatorService(
         worldRepository.get(worldId).toEither { RuntimeException("") }
 
     private fun createVehicle(worldId: WorldId, id: VehicleId, type: VehicleType, stop: Stop) =
-        Vehicle.create(worldId, id, type, stop, queryBus).right()
+        Vehicle.create(worldId, id, type, stop).right()
 
     private fun Vehicle.save() = vehicleRepository.save(this).flatMap { this.right() }
 

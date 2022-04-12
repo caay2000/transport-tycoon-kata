@@ -1,19 +1,18 @@
 package com.github.caay2000.ttk.context.vehicle.domain.vehicle
 
-import com.github.caay2000.ttk.context.vehicle.domain.world.Stop
+import com.github.caay2000.ttk.context.shared.domain.Distance
+import com.github.caay2000.ttk.context.shared.domain.StopId
 import java.util.concurrent.atomic.AtomicInteger
 
-data class Route(val start: Stop, val destination: Stop) {
+data class Route(val sourceId: StopId, val targetId: StopId, val distance: Distance) {
 
     private val time: AtomicInteger = AtomicInteger(0)
-
-    private val distanceToDestination = start.distanceTo(destination)
-    private val totalRouteDistance = distanceToDestination * 2
+    private val totalRouteDistance = distance * 2
 
     fun update() {
         time.incrementAndGet()
     }
 
-    fun isStoppedInDestination() = time.get() == distanceToDestination
+    fun isStoppedInDestination() = time.get() == distance
     fun isFinished() = time.get() >= totalRouteDistance
 }

@@ -14,7 +14,6 @@ class FindRouteQueryHandler(vehicleRepository: VehicleRepository, stopRepository
 
     private val routeFinderService = RouteFinderService(vehicleRepository, stopRepository)
 
-//    override fun <QUERY, RESPONSE> handle(query: QUERY): RESPONSE
     override fun handle(query: FindRouteQuery): FindRouteQueryResponse =
         routeFinderService.invoke(query.vehicleId.toDomainId())
             .flatMap { response -> response.toFindRouteQueryResponse() }

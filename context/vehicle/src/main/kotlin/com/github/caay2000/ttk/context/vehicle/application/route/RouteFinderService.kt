@@ -1,12 +1,15 @@
 package com.github.caay2000.ttk.context.vehicle.application.route
 
 import arrow.core.Either
+import arrow.core.computations.option
 import arrow.core.flatMap
 import arrow.core.left
 import arrow.core.right
+import arrow.core.toOption
 import com.github.caay2000.ttk.context.shared.domain.CargoId
 import com.github.caay2000.ttk.context.shared.domain.StopId
 import com.github.caay2000.ttk.context.shared.domain.VehicleId
+import com.github.caay2000.ttk.context.shared.domain.VehicleType
 import com.github.caay2000.ttk.context.vehicle.application.repository.StopRepository
 import com.github.caay2000.ttk.context.vehicle.application.repository.VehicleRepository
 import com.github.caay2000.ttk.context.vehicle.domain.vehicle.Vehicle
@@ -23,7 +26,7 @@ class RouteFinderService(
             .flatMap { vehicle -> vehicle.guardVehicleIsIdle() }
             .flatMap { vehicle -> getStop(vehicle.initialStop.id) }
             .flatMap { stop -> stop.guardStopHasCargo() }
-            .flatMap { stop -> stop.generateRoute(vehicleId) }
+            .flatMap { stop -> stop.findRoute(vehicleId) }
             .mapLeft { error -> error.mapError() }
 
     private fun findVehicle(vehicleId: VehicleId): Either<Throwable, Vehicle> =
@@ -40,9 +43,24 @@ class RouteFinderService(
         if (this.cargo.isEmpty()) RouteFinderServiceException.StopHasNoCargo(this.id).left()
         else this.right()
 
-    private fun Stop.generateRoute(vehicleId: VehicleId): Either<Throwable, RouteFinderResponse> =
+    private fun Stop.findRoute(vehicleId: VehicleId): Either<Throwable, RouteFinderResponse> =
         this.cargo.first().right()
-            .flatMap { cargo -> RouteFinderResponse(vehicleId, cargo.id, this.id, cargo.targetId).right() }
+            .flatMap { cargo ->
+                if (this.name != "FACTORY") {
+                    RouteFinderResponse(vehicleId, cargo.id, this.id, cargo.targetId).right()
+                } else {
+                    option.eager<StopId> {
+                        val target = stopRepository.get(cargo.targetId).bind()
+                        val vehicle = vehicleRepository.get(vehicleId).bind()
+                        if (target.name == "WAREHOUSE_A" && vehicle.type == VehicleType.TRUCK) {
+                            stopRepository.findByName("PORT").bind().id
+                        } else {
+                            cargo.targetId
+                        }
+                    }.flatMap { targetStopId -> RouteFinderResponse(vehicleId, cargo.id, this.id, targetStopId).toOption() }
+                        .toEither { RuntimeException("") }
+                }
+            }
 
     data class RouteFinderResponse(
         val vehicleId: VehicleId,

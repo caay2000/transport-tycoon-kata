@@ -2,10 +2,10 @@ package com.github.caay2000.ttk.application
 
 import com.github.caay2000.ttk.context.vehicle.application.handler.vehicle.CreateVehicleCommand
 import com.github.caay2000.ttk.context.vehicle.application.handler.vehicle.CreateVehicleCommandHandler
-import com.github.caay2000.ttk.context.vehicle.application.handler.vehicle.UpdateVehicleCommand
-import com.github.caay2000.ttk.context.vehicle.application.handler.vehicle.UpdateVehicleCommandHandler
 import com.github.caay2000.ttk.context.vehicle.application.route.FindRouteQuery
 import com.github.caay2000.ttk.context.vehicle.application.route.FindRouteQueryHandler
+import com.github.caay2000.ttk.context.vehicle.application.vehicle.update.UpdateVehicleCommand
+import com.github.caay2000.ttk.context.vehicle.application.vehicle.update.UpdateVehicleCommandHandler
 import com.github.caay2000.ttk.context.vehicle.application.world.create.CreateWorldCommand
 import com.github.caay2000.ttk.context.vehicle.application.world.create.CreateWorldCommandHandler
 import com.github.caay2000.ttk.context.vehicle.application.world.stop.cargo.ProduceCargoCommand
@@ -44,8 +44,8 @@ class VehicleContextConfiguration(
     init {
         instantiateQueryHandler(FindRouteQuery::class, FindRouteQueryHandler(vehicleRepository, stopRepository))
 
-        instantiateCommandHandler(CreateVehicleCommand::class, CreateVehicleCommandHandler(eventPublisher, queryBus, worldRepository, vehicleRepository))
-        instantiateCommandHandler(UpdateVehicleCommand::class, UpdateVehicleCommandHandler(eventPublisher, vehicleRepository))
+        instantiateCommandHandler(CreateVehicleCommand::class, CreateVehicleCommandHandler(eventPublisher, worldRepository, vehicleRepository))
+        instantiateCommandHandler(UpdateVehicleCommand::class, UpdateVehicleCommandHandler(eventPublisher, queryBus, vehicleRepository, stopRepository))
         instantiateCommandHandler(CreateStopCommand::class, CreateStopCommandHandler(worldRepository))
         instantiateCommandHandler(CreateWorldCommand::class, CreateWorldCommandHandler(worldRepository))
         instantiateCommandHandler(ProduceCargoCommand::class, ProduceCargoCommandHandler(stopRepository))
