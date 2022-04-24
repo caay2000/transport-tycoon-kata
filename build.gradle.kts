@@ -8,12 +8,16 @@ plugins {
 group = "com.github.caay2000"
 version = "1.0-SNAPSHOT"
 
+application {
+    mainClass.set("com.github.caay2000.ttk.AppKt")
+}
+
 repositories {
     mavenCentral()
 }
 
-application {
-    mainClass.set("com.github.caay2000.ttk.AppKt")
+tasks.withType<Wrapper> {
+    gradleVersion = "7.4.2"
 }
 
 tasks.test {
@@ -21,15 +25,19 @@ tasks.test {
 }
 
 dependencies {
-    implementation(project(":app"))
-}
+    implementation(project(":lib"))
+    implementation(project(":context:shared"))
+    implementation(project(":context:world"))
+    implementation(project(":context:vehicle"))
+    implementation("org.jgrapht:jgrapht-core:1.5.1")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
+    implementation("io.arrow-kt:arrow-core:1.0.1")
 
-tasks.withType<Wrapper> {
-    gradleVersion = "7.4.2"
-}
-
-dependencies {
     testImplementation(kotlin("test"))
+    testImplementation("org.junit.jupiter:junit-jupiter:5.7.1")
+    testImplementation("org.assertj:assertj-core:3.21.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
+    testImplementation("com.google.code.gson:gson:2.9.0")
 }
 
 apply(plugin = "info.solidsoft.pitest.aggregator")
@@ -40,7 +48,6 @@ pitest {
     outputFormats.addAll("XML")
     timestampedReports.set(false)
     exportLineCoverage.set(true)
-    //    excludedTestClasses.add("**.*IntegrationTest")
     avoidCallsTo.add("kotlin.jvm.internal")
     mutators.addAll("DEFAULTS")
     detectInlinedCode.set(true)

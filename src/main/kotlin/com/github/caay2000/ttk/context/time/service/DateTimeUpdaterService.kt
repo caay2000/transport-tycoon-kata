@@ -1,4 +1,4 @@
-package com.github.caay2000.ttk.context.time.domain.service
+package com.github.caay2000.ttk.context.time.service
 
 import com.github.caay2000.ttk.lib.datetime.DateTimeProvider
 
