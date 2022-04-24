@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mutations>
+<mutation detected='false' status='NO_COVERAGE' numberOfTestsRun='0'><sourceFile>App.kt</sourceFile><mutatedClass>com.github.caay2000.ttk.AppKt</mutatedClass><mutatedMethod>main</mutatedMethod><methodDescription>([Ljava/lang/String;)V</methodDescription><lineNumber>19</lineNumber><mutator>org.pitest.mutationtest.engine.gregor.mutators.VoidMethodCallMutator</mutator><index>16</index><block>4</block><killingTest/><description>removed call to java/io/PrintStream::println</description></mutation>
+</mutations>
