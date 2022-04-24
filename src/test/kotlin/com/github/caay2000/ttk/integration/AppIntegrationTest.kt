@@ -33,6 +33,7 @@ class AppIntegrationTest {
         "AA, 13",
         "BB, 5",
         "BBB, 15",
+        "ABABA, 21",
         "ABB, 7",
         "AABABBAB, 29",
         "ABBBABAAABBB, 41"

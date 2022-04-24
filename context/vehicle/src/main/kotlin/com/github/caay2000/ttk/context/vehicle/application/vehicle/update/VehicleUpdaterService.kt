@@ -3,8 +3,10 @@ package com.github.caay2000.ttk.context.vehicle.application.vehicle.update
 import arrow.core.Either
 import arrow.core.flatMap
 import arrow.core.getOrHandle
+import arrow.core.left
 import arrow.core.right
 import com.github.caay2000.ttk.context.shared.domain.CargoId
+import com.github.caay2000.ttk.context.shared.domain.Distance
 import com.github.caay2000.ttk.context.shared.domain.StopId
 import com.github.caay2000.ttk.context.shared.domain.VehicleId
 import com.github.caay2000.ttk.context.shared.domain.toDomainId
@@ -29,71 +31,70 @@ class VehicleUpdaterService(
     private val stopRepository: StopRepository
 ) {
 
-    fun invoke(vehicleId: VehicleId): Either<Throwable, Unit> =
+    fun invoke(vehicleId: VehicleId): Either<VehicleUpdaterServiceException, Unit> =
         findVehicle(vehicleId)
             .flatMap { vehicle -> vehicle.executeUpdate() }
             .flatMap { vehicle -> vehicle.save() }
             .flatMap { vehicle -> vehicle.publishEvents() }
+            .mapLeft { error -> error.mapError() }
 
     private fun findVehicle(vehicleId: VehicleId): Either<Throwable, Vehicle> =
         vehicleRepository.get(vehicleId).toEither { VehicleUpdaterServiceException.VehicleNotFound(vehicleId) }
 
-    private fun Vehicle.executeUpdate(): Either<Throwable, Vehicle> {
-        when (this.status) {
-            VehicleStatus.IDLE -> {
-                val queryResponse = queryBus.execute<FindRouteQuery, FindRouteQueryResponse>(FindRouteQuery(this.id.uuid))
-                if (queryResponse.routeFound) {
-                    this.loadCargo(queryResponse.toCargo())
-                    this.startRoute(queryResponse.toRoute())
-                    this.move()
-                }
-                this.pushEvent(VehicleUpdatedEvent(this.worldId.uuid, this.id.uuid, this.type.name, this.cargo?.id?.uuid, this.status.name))
-            }
-            VehicleStatus.ON_ROUTE -> {
-                when {
-                    this.route!!.isStoppedInDestination() -> {
-                        this.unloadCargo()
+    private fun Vehicle.executeUpdate(): Either<Throwable, Vehicle> =
+        Either.catch {
+            when (this.status) {
+                VehicleStatus.IDLE -> {
+                    val queryResponse = queryBus.execute<FindRouteQuery, FindRouteQueryResponse>(FindRouteQuery(this.id.uuid))
+                    if (queryResponse.routeFound) {
+                        this.loadCargo(queryResponse.toCargo())
+                        this.startRoute(queryResponse.toRoute())
                         this.move()
-                        this.pushEvent(VehicleUpdatedEvent(this.worldId.uuid, this.id.uuid, this.type.name, this.cargo?.id?.uuid, this.status.name))
                     }
-                    this.route!!.isFinished() -> {
-                        this.stop()
-                        this.executeUpdate()
-                    }
-                    else -> {
-                        this.move()
-                        this.pushEvent(VehicleUpdatedEvent(this.worldId.uuid, this.id.uuid, this.type.name, this.cargo?.id?.uuid, this.status.name))
+                    this.pushEvent(VehicleUpdatedEvent(this.worldId.uuid, this.id.uuid, this.type.name, this.cargo?.id?.uuid, this.status.name))
+                }
+                VehicleStatus.ON_ROUTE -> {
+                    when {
+                        this.route!!.isStoppedInDestination() -> {
+                            this.unloadCargo()
+                            this.move()
+                            this.pushEvent(VehicleUpdatedEvent(this.worldId.uuid, this.id.uuid, this.type.name, this.cargo?.id?.uuid, this.status.name))
+                        }
+                        this.route!!.isFinished() -> {
+                            this.stop()
+                            this.executeUpdate()
+                        }
+                        else -> {
+                            this.move()
+                            this.pushEvent(VehicleUpdatedEvent(this.worldId.uuid, this.id.uuid, this.type.name, this.cargo?.id?.uuid, this.status.name))
+                        }
                     }
                 }
             }
+            this
         }
 
-        return this.right()
-    }
-
     private fun FindRouteQueryResponse.toCargo(): Cargo =
-        stopRepository.get(this.route!!.sourceId.toDomainId()).toEither { RuntimeException("") }
+        findStop(this.route!!.sourceStopId.toDomainId())
             .flatMap { stop -> stop.cargo.find { it.id == this.route.cargoId.toDomainId<CargoId>() }!!.right() }
             .getOrHandle { throw it }
 
     private fun FindRouteQueryResponse.toRoute(): Route =
-        stopRepository.findDistanceBetween(this.route!!.sourceId.toDomainId(), this.route.targetId.toDomainId()).toEither { RuntimeException("") }
-            .flatMap { distance -> Route(this.route.sourceId.toDomainId(), this.route.targetId.toDomainId(), distance).right() }
+        findStop(this.route!!.sourceStopId.toDomainId())
+            .flatMap { stop -> stop.guardConnectionExists(this.route.targetStopId.toDomainId()) }
+            .flatMap { stop -> stop.findDistanceTo(this.route.targetStopId.toDomainId()) }
+            .flatMap { distance -> Route(this.route.sourceStopId.toDomainId(), this.route.targetStopId.toDomainId(), distance).right() }
             .getOrHandle { throw it }
-//
-//        findStop(this.route!!.sourceId.toDomainId())
-//            .flatMap { stop ->  }
-//        findStop()
-//            .flatMap { source -> stopRepository.get(this.route!!.sourceId.to()).toEither { VehicleUpdaterServiceException.StopNotFound(this.route!!.sourceId.toDomainId()) } }
 
     private fun findStop(stopId: StopId): Either<Throwable, Stop> =
         stopRepository.get(stopId).toEither { VehicleUpdaterServiceException.StopNotFound(stopId) }
 
-//    Route(
-//    id = this.route!!.cargoId.toDomainId(),
-//    sourceId = this.route.sourceId.toDomainId(),
-//    targetId = this.route.targetId.toDomainId()
-//    )
+    private fun Stop.guardConnectionExists(targetStopId: StopId): Either<Throwable, Stop> =
+        if (this.connections.any { it.targetStopId == targetStopId }) this.right()
+        else VehicleUpdaterServiceException.ConnectionNotFound(this.id, targetStopId).left()
+
+    private fun Stop.findDistanceTo(targetStopId: StopId): Either<Throwable, Distance> =
+        Either.catch { this.distanceTo(targetStopId) }
 
     private fun Vehicle.save() = vehicleRepository.save(this).flatMap { this.right() }
 

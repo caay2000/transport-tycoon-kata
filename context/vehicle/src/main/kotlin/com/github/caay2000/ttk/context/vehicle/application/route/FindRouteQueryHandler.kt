@@ -45,7 +45,7 @@ data class FindRouteQueryResponse(
     data class RouteQueryResponse(
         val vehicleId: UUID,
         val cargoId: UUID,
-        val sourceId: UUID,
-        val targetId: UUID
+        val sourceStopId: UUID,
+        val targetStopId: UUID
     )
 }

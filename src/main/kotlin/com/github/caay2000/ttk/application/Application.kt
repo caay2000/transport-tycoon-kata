@@ -38,8 +38,8 @@ class Application(configuration: ApplicationConfiguration) {
         http(HTTP_CREATE_STOP, worldId.uuid, warehouseBStopId.uuid, "WAREHOUSE_B")
 
         http(HTTP_CREATE_CONNECTION, worldId.uuid, factoryStopId.uuid, portStopId.uuid, 1, setOf(VehicleType.TRUCK.name))
-        http(HTTP_CREATE_CONNECTION, worldId.uuid, portStopId.uuid, warehouseAStopId.uuid, 1, setOf(VehicleType.BOAT.name))
-        http(HTTP_CREATE_CONNECTION, worldId.uuid, factoryStopId.uuid, warehouseBStopId.uuid, 1, setOf(VehicleType.TRUCK.name))
+        http(HTTP_CREATE_CONNECTION, worldId.uuid, portStopId.uuid, warehouseAStopId.uuid, 4, setOf(VehicleType.BOAT.name))
+        http(HTTP_CREATE_CONNECTION, worldId.uuid, factoryStopId.uuid, warehouseBStopId.uuid, 5, setOf(VehicleType.TRUCK.name))
 
         http(HTTP_CREATE_VEHICLE, worldId.uuid, factoryStopId.uuid, randomVehicleId(), VehicleType.TRUCK.name)
         http(HTTP_CREATE_VEHICLE, worldId.uuid, factoryStopId.uuid, randomVehicleId(), VehicleType.TRUCK.name)

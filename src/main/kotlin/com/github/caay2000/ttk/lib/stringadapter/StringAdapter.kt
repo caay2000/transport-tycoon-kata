@@ -1,7 +1,5 @@
 package com.github.caay2000.ttk.lib.stringadapter
 
-import com.github.caay2000.ttk.context.shared.domain.Location
-
 class StringAdapter {
 
     fun execute(input: String) = parseRoute(input)
@@ -11,13 +9,13 @@ class StringAdapter {
         val values = regex.find(input)!!.value
         return values.asIterable()
             .filterNot { it.isWhitespace() }
-            .map { it.toLocation().name }
+            .map { it.toLocation() }
     }
 
-    private fun Char.toLocation(): Location =
+    private fun Char.toLocation(): String =
         when (this) {
-            'A' -> Location.WAREHOUSE_A
-            'B' -> Location.WAREHOUSE_B
+            'A' -> "WAREHOUSE_A"
+            'B' -> "WAREHOUSE_B"
             else -> throw IllegalArgumentException("Invalid input")
         }
 }

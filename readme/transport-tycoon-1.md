@@ -28,11 +28,15 @@ back from A, while ship travels back to the Port.
 **Task**: write a program that takes a list of cargos from the command line and prints out the number of hours that it
 would take to get them delivered.
 
-| Input        | Output |
-|--------------|--------|
-| A            | 5      |
-| AB           | 5      |
-| BB           | 5      |
-| ABB          | 7      |
-| AABABBAB     | ?      |
-| ABBBABAAABBB | ?      |
+| Input        | Output  |
+|--------------|---------|
+| B            | 5       |
+| A            | 5       |
+| AB           | 5       |
+| BB           | 5       |
+| AA           | 13      |
+| ABB          | 7       |
+| BBB          | 15      |
+| ABABA        | 21      |
+| AABABBAB     | 29      |
+| ABBBABAAABBB | 41      |

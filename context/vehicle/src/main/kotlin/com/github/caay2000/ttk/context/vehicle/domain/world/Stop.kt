@@ -2,7 +2,6 @@ package com.github.caay2000.ttk.context.vehicle.domain.world
 
 import com.github.caay2000.ttk.context.shared.domain.CargoId
 import com.github.caay2000.ttk.context.shared.domain.Distance
-import com.github.caay2000.ttk.context.shared.domain.Location
 import com.github.caay2000.ttk.context.shared.domain.StopId
 import com.github.caay2000.ttk.context.shared.domain.VehicleType
 import com.github.caay2000.ttk.context.shared.domain.WorldId
@@ -15,7 +14,7 @@ data class Stop(val worldId: WorldId, val id: StopId, val name: String, var carg
         fun create(worldId: WorldId, id: StopId, name: String): Stop = Stop(worldId, id, name, emptyList(), emptySet())
     }
 
-    fun distanceTo(stop: Stop) = Location.valueOf(this.name).distanceTo(Location.valueOf(stop.name))
+    fun distanceTo(targetStopId: StopId) = this.connections.first { it.targetStopId == targetStopId }.distance
 
     fun createConnection(targetStopId: StopId, distance: Distance, allowedVehicleTypes: Set<VehicleType>): Stop =
         this.copy(connections = this.connections + Connection(this.id, targetStopId, distance, allowedVehicleTypes))
