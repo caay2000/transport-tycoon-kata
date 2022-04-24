@@ -4,7 +4,7 @@ import arrow.core.Either
 import arrow.core.Option
 import com.github.caay2000.ttk.context.shared.domain.StopId
 import com.github.caay2000.ttk.context.shared.domain.WorldId
-import com.github.caay2000.ttk.context.vehicle.application.repository.WorldRepository
+import com.github.caay2000.ttk.context.vehicle.domain.repository.WorldRepository
 import com.github.caay2000.ttk.context.vehicle.domain.world.World
 import com.github.caay2000.ttk.lib.database.InMemoryDatabase
 

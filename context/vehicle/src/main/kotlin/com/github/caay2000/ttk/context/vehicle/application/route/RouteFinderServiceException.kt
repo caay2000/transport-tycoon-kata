@@ -5,8 +5,8 @@ import com.github.caay2000.ttk.context.shared.domain.VehicleId
 import com.github.caay2000.ttk.context.vehicle.domain.vehicle.VehicleStatus
 
 sealed class RouteFinderServiceException : Throwable {
-    constructor(message: String)
-    constructor(cause: Throwable)
+    constructor(message: String) : super(message)
+    constructor(cause: Throwable) : super(cause)
 
     data class StopNotFound(val stopId: StopId) : RouteFinderServiceException("stop ${stopId.rawId} not found")
     data class StopHasNoCargo(val stopId: StopId) : RouteFinderServiceException("stop ${stopId.rawId} has no cargo")

@@ -1,8 +1,7 @@
 plugins {
-    application
-    kotlin("jvm") version "1.6.10"
-    id("info.solidsoft.pitest") version "1.7.4"
-    id("org.jlleitschuh.gradle.ktlint") version "10.2.0"
+    kotlin("jvm")
+    id("info.solidsoft.pitest")
+    id("org.jlleitschuh.gradle.ktlint")
 }
 
 group = "com.github.caay2000"
@@ -12,13 +11,8 @@ repositories {
     mavenCentral()
 }
 
-application {
-    mainClass.set("com.github.caay2000.ttk.AppKt")
-}
-
 tasks.test {
     useJUnitPlatform()
-//    dependsOn(tasks.ktlintFormat)
 }
 
 dependencies {
@@ -34,13 +28,17 @@ dependencies {
     testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
 }
 
+apply(plugin = "info.solidsoft.pitest.aggregator")
 pitest {
-    pitestVersion.set("1.7.4")
+    pitestVersion.set("1.7.5")
     junit5PluginVersion.set("0.15")
     targetClasses.add("com.github.caay2000.ttk.*")
-    outputFormats.add("HTML")
+    outputFormats.addAll("XML")
     timestampedReports.set(false)
-//    excludedTestClasses.add("**.*IntegrationTest")
+    exportLineCoverage.set(true)
     avoidCallsTo.add("kotlin.jvm.internal")
     mutators.addAll("DEFAULTS")
+    detectInlinedCode.set(true)
+    threads.set(4)
+    failWhenNoMutations.set(false)
 }

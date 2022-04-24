@@ -6,7 +6,7 @@ import arrow.core.toOption
 import com.github.caay2000.ttk.context.shared.domain.Distance
 import com.github.caay2000.ttk.context.shared.domain.StopId
 import com.github.caay2000.ttk.context.shared.domain.WorldId
-import com.github.caay2000.ttk.context.vehicle.application.repository.StopRepository
+import com.github.caay2000.ttk.context.vehicle.domain.repository.StopRepository
 import com.github.caay2000.ttk.context.vehicle.domain.world.Stop
 import com.github.caay2000.ttk.lib.database.InMemoryDatabase
 

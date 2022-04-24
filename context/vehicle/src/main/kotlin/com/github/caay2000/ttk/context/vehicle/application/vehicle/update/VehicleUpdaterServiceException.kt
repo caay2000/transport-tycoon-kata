@@ -4,8 +4,8 @@ import com.github.caay2000.ttk.context.shared.domain.StopId
 import com.github.caay2000.ttk.context.shared.domain.VehicleId
 
 sealed class VehicleUpdaterServiceException : Throwable {
-    constructor(message: String)
-    constructor(cause: Throwable)
+    constructor(message: String) : super(message)
+    constructor(cause: Throwable) : super(cause)
 
     data class VehicleNotFound(val vehicleId: VehicleId) : VehicleUpdaterServiceException("vehicle ${vehicleId.rawId} not found")
     data class StopNotFound(val stopId: StopId) : VehicleUpdaterServiceException("stop ${stopId.rawId} not found")
@@ -15,5 +15,6 @@ sealed class VehicleUpdaterServiceException : Throwable {
 internal fun Throwable.mapError() =
     when (this) {
         is VehicleUpdaterServiceException.VehicleNotFound -> this
+        is VehicleUpdaterServiceException.StopNotFound -> this
         else -> VehicleUpdaterServiceException.Unknown(this)
     }

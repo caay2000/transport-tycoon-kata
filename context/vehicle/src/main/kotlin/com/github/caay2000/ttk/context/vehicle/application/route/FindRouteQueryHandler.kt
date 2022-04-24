@@ -4,8 +4,8 @@ import arrow.core.flatMap
 import arrow.core.getOrHandle
 import arrow.core.right
 import com.github.caay2000.ttk.context.shared.domain.toDomainId
-import com.github.caay2000.ttk.context.vehicle.application.repository.StopRepository
-import com.github.caay2000.ttk.context.vehicle.application.repository.VehicleRepository
+import com.github.caay2000.ttk.context.vehicle.domain.repository.StopRepository
+import com.github.caay2000.ttk.context.vehicle.domain.repository.VehicleRepository
 import com.github.caay2000.ttk.lib.eventbus.query.Query
 import com.github.caay2000.ttk.lib.eventbus.query.QueryHandler
 import java.util.UUID

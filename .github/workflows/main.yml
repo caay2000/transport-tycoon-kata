@@ -25,11 +25,11 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run Build
-        run: gradle clean build pitest
+        run: gradle clean build pitest pitestReportAggregate
 
       - name: Publish Pitest Report
         uses: peaceiris/actions-gh-pages@v3.8.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./app/build/reports/pitest
+          publish_dir: ./build/reports/pitest
           full_commit_message: Publishing pitest reports for ${GITHUB_SHA}

@@ -1,7 +1,11 @@
 package com.github.caay2000.ttk.integration
 
-import com.github.caay2000.ttk.App
+import com.github.caay2000.ttk.application.Application
+import com.github.caay2000.ttk.application.configuration.ApplicationConfiguration
+import com.github.caay2000.ttk.lib.stringadapter.StringAdapter
+import com.google.gson.GsonBuilder
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
 import org.junit.jupiter.params.ParameterizedTest
@@ -10,19 +14,36 @@ import org.junit.jupiter.params.provider.CsvSource
 @TestInstance(PER_CLASS)
 class AppIntegrationTest {
 
+    private val gson = GsonBuilder().setPrettyPrinting().create()
+
+    @Test
+    fun `world is created correctly`() {
+
+        val sut = Application(ApplicationConfiguration())
+
+        val world = sut.create()
+
+        println(gson.toJson(world))
+    }
+
     @CsvSource(
         "B, 5",
         "A, 5",
         "AB, 5",
+        "AA, 13",
         "BB, 5",
         "BBB, 15",
         "ABB, 7",
-        "AABABBAB, 21",
+        "AABABBAB, 29",
         "ABBBABAAABBB, 41"
     )
     @ParameterizedTest(name = "{index} - {0} route takes {1} steps")
     fun `route takes the correct steps`(deliveries: String, steps: Int) {
-        val result = App().invoke(deliveries)
+
+        val sut = Application(ApplicationConfiguration())
+
+        sut.create()
+        val result = sut.execute(StringAdapter().execute(deliveries))
         assertThat(result.duration).isEqualTo(steps)
     }
 

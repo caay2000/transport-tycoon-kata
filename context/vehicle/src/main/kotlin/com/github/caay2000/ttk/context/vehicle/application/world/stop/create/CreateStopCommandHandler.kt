@@ -2,8 +2,8 @@ package com.github.caay2000.ttk.context.vehicle.application.world.stop.create
 
 import arrow.core.getOrHandle
 import com.github.caay2000.ttk.context.shared.domain.toDomainId
-import com.github.caay2000.ttk.context.vehicle.application.handler.VehicleCommand
-import com.github.caay2000.ttk.context.vehicle.application.repository.WorldRepository
+import com.github.caay2000.ttk.context.vehicle.application.VehicleCommand
+import com.github.caay2000.ttk.context.vehicle.domain.repository.WorldRepository
 import com.github.caay2000.ttk.lib.eventbus.command.CommandHandler
 import java.util.UUID
 

@@ -5,3 +5,5 @@ enum class VehicleType {
     TRUCK,
     BOAT
 }
+
+fun String.toVehicleType() = VehicleType.valueOf(this)

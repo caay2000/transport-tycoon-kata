@@ -7,6 +7,8 @@ class QueryBusImpl : QueryBus {
     private val queryExecutor = KTQueryExecutor()
     override fun <QUERY : Query, RESPONSE : Any> execute(query: QUERY): RESPONSE {
         println(query)
-        return queryExecutor.execute(query)
+        val result: RESPONSE = queryExecutor.execute(query)
+        println(result)
+        return result
     }
 }

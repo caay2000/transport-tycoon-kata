@@ -5,7 +5,7 @@ import arrow.core.flatMap
 import arrow.core.right
 import com.github.caay2000.ttk.context.shared.domain.StopId
 import com.github.caay2000.ttk.context.shared.domain.WorldId
-import com.github.caay2000.ttk.context.vehicle.application.repository.WorldRepository
+import com.github.caay2000.ttk.context.vehicle.domain.repository.WorldRepository
 import com.github.caay2000.ttk.context.vehicle.domain.world.Stop
 import com.github.caay2000.ttk.context.vehicle.domain.world.World
 
@@ -23,5 +23,6 @@ class StopCreatorService(private val worldRepository: WorldRepository) {
     private fun World.createStop(worldId: WorldId, stopId: StopId, stopName: String): Either<Nothing, World> =
         this.addStop(Stop.create(worldId, stopId, stopName)).right()
 
-    private fun World.save() = Either.catch { worldRepository.save(this) }.flatMap { Unit.right() }
+    private fun World.save() = worldRepository.save(this)
+        .map { }
 }

@@ -4,19 +4,20 @@ import arrow.core.Either
 import arrow.core.flatMap
 import arrow.core.getOrHandle
 import arrow.core.right
+import com.github.caay2000.ttk.context.shared.domain.CargoId
 import com.github.caay2000.ttk.context.shared.domain.StopId
 import com.github.caay2000.ttk.context.shared.domain.VehicleId
 import com.github.caay2000.ttk.context.shared.domain.toDomainId
-import com.github.caay2000.ttk.context.vehicle.application.repository.StopRepository
-import com.github.caay2000.ttk.context.vehicle.application.repository.VehicleRepository
+import com.github.caay2000.ttk.context.shared.event.VehicleUpdatedEvent
 import com.github.caay2000.ttk.context.vehicle.application.route.FindRouteQuery
 import com.github.caay2000.ttk.context.vehicle.application.route.FindRouteQueryResponse
 import com.github.caay2000.ttk.context.vehicle.domain.cargo.Cargo
+import com.github.caay2000.ttk.context.vehicle.domain.repository.StopRepository
+import com.github.caay2000.ttk.context.vehicle.domain.repository.VehicleRepository
 import com.github.caay2000.ttk.context.vehicle.domain.vehicle.Route
 import com.github.caay2000.ttk.context.vehicle.domain.vehicle.Vehicle
 import com.github.caay2000.ttk.context.vehicle.domain.vehicle.VehicleStatus
 import com.github.caay2000.ttk.context.vehicle.domain.world.Stop
-import com.github.caay2000.ttk.lib.event.VehicleUpdatedEvent
 import com.github.caay2000.ttk.lib.eventbus.event.Event
 import com.github.caay2000.ttk.lib.eventbus.event.EventPublisher
 import com.github.caay2000.ttk.lib.eventbus.query.QueryBus
@@ -70,14 +71,13 @@ class VehicleUpdaterService(
         return this.right()
     }
 
-    private fun FindRouteQueryResponse.toCargo(): Cargo = Cargo(
-        id = this.route!!.cargoId.toDomainId(),
-        sourceId = this.route.sourceId.toDomainId(),
-        targetId = this.route.targetId.toDomainId()
-    )
+    private fun FindRouteQueryResponse.toCargo(): Cargo =
+        stopRepository.get(this.route!!.sourceId.toDomainId()).toEither { RuntimeException("") }
+            .flatMap { stop -> stop.cargo.find { it.id == this.route.cargoId.toDomainId<CargoId>() }!!.right() }
+            .getOrHandle { throw it }
 
     private fun FindRouteQueryResponse.toRoute(): Route =
-        stopRepository.findDistanceBetween(this.route!!.sourceId.toDomainId(), this.route!!.targetId.toDomainId()).toEither { RuntimeException("") }
+        stopRepository.findDistanceBetween(this.route!!.sourceId.toDomainId(), this.route.targetId.toDomainId()).toEither { RuntimeException("") }
             .flatMap { distance -> Route(this.route.sourceId.toDomainId(), this.route.targetId.toDomainId(), distance).right() }
             .getOrHandle { throw it }
 //

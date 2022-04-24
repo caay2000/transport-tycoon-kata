@@ -3,11 +3,10 @@ package com.github.caay2000.ttk.context.vehicle.domain.vehicle
 import com.github.caay2000.ttk.context.shared.domain.VehicleId
 import com.github.caay2000.ttk.context.shared.domain.VehicleType
 import com.github.caay2000.ttk.context.shared.domain.WorldId
+import com.github.caay2000.ttk.context.shared.event.VehicleLoadedEvent
+import com.github.caay2000.ttk.context.shared.event.VehicleUnloadedEvent
 import com.github.caay2000.ttk.context.vehicle.domain.cargo.Cargo
 import com.github.caay2000.ttk.context.vehicle.domain.world.Stop
-import com.github.caay2000.ttk.lib.event.VehicleCreatedEvent
-import com.github.caay2000.ttk.lib.event.VehicleLoadedEvent
-import com.github.caay2000.ttk.lib.event.VehicleUnloadedEvent
 import com.github.caay2000.ttk.lib.eventbus.domain.Aggregate
 
 sealed class Vehicle(
@@ -21,8 +20,6 @@ sealed class Vehicle(
             when (type) {
                 VehicleType.TRUCK -> Truck(worldId, id, stop)
                 VehicleType.BOAT -> Boat(worldId, id, stop)
-            }.also {
-                it.pushEvent(VehicleCreatedEvent(worldId.uuid, id.uuid, type.name, it.status.name))
             }
     }
 
@@ -53,6 +50,7 @@ sealed class Vehicle(
                 this.worldId.uuid,
                 this.id.uuid,
                 cargo.id.uuid,
+                this.initialStop.id.uuid,
                 cargo.sourceId.uuid,
                 cargo.targetId.uuid
             )

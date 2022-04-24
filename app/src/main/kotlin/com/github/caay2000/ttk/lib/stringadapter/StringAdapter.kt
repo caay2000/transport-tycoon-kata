@@ -4,14 +4,14 @@ import com.github.caay2000.ttk.context.shared.domain.Location
 
 class StringAdapter {
 
-    internal fun execute(input: String) = parseRoute(input)
+    fun execute(input: String) = parseRoute(input)
 
-    private fun parseRoute(input: String): List<Location> {
+    private fun parseRoute(input: String): List<String> {
         val regex = "^([AB])+\$".toRegex()
         val values = regex.find(input)!!.value
         return values.asIterable()
             .filterNot { it.isWhitespace() }
-            .map { it.toLocation() }
+            .map { it.toLocation().name }
     }
 
     private fun Char.toLocation(): Location =
