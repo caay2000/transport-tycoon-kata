@@ -14,6 +14,8 @@ import com.github.caay2000.ttk.context.world.application.stop.connection.create.
 import com.github.caay2000.ttk.context.world.application.stop.connection.create.CreateConnectionCommandHandler
 import com.github.caay2000.ttk.context.world.application.stop.create.CreateStopCommand
 import com.github.caay2000.ttk.context.world.application.stop.create.CreateStopCommandHandler
+import com.github.caay2000.ttk.context.world.application.time.UpdateDateTimeCommand
+import com.github.caay2000.ttk.context.world.application.time.UpdateDateTimeCommandHandler
 import com.github.caay2000.ttk.context.world.application.vehicle.create.CreateVehicleCommand
 import com.github.caay2000.ttk.context.world.application.vehicle.create.CreateVehicleCommandHandler
 import com.github.caay2000.ttk.context.world.application.vehicle.update.UpdateVehicleCommand
@@ -31,12 +33,13 @@ import com.github.caay2000.ttk.context.world.inbound.event.WorldUpdatedEventSubs
 import com.github.caay2000.ttk.context.world.outbound.InMemoryStopRepository
 import com.github.caay2000.ttk.context.world.outbound.InMemoryWorldRepository
 import com.github.caay2000.ttk.lib.database.InMemoryDatabase
+import com.github.caay2000.ttk.lib.datetime.DateTimeProvider
 import com.github.caay2000.ttk.lib.eventbus.command.Command
 import com.github.caay2000.ttk.lib.eventbus.command.CommandBus
 import com.github.caay2000.ttk.lib.eventbus.event.Event
 import com.github.caay2000.ttk.lib.eventbus.event.EventPublisher
 
-class WorldContextConfiguration(commandBus: CommandBus<Command>, eventPublisher: EventPublisher<Event>, database: InMemoryDatabase) {
+class WorldContextConfiguration(commandBus: CommandBus<Command>, eventPublisher: EventPublisher<Event>, database: InMemoryDatabase, dateTimeProvider: DateTimeProvider) {
 
     private val worldRepository = InMemoryWorldRepository(database)
     private val stopRepository = InMemoryStopRepository(database)
@@ -51,6 +54,7 @@ class WorldContextConfiguration(commandBus: CommandBus<Command>, eventPublisher:
         instantiateCommandHandler(UnloadCargoCommand::class, UnloadCargoCommandHandler(stopRepository))
         instantiateCommandHandler(UpdateWorldCommand::class, UpdateWorldCommandHandler(eventPublisher, worldRepository))
         instantiateCommandHandler(UpdateVehicleCommand::class, UpdateVehicleCommandHandler(eventPublisher, worldRepository))
+        instantiateCommandHandler(UpdateDateTimeCommand::class, UpdateDateTimeCommandHandler(dateTimeProvider))
 
 //        instantiateCommandHandler(CreateVehicleCommand::class, CreateVehicleCommandHandler(worldRepository))
 //        instantiateCommandHandler(UpdateWorldCommand::class, UpdateWorldCommandHandler(eventPublisher, worldRepository))

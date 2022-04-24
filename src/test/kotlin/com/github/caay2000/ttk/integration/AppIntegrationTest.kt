@@ -1,8 +1,8 @@
 package com.github.caay2000.ttk.integration
 
+import com.github.caay2000.ttk.App
 import com.github.caay2000.ttk.application.Application
 import com.github.caay2000.ttk.application.configuration.ApplicationConfiguration
-import com.github.caay2000.ttk.lib.stringadapter.StringAdapter
 import com.google.gson.GsonBuilder
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -41,10 +41,7 @@ class AppIntegrationTest {
     @ParameterizedTest(name = "{index} - {0} route takes {1} steps")
     fun `route takes the correct steps`(deliveries: String, steps: Int) {
 
-        val sut = Application(ApplicationConfiguration())
-
-        sut.create()
-        val result = sut.execute(StringAdapter().execute(deliveries))
+        val result = App().invoke(deliveries)
         assertThat(result.duration).isEqualTo(steps)
     }
 

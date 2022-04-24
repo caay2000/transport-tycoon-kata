@@ -1,4 +1,4 @@
-package com.github.caay2000.ttk.context.time.service
+package com.github.caay2000.ttk.context.world.application.time
 
 import com.github.caay2000.ttk.lib.datetime.DateTimeProvider
 

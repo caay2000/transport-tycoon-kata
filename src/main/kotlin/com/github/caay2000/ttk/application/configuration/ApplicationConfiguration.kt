@@ -1,9 +1,5 @@
 package com.github.caay2000.ttk.application.configuration
 
-import com.github.caay2000.ttk.context.shared.event.WorldUpdatedEvent
-import com.github.caay2000.ttk.context.time.application.UpdateDateTimeCommand
-import com.github.caay2000.ttk.context.time.application.UpdateDateTimeCommandHandler
-import com.github.caay2000.ttk.context.time.inbound.WorldUpdatedEventSubscriber
 import com.github.caay2000.ttk.context.world.inbound.rest.HttpController
 import com.github.caay2000.ttk.lib.database.InMemoryDatabase
 import com.github.caay2000.ttk.lib.datetime.DateTimeProvider
@@ -27,8 +23,8 @@ class ApplicationConfiguration {
 
     val dateTimeProvider: DateTimeProvider = DateTimeProviderImpl()
 
-    val commandBus = CommandBusImpl()
-    val queryBus = QueryBusImpl()
+    private val commandBus = CommandBusImpl()
+    private val queryBus = QueryBusImpl()
     private val eventPublisher = EventPublisherImpl()
 
     val httpController: HttpController = HttpController(commandBus, queryBus)
@@ -37,12 +33,7 @@ class ApplicationConfiguration {
 
     init {
         KTEventBus.init<Command, Query, Event>()
-
-        instantiateCommandHandler(UpdateDateTimeCommand::class, UpdateDateTimeCommandHandler(dateTimeProvider))
-
-        instantiateEventSubscriber(WorldUpdatedEvent::class, WorldUpdatedEventSubscriber(commandBus))
-
-        WorldContextConfiguration(commandBus, eventPublisher, database)
+        WorldContextConfiguration(commandBus, eventPublisher, database, dateTimeProvider)
         VehicleContextConfiguration(commandBus, queryBus, eventPublisher, database)
     }
 }
