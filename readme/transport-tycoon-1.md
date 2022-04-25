@@ -1,4 +1,4 @@
-[Back to index](../README.md)
+[Back to index](../README.md) | [Next Exercise >](transport-tycoon-2.md) 
 
 # Exercise 1
 
@@ -40,3 +40,5 @@ would take to get them delivered.
 | ABABA        | 21      |
 | AABABBAB     | 29      |
 | ABBBABAAABBB | 41      |
+
+[Back to index](../README.md) | [Next Exercise >](transport-tycoon-2.md) 
