@@ -6,14 +6,14 @@ import com.github.caay2000.ttk.context.shared.domain.VehicleId
 import com.github.caay2000.ttk.context.shared.domain.VehicleType
 import com.github.caay2000.ttk.context.shared.domain.WorldId
 import com.github.caay2000.ttk.context.shared.domain.randomDomainId
-import com.github.caay2000.ttk.context.world.application.world.find.FindWorldQueryResponse
-import com.github.caay2000.ttk.context.world.inbound.rest.HttpController.Companion.HTTP_CREATE_CONNECTION
-import com.github.caay2000.ttk.context.world.inbound.rest.HttpController.Companion.HTTP_CREATE_STOP
-import com.github.caay2000.ttk.context.world.inbound.rest.HttpController.Companion.HTTP_CREATE_VEHICLE
-import com.github.caay2000.ttk.context.world.inbound.rest.HttpController.Companion.HTTP_CREATE_WORLD
-import com.github.caay2000.ttk.context.world.inbound.rest.HttpController.Companion.HTTP_GET_WORLD
-import com.github.caay2000.ttk.context.world.inbound.rest.HttpController.Companion.HTTP_PRODUCE_CARGO
-import com.github.caay2000.ttk.context.world.inbound.rest.HttpController.Companion.HTTP_UPDATE_WORLD
+import com.github.caay2000.ttk.context.world.world.application.find.FindWorldQueryResponse
+import com.github.caay2000.ttk.context.world.world.primary.http.HttpController.Companion.HTTP_CREATE_CONNECTION
+import com.github.caay2000.ttk.context.world.world.primary.http.HttpController.Companion.HTTP_CREATE_STOP
+import com.github.caay2000.ttk.context.world.world.primary.http.HttpController.Companion.HTTP_CREATE_VEHICLE
+import com.github.caay2000.ttk.context.world.world.primary.http.HttpController.Companion.HTTP_CREATE_WORLD
+import com.github.caay2000.ttk.context.world.world.primary.http.HttpController.Companion.HTTP_GET_WORLD
+import com.github.caay2000.ttk.context.world.world.primary.http.HttpController.Companion.HTTP_PRODUCE_CARGO
+import com.github.caay2000.ttk.context.world.world.primary.http.HttpController.Companion.HTTP_UPDATE_WORLD
 import com.github.caay2000.ttk.lib.eventbus.event.Event
 import java.util.UUID
 

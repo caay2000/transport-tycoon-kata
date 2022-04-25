@@ -13,9 +13,8 @@ Wa also want to do some modification to our ship, so it can carry more cargo but
 
   
   - **Trucks continue with the same capacity and speed**:
-
-    - But takes 1 hour to load *all* cargo
-    - Truck also takes a hour to unload *all* cargo
+    - But takes 1 hour to load
+    - Truck also takes an hour to unload
 
 
   - **Ship can take up to 4 containers, but is slower now**:
