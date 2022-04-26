@@ -21,9 +21,11 @@ data class VehicleUpdatedEvent(
     val status: String
 ) : VehicleEvent()
 
-data class VehiclePendingLoadEvent(
+data class VehicleLoadingEvent(
     val worldId: UUID,
-    override val vehicleId: UUID
+    override val vehicleId: UUID,
+    val cargoId: UUID,
+    val stopId: UUID
 ) : VehicleEvent()
 
 data class VehicleLoadedEvent(

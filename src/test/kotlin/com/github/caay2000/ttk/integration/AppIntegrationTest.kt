@@ -5,6 +5,7 @@ import com.github.caay2000.ttk.application.Application
 import com.github.caay2000.ttk.application.configuration.ApplicationConfiguration
 import com.google.gson.GsonBuilder
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
@@ -38,8 +39,28 @@ class AppIntegrationTest {
         "AABABBAB, 29",
         "ABBBABAAABBB, 41"
     )
-    @ParameterizedTest(name = "{index} - {0} route takes {1} steps")
-    fun `route takes the correct steps`(deliveries: String, steps: Int) {
+    @ParameterizedTest(name = "Exercise 1 - {index} - {0} route takes {1} steps")
+    fun `exercise 1 - route takes the correct steps`(deliveries: String, steps: Int) {
+
+        val result = App().invoke(deliveries)
+        assertThat(result.duration).isEqualTo(steps)
+    }
+
+    @Disabled("still working on scenario 2")
+    @CsvSource(
+        "B, 7", // 1 + 5 + 1
+        "A, 15", // 1 + 5 + 1 + 2 + 6 + 2
+        "AB, 15", // 1 + 5 + 1 + 2 + 6 + 2
+        "AA, 15", // 1 + 5 + 1 + 2 + 6 + 2
+        "BB, 7", // 1 + 5 + 1
+        "BBB, 19", // 1 + 5 + 1 + 5 + 1 + 5 + 1
+//        "ABABA, 21",
+//        "ABB, 7",
+//        "AABABBAB, 29",
+//        "ABBBABAAABBB, 41"
+    )
+    @ParameterizedTest(name = "Exercise 2 {index} - {0} route takes {1} steps")
+    fun `exercise 2 - route takes the correct steps`(deliveries: String, steps: Int) {
 
         val result = App().invoke(deliveries)
         assertThat(result.duration).isEqualTo(steps)
