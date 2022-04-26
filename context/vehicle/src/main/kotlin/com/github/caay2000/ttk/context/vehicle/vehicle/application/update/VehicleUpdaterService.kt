@@ -42,31 +42,32 @@ class VehicleUpdaterService(
 
     private fun Vehicle.executeUpdate(): Either<Throwable, Vehicle> =
         Either.catch {
-            when (this.status) {
-                VehicleStatus.IDLE -> findCargo()
-                VehicleStatus.LOADING -> {
-                }
-                VehicleStatus.ON_ROUTE -> {
-                    if (this.taskFinished) {
-                        this.unloadCargo()
-                        this.returnRoute()
+            with(this.update()) {
+                when (this.status) {
+                    VehicleStatus.IDLE -> findRoute()
+                    VehicleStatus.LOADING -> {
+                    }
+                    VehicleStatus.ON_ROUTE -> {
+                        if (this.taskFinished) {
+                            this.unloadCargo()
+                            this.returnRoute()
+                        }
+                    }
+                    VehicleStatus.UNLOADING -> {
+                    }
+                    VehicleStatus.RETURNING -> {
+                        if (this.taskFinished) {
+                            this.stop()
+                            findRoute()
+                        }
                     }
                 }
-                VehicleStatus.UNLOADING -> {
-                }
-                VehicleStatus.RETURNING -> {
-                    if (this.taskFinished) {
-                        this.stop()
-                        findCargo()
-                    }
-                }
+                this.pushEvent(VehicleUpdatedEvent(this.worldId.uuid, this.id.uuid, this.type.name, this.cargo?.id?.uuid, this.status.name))
+                this
             }
-            this.update()
-            this.pushEvent(VehicleUpdatedEvent(this.worldId.uuid, this.id.uuid, this.type.name, this.cargo?.id?.uuid, this.status.name))
-            this
         }
 
-    private fun Vehicle.findCargo() {
+    private fun Vehicle.findRoute() {
         val queryResponse = queryBus.execute<FindRouteQuery, FindRouteQueryResponse>(FindRouteQuery(this.id.uuid))
         if (queryResponse.routeFound) {
             this.loadCargo(queryResponse.toCargo())
