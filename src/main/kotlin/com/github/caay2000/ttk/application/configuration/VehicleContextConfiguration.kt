@@ -5,6 +5,7 @@ import com.github.caay2000.ttk.context.shared.event.ConnectionCreatedEvent
 import com.github.caay2000.ttk.context.shared.event.StopCreatedEvent
 import com.github.caay2000.ttk.context.shared.event.VehicleCreatedEvent
 import com.github.caay2000.ttk.context.shared.event.VehicleLoadedEvent
+import com.github.caay2000.ttk.context.shared.event.VehicleLoadingEvent
 import com.github.caay2000.ttk.context.shared.event.VehiclePendingUpdateEvent
 import com.github.caay2000.ttk.context.shared.event.VehicleUnloadedEvent
 import com.github.caay2000.ttk.context.shared.event.WorldCreatedEvent
@@ -12,9 +13,14 @@ import com.github.caay2000.ttk.context.vehicle.cargo.application.consume.Consume
 import com.github.caay2000.ttk.context.vehicle.cargo.application.consume.ConsumeCargoCommandHandler
 import com.github.caay2000.ttk.context.vehicle.cargo.application.produce.ProduceCargoCommand
 import com.github.caay2000.ttk.context.vehicle.cargo.application.produce.ProduceCargoCommandHandler
+import com.github.caay2000.ttk.context.vehicle.cargo.application.reserve.ReserveCargoCommand
+import com.github.caay2000.ttk.context.vehicle.cargo.application.reserve.ReserveCargoCommandHandler
 import com.github.caay2000.ttk.context.vehicle.cargo.application.unload.UnloadCargoCommand
 import com.github.caay2000.ttk.context.vehicle.cargo.application.unload.UnloadCargoCommandHandler
 import com.github.caay2000.ttk.context.vehicle.cargo.primary.event.CargoProducedEventSubscriber
+import com.github.caay2000.ttk.context.vehicle.cargo.primary.event.VehicleLoadedEventSubscriber
+import com.github.caay2000.ttk.context.vehicle.cargo.primary.event.VehicleLoadingEventSubscriber
+import com.github.caay2000.ttk.context.vehicle.cargo.primary.event.VehicleUnloadedEventSubscriber
 import com.github.caay2000.ttk.context.vehicle.route.application.find.FindRouteQuery
 import com.github.caay2000.ttk.context.vehicle.route.application.find.FindRouteQueryHandler
 import com.github.caay2000.ttk.context.vehicle.stop.application.connection.create.CreateConnectionCommand
@@ -29,9 +35,7 @@ import com.github.caay2000.ttk.context.vehicle.vehicle.application.create.Create
 import com.github.caay2000.ttk.context.vehicle.vehicle.application.update.UpdateVehicleCommand
 import com.github.caay2000.ttk.context.vehicle.vehicle.application.update.UpdateVehicleCommandHandler
 import com.github.caay2000.ttk.context.vehicle.vehicle.primary.event.VehicleCreatedEventSubscriber
-import com.github.caay2000.ttk.context.vehicle.vehicle.primary.event.VehicleLoadedEventSubscriber
 import com.github.caay2000.ttk.context.vehicle.vehicle.primary.event.VehiclePendingUpdateEventSubscriber
-import com.github.caay2000.ttk.context.vehicle.vehicle.primary.event.VehicleUnloadedEventSubscriber
 import com.github.caay2000.ttk.context.vehicle.vehicle.secondary.database.InMemoryVehicleRepository
 import com.github.caay2000.ttk.context.vehicle.world.application.create.CreateWorldCommand
 import com.github.caay2000.ttk.context.vehicle.world.application.create.CreateWorldCommandHandler
@@ -66,6 +70,7 @@ class VehicleContextConfiguration(
         instantiateCommandHandler(ProduceCargoCommand::class, ProduceCargoCommandHandler(stopRepository))
         instantiateCommandHandler(ConsumeCargoCommand::class, ConsumeCargoCommandHandler(stopRepository))
         instantiateCommandHandler(UnloadCargoCommand::class, UnloadCargoCommandHandler(stopRepository))
+        instantiateCommandHandler(ReserveCargoCommand::class, ReserveCargoCommandHandler(stopRepository))
 
         instantiateEventSubscriber(WorldCreatedEvent::class, WorldCreatedEventSubscriber(commandBus))
         instantiateEventSubscriber(StopCreatedEvent::class, StopCreatedEventSubscriber(commandBus))
@@ -75,5 +80,6 @@ class VehicleContextConfiguration(
         instantiateEventSubscriber(CargoProducedEvent::class, CargoProducedEventSubscriber(commandBus))
         instantiateEventSubscriber(VehicleLoadedEvent::class, VehicleLoadedEventSubscriber(commandBus))
         instantiateEventSubscriber(VehicleUnloadedEvent::class, VehicleUnloadedEventSubscriber(commandBus))
+        instantiateEventSubscriber(VehicleLoadingEvent::class, VehicleLoadingEventSubscriber(commandBus))
     }
 }

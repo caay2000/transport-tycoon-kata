@@ -6,7 +6,9 @@ import com.github.caay2000.ttk.context.shared.domain.VehicleId
 import com.github.caay2000.ttk.context.shared.domain.VehicleType
 import com.github.caay2000.ttk.context.shared.domain.WorldId
 import com.github.caay2000.ttk.context.shared.event.VehicleLoadedEvent
+import com.github.caay2000.ttk.context.shared.event.VehicleLoadingEvent
 import com.github.caay2000.ttk.context.shared.event.VehicleUnloadedEvent
+import com.github.caay2000.ttk.context.shared.event.VehicleUnloadingEvent
 import com.github.caay2000.ttk.context.vehicle.cargo.domain.Cargo
 import com.github.caay2000.ttk.context.vehicle.stop.domain.Stop
 import com.github.caay2000.ttk.lib.eventbus.domain.Aggregate
@@ -31,6 +33,7 @@ sealed class Vehicle(
         get() = task.isFinished()
 
     abstract val loadTime: Int
+    abstract val speed: Double
 
     abstract val initialStop: Stop
 
@@ -48,43 +51,80 @@ sealed class Vehicle(
         return this
     }
 
-    fun loadCargo(cargo: Cargo): Vehicle {
-        this.cargo = cargo
+    fun loadCargo(
+        cargo: Cargo,
+        routeTargetStopId: StopId,
+        routeTargetStopDistance: Distance
+    ): Vehicle {
+        this.task = VehicleTask.LoadCargoTask(this.loadTime, cargo, routeTargetStopId, routeTargetStopDistance)
+        this.pushEvent(
+            VehicleLoadingEvent(
+                this.worldId.uuid,
+                this.id.uuid,
+                cargo.id.uuid,
+                this.initialStop.id.uuid
+            )
+
+        )
+        return this
+    }
+
+    fun finishLoadingCargo(): Vehicle {
+        this.cargo = (task as VehicleTask.LoadCargoTask).cargo
         this.pushEvent(
             VehicleLoadedEvent(
                 this.worldId.uuid,
                 this.id.uuid,
-                cargo.id.uuid,
+                this.cargo!!.id.uuid,
                 this.initialStop.id.uuid,
-                cargo.sourceId.uuid,
-                cargo.targetId.uuid
+                this.cargo!!.sourceId.uuid,
+                this.cargo!!.targetId.uuid
             )
         )
         return this
     }
 
     fun unloadCargo(): Vehicle {
+        this.task = VehicleTask.UnloadCargoTask(this.loadTime, this.cargo!!, (task as VehicleTask.OnRouteTask).targetStopId)
+        this.pushEvent(
+            VehicleUnloadingEvent(
+                this.worldId.uuid,
+                this.id.uuid,
+                cargo!!.id.uuid,
+                (task as VehicleTask.UnloadCargoTask).stopId.uuid
+            )
+        )
+        return this
+    }
+
+    fun finishUnloadingCargo(): Vehicle {
+        this.cargo = null
+        val currentTask = this.task as VehicleTask.UnloadCargoTask
         this.pushEvent(
             VehicleUnloadedEvent(
                 this.worldId.uuid,
                 this.id.uuid,
-                cargo!!.id.uuid,
-                (task as VehicleTask.OnRouteTask).targetStopId.uuid,
-                cargo!!.sourceId.uuid,
-                cargo!!.targetId.uuid
+                currentTask.cargo.id.uuid,
+                currentTask.stopId.uuid,
+                currentTask.cargo.sourceId.uuid,
+                currentTask.cargo.targetId.uuid
             )
         )
-        this.cargo = null
+
         return this
     }
 
-    fun startRoute(distance: Distance, sourceStopId: StopId, targetStopId: StopId): Vehicle {
-        this.task = VehicleTask.OnRouteTask(distance, sourceStopId, targetStopId)
+    fun startRoute(): Vehicle {
+        if (this.task is VehicleTask.LoadCargoTask) {
+            this.task = (this.task as VehicleTask.LoadCargoTask).toOnRouteTask(this.initialStop.id, this.speed)
+        }
         return this
     }
 
     fun returnRoute(): Vehicle {
-        this.task = (this.task as VehicleTask.OnRouteTask).toReturnBackRoute()
+        val currentTask = (this.task as VehicleTask.UnloadCargoTask)
+        val distance = this.initialStop.distanceTo(currentTask.stopId)
+        this.task = VehicleTask.ReturnBackRouteTask(distance, this.speed)
         return this
     }
 }
@@ -99,6 +139,7 @@ data class Boat(
     override val initialStop: Stop
 ) : Vehicle(idWorld, vehicleId, VehicleType.BOAT) {
     override val loadTime: Int = 2
+    override val speed: Double = 0.666666
 }
 
 data class Truck(
@@ -107,4 +148,5 @@ data class Truck(
     override val initialStop: Stop
 ) : Vehicle(idWorld, vehicleId, VehicleType.TRUCK) {
     override val loadTime: Int = 1
+    override val speed: Double = 1.0
 }

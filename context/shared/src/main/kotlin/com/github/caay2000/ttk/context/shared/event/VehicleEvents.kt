@@ -37,6 +37,13 @@ data class VehicleLoadedEvent(
     val targetStopId: UUID
 ) : VehicleEvent()
 
+data class VehicleUnloadingEvent(
+    val worldId: UUID,
+    override val vehicleId: UUID,
+    val cargoId: UUID,
+    val stopId: UUID
+) : VehicleEvent()
+
 data class VehicleUnloadedEvent(
     val worldId: UUID,
     override val vehicleId: UUID,

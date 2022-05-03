@@ -23,10 +23,11 @@ class FindRouteQueryHandler(vehicleRepository: VehicleRepository, stopRepository
         FindRouteQueryResponse(
             routeFound = true,
             route = FindRouteQueryResponse.RouteQueryResponse(
-                this.vehicleId.uuid,
                 this.cargoId.uuid,
-                this.sourceId.uuid,
-                this.targetId.uuid
+                this.cargoSourceStopId.uuid,
+                this.cargoTargetStopId.uuid,
+                this.routeTargetStopId.uuid,
+                this.routeTargetStopDistance
             )
         ).right()
 
@@ -43,9 +44,10 @@ data class FindRouteQueryResponse(
     val error: String? = null
 ) {
     data class RouteQueryResponse(
-        val vehicleId: UUID,
         val cargoId: UUID,
-        val sourceStopId: UUID,
-        val targetStopId: UUID
+        val cargoSourceStopId: UUID,
+        val cargoTargetStopId: UUID,
+        val routeTargetStopId: UUID,
+        val routeTargetStopDistance: Int
     )
 }

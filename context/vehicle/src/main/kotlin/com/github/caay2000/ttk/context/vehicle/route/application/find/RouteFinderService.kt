@@ -7,6 +7,7 @@ import arrow.core.left
 import arrow.core.right
 import arrow.core.toOption
 import com.github.caay2000.ttk.context.shared.domain.CargoId
+import com.github.caay2000.ttk.context.shared.domain.Distance
 import com.github.caay2000.ttk.context.shared.domain.StopId
 import com.github.caay2000.ttk.context.shared.domain.VehicleId
 import com.github.caay2000.ttk.context.shared.domain.VehicleType
@@ -40,14 +41,14 @@ class RouteFinderService(
         .toEither { RouteFinderServiceException.StopNotFound(stopId) }
 
     private fun Stop.guardStopHasCargo(): Either<Throwable, Stop> =
-        if (this.cargo.isEmpty()) RouteFinderServiceException.StopHasNoCargo(this.id).left()
+        if (this.cargo.none { it.reserved.not() }) RouteFinderServiceException.StopHasNoCargo(this.id).left()
         else this.right()
 
     private fun Stop.findRoute(vehicleId: VehicleId): Either<Throwable, RouteFinderResponse> =
-        this.cargo.first().right()
+        this.cargo.first { it.reserved.not() }.right()
             .flatMap { cargo ->
                 if (this.name != "FACTORY") {
-                    RouteFinderResponse(vehicleId, cargo.id, this.id, cargo.targetId).right()
+                    RouteFinderResponse(cargo.id, cargo.sourceId, cargo.targetId, cargo.targetId, this.distanceTo(cargo.targetId)).right()
                 } else {
                     option.eager<StopId> {
                         val target = stopRepository.get(cargo.targetId).bind()
@@ -57,16 +58,17 @@ class RouteFinderService(
                         } else {
                             cargo.targetId
                         }
-                    }.flatMap { targetStopId -> RouteFinderResponse(vehicleId, cargo.id, this.id, targetStopId).toOption() }
+                    }.flatMap { targetStopId -> RouteFinderResponse(cargo.id, cargo.sourceId, cargo.targetId, targetStopId, this.distanceTo(targetStopId)).toOption() }
                         .toEither { RuntimeException("") }
                 }
             }
 
     data class RouteFinderResponse(
-        val vehicleId: VehicleId,
         val cargoId: CargoId,
-        val sourceId: StopId,
-        val targetId: StopId
+        val cargoSourceStopId: StopId,
+        val cargoTargetStopId: StopId,
+        val routeTargetStopId: StopId,
+        val routeTargetStopDistance: Distance
     )
 
     // THIS LOGIC IS MISSING
