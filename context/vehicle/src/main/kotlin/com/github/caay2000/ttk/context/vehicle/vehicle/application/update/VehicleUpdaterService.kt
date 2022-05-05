@@ -32,7 +32,8 @@ class VehicleUpdaterService(
             .mapLeft { error -> error.mapError() }
 
     private fun findVehicle(vehicleId: VehicleId): Either<Throwable, Vehicle> =
-        vehicleRepository.get(vehicleId).toEither { VehicleUpdaterServiceException.VehicleNotFound(vehicleId) }
+        vehicleRepository.get(vehicleId)
+            .mapLeft { VehicleUpdaterServiceException.VehicleNotFound(vehicleId) }
 
     private fun Vehicle.executeUpdate(): Either<Throwable, Vehicle> =
         Either.catch {
@@ -44,7 +45,11 @@ class VehicleUpdaterService(
                     VehicleStatus.UNLOADING -> this.updateUnloading()
                     VehicleStatus.RETURNING -> this.updateReturning()
                 }
-                this.pushEvent(VehicleUpdatedEvent(this.worldId.uuid, this.id.uuid, this.type.name, this.cargo?.id?.uuid, this.status.name))
+                if (this.taskFinished && this.status != VehicleStatus.IDLE) {
+                    this.executeUpdate()
+                } else {
+                    this.pushEvent(VehicleUpdatedEvent(this.worldId.uuid, this.id.uuid, this.type.name, this.cargo?.id?.uuid, this.status.name))
+                }
                 this
             }
         }

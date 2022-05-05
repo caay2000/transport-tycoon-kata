@@ -1,6 +1,5 @@
 package com.github.caay2000.ttk.application.configuration
 
-import com.github.caay2000.ttk.context.world.world.primary.http.HttpController
 import com.github.caay2000.ttk.lib.database.InMemoryDatabase
 import com.github.caay2000.ttk.lib.datetime.DateTimeProvider
 import com.github.caay2000.ttk.lib.datetime.DateTimeProviderImpl
@@ -18,6 +17,8 @@ import com.github.caay2000.ttk.lib.eventbus.query.Query
 import com.github.caay2000.ttk.lib.eventbus.query.QueryBusImpl
 import com.github.caay2000.ttk.lib.eventbus.query.QueryHandler
 import kotlin.reflect.KClass
+import com.github.caay2000.ttk.context.vehicle.vehicle.primary.http.HttpController as HttpVehicleController
+import com.github.caay2000.ttk.context.world.world.primary.http.HttpController as HttpWorldController
 
 class ApplicationConfiguration {
 
@@ -27,7 +28,8 @@ class ApplicationConfiguration {
     private val queryBus = QueryBusImpl()
     private val eventPublisher = EventPublisherImpl()
 
-    val httpController: HttpController = HttpController(commandBus, queryBus)
+    val httpWorldController: HttpWorldController = HttpWorldController(commandBus, queryBus)
+    val httpVehicleController: HttpVehicleController = HttpVehicleController(commandBus)
 
     private val database: InMemoryDatabase = InMemoryDatabase()
 

@@ -1,6 +1,7 @@
 package com.github.caay2000.ttk.context.vehicle.route.application.find
 
 import arrow.core.Either
+import arrow.core.computations.ResultEffect.bind
 import arrow.core.computations.option
 import arrow.core.flatMap
 import arrow.core.left
@@ -31,7 +32,8 @@ class RouteFinderService(
             .mapLeft { error -> error.mapError() }
 
     private fun findVehicle(vehicleId: VehicleId): Either<Throwable, Vehicle> =
-        vehicleRepository.get(vehicleId).toEither { RouteFinderServiceException.VehicleNotFound(vehicleId) }
+        vehicleRepository.get(vehicleId)
+            .mapLeft { RouteFinderServiceException.VehicleNotFound(vehicleId) }
 
     private fun Vehicle.guardVehicleIsIdle(): Either<Throwable, Vehicle> =
         if (this.status != VehicleStatus.IDLE) RouteFinderServiceException.VehicleInvalidStatus(this.id, this.status, VehicleStatus.IDLE).left()

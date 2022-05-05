@@ -10,6 +10,7 @@ import com.github.caay2000.ttk.context.shared.event.VehicleLoadingEvent
 import com.github.caay2000.ttk.context.shared.event.VehicleUnloadedEvent
 import com.github.caay2000.ttk.context.shared.event.VehicleUnloadingEvent
 import com.github.caay2000.ttk.context.vehicle.cargo.domain.Cargo
+import com.github.caay2000.ttk.context.vehicle.configuration.domain.VehicleConfiguration
 import com.github.caay2000.ttk.context.vehicle.stop.domain.Stop
 import com.github.caay2000.ttk.lib.eventbus.domain.Aggregate
 
@@ -20,10 +21,10 @@ sealed class Vehicle(
 ) : Aggregate() {
 
     companion object {
-        fun create(worldId: WorldId, id: VehicleId, type: VehicleType, stop: Stop) =
+        fun create(configuration: VehicleConfiguration, worldId: WorldId, id: VehicleId, type: VehicleType, stop: Stop) =
             when (type) {
-                VehicleType.TRUCK -> Truck(worldId, id, stop)
-                VehicleType.BOAT -> Boat(worldId, id, stop)
+                VehicleType.TRUCK -> Truck(configuration, worldId, id, stop)
+                VehicleType.BOAT -> Boat(configuration, worldId, id, stop)
             }
     }
 
@@ -134,19 +135,21 @@ enum class VehicleStatus {
 }
 
 data class Boat(
+    val configuration: VehicleConfiguration,
     val idWorld: WorldId,
     val vehicleId: VehicleId,
     override val initialStop: Stop
 ) : Vehicle(idWorld, vehicleId, VehicleType.BOAT) {
-    override val loadTime: Int = 2
-    override val speed: Double = 0.666666
+    override val loadTime: Int = configuration.loadTime
+    override val speed: Double = configuration.speed
 }
 
 data class Truck(
+    val configuration: VehicleConfiguration,
     val idWorld: WorldId,
     val vehicleId: VehicleId,
     override val initialStop: Stop
 ) : Vehicle(idWorld, vehicleId, VehicleType.TRUCK) {
-    override val loadTime: Int = 1
-    override val speed: Double = 1.0
+    override val loadTime: Int = configuration.loadTime
+    override val speed: Double = configuration.speed
 }

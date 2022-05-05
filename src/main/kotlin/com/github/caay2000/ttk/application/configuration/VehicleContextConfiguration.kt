@@ -21,6 +21,11 @@ import com.github.caay2000.ttk.context.vehicle.cargo.primary.event.CargoProduced
 import com.github.caay2000.ttk.context.vehicle.cargo.primary.event.VehicleLoadedEventSubscriber
 import com.github.caay2000.ttk.context.vehicle.cargo.primary.event.VehicleLoadingEventSubscriber
 import com.github.caay2000.ttk.context.vehicle.cargo.primary.event.VehicleUnloadedEventSubscriber
+import com.github.caay2000.ttk.context.vehicle.configuration.application.create.CreateVehicleConfigurationCommand
+import com.github.caay2000.ttk.context.vehicle.configuration.application.create.CreateVehicleConfigurationCommandHandler
+import com.github.caay2000.ttk.context.vehicle.configuration.application.find.FindVehicleConfigurationQuery
+import com.github.caay2000.ttk.context.vehicle.configuration.application.find.FindVehicleConfigurationQueryHandler
+import com.github.caay2000.ttk.context.vehicle.configuration.secondary.database.InMemoryVehicleConfigurationRepository
 import com.github.caay2000.ttk.context.vehicle.route.application.find.FindRouteQuery
 import com.github.caay2000.ttk.context.vehicle.route.application.find.FindRouteQueryHandler
 import com.github.caay2000.ttk.context.vehicle.stop.application.connection.create.CreateConnectionCommand
@@ -58,11 +63,14 @@ class VehicleContextConfiguration(
     private val worldRepository = InMemoryWorldRepository(database)
     private val stopRepository = InMemoryStopRepository(database)
     private val vehicleRepository = InMemoryVehicleRepository(database)
+    private val vehicleConfigurationRepository = InMemoryVehicleConfigurationRepository(database)
 
     init {
         instantiateQueryHandler(FindRouteQuery::class, FindRouteQueryHandler(vehicleRepository, stopRepository))
+        instantiateQueryHandler(FindVehicleConfigurationQuery::class, FindVehicleConfigurationQueryHandler(vehicleConfigurationRepository))
 
-        instantiateCommandHandler(CreateVehicleCommand::class, CreateVehicleCommandHandler(vehicleRepository, stopRepository))
+        instantiateCommandHandler(CreateVehicleConfigurationCommand::class, CreateVehicleConfigurationCommandHandler(vehicleConfigurationRepository))
+        instantiateCommandHandler(CreateVehicleCommand::class, CreateVehicleCommandHandler(queryBus, vehicleRepository, stopRepository))
         instantiateCommandHandler(UpdateVehicleCommand::class, UpdateVehicleCommandHandler(eventPublisher, queryBus, vehicleRepository, stopRepository))
         instantiateCommandHandler(CreateStopCommand::class, CreateStopCommandHandler(worldRepository))
         instantiateCommandHandler(CreateConnectionCommand::class, CreateConnectionCommandHandler(stopRepository))
