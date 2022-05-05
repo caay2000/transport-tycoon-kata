@@ -6,6 +6,8 @@ import com.github.caay2000.ttk.context.shared.domain.VehicleId
 import com.github.caay2000.ttk.context.shared.domain.VehicleType
 import com.github.caay2000.ttk.context.shared.domain.WorldId
 import com.github.caay2000.ttk.context.shared.domain.randomDomainId
+import com.github.caay2000.ttk.context.vehicle.configuration.domain.VehicleConfiguration
+import com.github.caay2000.ttk.context.vehicle.vehicle.primary.http.HttpController.Companion.HTTP_CONFIGURE_VEHICLE
 import com.github.caay2000.ttk.context.world.world.application.find.FindWorldQueryResponse
 import com.github.caay2000.ttk.context.world.world.primary.http.HttpController.Companion.HTTP_CREATE_CONNECTION
 import com.github.caay2000.ttk.context.world.world.primary.http.HttpController.Companion.HTTP_CREATE_STOP
@@ -19,7 +21,8 @@ import java.util.UUID
 
 class Application(configuration: ApplicationConfiguration) {
 
-    private val http = configuration.httpController
+    private val httpWorld = configuration.httpWorldController
+    private val httpVehicle = configuration.httpVehicleController
     private val dateTimeProvider = configuration.dateTimeProvider
 
     private val worldId = WorldId()
@@ -28,24 +31,26 @@ class Application(configuration: ApplicationConfiguration) {
     private val warehouseAStopId = StopId()
     private val warehouseBStopId = StopId()
 
-    fun create(): ApplicationWorld {
+    fun create(configurations: Set<VehicleConfiguration>): ApplicationWorld {
 
-        http(HTTP_CREATE_WORLD, worldId.uuid)
+        httpWorld(HTTP_CREATE_WORLD, worldId.uuid)
 
-        http(HTTP_CREATE_STOP, worldId.uuid, factoryStopId.uuid, "FACTORY")
-        http(HTTP_CREATE_STOP, worldId.uuid, portStopId.uuid, "PORT")
-        http(HTTP_CREATE_STOP, worldId.uuid, warehouseAStopId.uuid, "WAREHOUSE_A")
-        http(HTTP_CREATE_STOP, worldId.uuid, warehouseBStopId.uuid, "WAREHOUSE_B")
+        httpWorld(HTTP_CREATE_STOP, worldId.uuid, factoryStopId.uuid, "FACTORY")
+        httpWorld(HTTP_CREATE_STOP, worldId.uuid, portStopId.uuid, "PORT")
+        httpWorld(HTTP_CREATE_STOP, worldId.uuid, warehouseAStopId.uuid, "WAREHOUSE_A")
+        httpWorld(HTTP_CREATE_STOP, worldId.uuid, warehouseBStopId.uuid, "WAREHOUSE_B")
 
-        http(HTTP_CREATE_CONNECTION, worldId.uuid, factoryStopId.uuid, portStopId.uuid, 1, setOf(VehicleType.TRUCK.name))
-        http(HTTP_CREATE_CONNECTION, worldId.uuid, portStopId.uuid, warehouseAStopId.uuid, 4, setOf(VehicleType.BOAT.name))
-        http(HTTP_CREATE_CONNECTION, worldId.uuid, factoryStopId.uuid, warehouseBStopId.uuid, 5, setOf(VehicleType.TRUCK.name))
+        httpWorld(HTTP_CREATE_CONNECTION, worldId.uuid, factoryStopId.uuid, portStopId.uuid, 1, setOf(VehicleType.TRUCK.name))
+        httpWorld(HTTP_CREATE_CONNECTION, worldId.uuid, portStopId.uuid, warehouseAStopId.uuid, 4, setOf(VehicleType.BOAT.name))
+        httpWorld(HTTP_CREATE_CONNECTION, worldId.uuid, factoryStopId.uuid, warehouseBStopId.uuid, 5, setOf(VehicleType.TRUCK.name))
 
-        http(HTTP_CREATE_VEHICLE, worldId.uuid, factoryStopId.uuid, randomVehicleId(), VehicleType.TRUCK.name)
-        http(HTTP_CREATE_VEHICLE, worldId.uuid, factoryStopId.uuid, randomVehicleId(), VehicleType.TRUCK.name)
-        http(HTTP_CREATE_VEHICLE, worldId.uuid, portStopId.uuid, randomVehicleId(), VehicleType.BOAT.name)
+        httpVehicle(HTTP_CONFIGURE_VEHICLE, configurations)
 
-        val world = http(HTTP_GET_WORLD, worldId.uuid).body as FindWorldQueryResponse
+        httpWorld(HTTP_CREATE_VEHICLE, worldId.uuid, factoryStopId.uuid, randomVehicleId(), VehicleType.TRUCK.name)
+        httpWorld(HTTP_CREATE_VEHICLE, worldId.uuid, factoryStopId.uuid, randomVehicleId(), VehicleType.TRUCK.name)
+        httpWorld(HTTP_CREATE_VEHICLE, worldId.uuid, portStopId.uuid, randomVehicleId(), VehicleType.BOAT.name)
+
+        val world = httpWorld(HTTP_GET_WORLD, worldId.uuid).body as FindWorldQueryResponse
 
         return world.toApplicationWorld()
     }
@@ -53,10 +58,10 @@ class Application(configuration: ApplicationConfiguration) {
     fun execute(cargoDestinations: List<String>): Result {
 
         cargoDestinations.forEach { destination ->
-            http(HTTP_PRODUCE_CARGO, worldId.uuid, factoryStopId.uuid, UUID.randomUUID(), findId(destination))
+            httpWorld(HTTP_PRODUCE_CARGO, worldId.uuid, factoryStopId.uuid, UUID.randomUUID(), findId(destination))
         }
 
-        http(HTTP_UPDATE_WORLD, worldId.uuid)
+        httpWorld(HTTP_UPDATE_WORLD, worldId.uuid)
 
         return Result(
             duration = dateTimeProvider.now().value(),

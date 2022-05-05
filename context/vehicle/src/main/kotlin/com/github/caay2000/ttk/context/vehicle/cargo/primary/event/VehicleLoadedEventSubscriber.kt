@@ -1,4 +1,4 @@
-package com.github.caay2000.ttk.context.vehicle.vehicle.primary.event
+package com.github.caay2000.ttk.context.vehicle.cargo.primary.event
 
 import com.github.caay2000.ttk.context.shared.event.VehicleLoadedEvent
 import com.github.caay2000.ttk.context.vehicle.cargo.application.consume.ConsumeCargoCommand
