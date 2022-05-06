@@ -1,3 +1,2 @@
-* text=auto
-# *.xml filter=lfs diff=lfs merge=lfs -text
-*.xml filter=lfs diff=lfs merge=lfs -text
+linecoverage.xml filter=lfs diff=lfs merge=lfs -text
+mutations.xml filter=lfs diff=lfs merge=lfs -text
