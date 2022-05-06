@@ -25,4 +25,5 @@ data class Stop(val worldId: WorldId, val id: StopId, val name: String, var carg
         else this.copy(cargo = this.cargo + cargo)
 
     fun consumeCargo(cargoId: CargoId): Stop = this.copy(cargo = this.cargo.filter { it.id != cargoId })
+    fun reserveCargo(cargoId: CargoId): Stop = this.copy(cargo = this.cargo.map { if (it.id == cargoId) it.copy(reserved = true) else it })
 }

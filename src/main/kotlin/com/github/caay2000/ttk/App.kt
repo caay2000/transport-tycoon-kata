@@ -2,14 +2,21 @@ package com.github.caay2000.ttk
 
 import com.github.caay2000.ttk.application.Application
 import com.github.caay2000.ttk.application.configuration.ApplicationConfiguration
+import com.github.caay2000.ttk.context.shared.domain.VehicleType
+import com.github.caay2000.ttk.context.vehicle.configuration.domain.VehicleConfiguration
 
 class App {
 
     private val application = Application(ApplicationConfiguration())
     private val adapter = LocationAdapter()
 
-    fun invoke(input: String): Application.Result {
-        application.create()
+    private val defaultConfiguration = setOf(
+        VehicleConfiguration.create(VehicleType.TRUCK, 0, 1.0, 1),
+        VehicleConfiguration.create(VehicleType.BOAT, 0, 1.0, 1)
+    )
+
+    fun invoke(input: String, vehicleConfiguration: Set<VehicleConfiguration> = defaultConfiguration): Application.Result {
+        application.create(vehicleConfiguration)
         return application.execute(adapter.execute(input))
     }
 
@@ -35,5 +42,5 @@ class App {
 }
 
 fun main(args: Array<String>) {
-    println(App().invoke(args[0]).duration)
+    println(App().invoke(input = args[0]).duration)
 }
