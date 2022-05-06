@@ -26,7 +26,7 @@ jobs:
 
       - name: Run Build
         run: gradle pitest pitestReportAggregate --parallel
-ó
+
       - name: Publish Pitest Report
         uses: peaceiris/actions-gh-pages@v3.8.0
         with:
