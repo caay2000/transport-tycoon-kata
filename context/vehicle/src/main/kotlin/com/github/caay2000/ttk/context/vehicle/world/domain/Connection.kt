@@ -9,4 +9,10 @@ data class Connection(
     val targetStopId: StopId,
     val distance: Distance,
     val allowedVehicleTypes: Set<VehicleType>
-)
+) {
+
+    fun reverse(): Connection = this.copy(
+        sourceStopId = this.targetStopId,
+        targetStopId = this.sourceStopId
+    )
+}

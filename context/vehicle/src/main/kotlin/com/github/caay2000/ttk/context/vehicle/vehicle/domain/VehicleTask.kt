@@ -32,9 +32,9 @@ internal sealed class VehicleTask(val status: VehicleStatus) {
         override fun update(): VehicleTask = this.copy(progress = progress + 1)
     }
 
-    data class UnloadCargoTask internal constructor(override val duration: Int, override val progress: Int, val cargo: Cargo, val stopId: StopId) :
+    data class UnloadCargoTask internal constructor(override val duration: Int, override val progress: Int, val cargo: Cargo, val stopId: StopId, val distance: Distance) :
         VehicleTask(VehicleStatus.UNLOADING) {
-        constructor(duration: Int, cargo: Cargo, stopId: StopId) : this(duration, 0, cargo, stopId)
+        constructor(duration: Int, cargo: Cargo, stopId: StopId, distance: Distance) : this(duration, 0, cargo, stopId, distance)
 
         override fun update(): VehicleTask = this.copy(progress = progress + 1)
     }

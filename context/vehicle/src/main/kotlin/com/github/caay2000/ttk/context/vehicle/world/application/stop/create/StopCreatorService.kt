@@ -21,7 +21,7 @@ class StopCreatorService(private val worldRepository: WorldRepository) {
         .toEither { StopCreatorServiceException.WorldDoesNotExists(worldId) }
 
     private fun World.createStop(worldId: WorldId, stopId: StopId, stopName: String): Either<Nothing, World> =
-        this.addStop(Stop.create(worldId, stopId, stopName)).right()
+        this.createStop(Stop.create(worldId, stopId, stopName)).right()
 
     private fun World.save() = worldRepository.save(this)
         .map { }
