@@ -12,5 +12,5 @@ interface WorldRepository {
     fun get(id: WorldId): Option<World>
     fun exists(id: WorldId): Boolean
 
-    fun getStop(id: StopId): Option<Stop>
+    fun getStop(worldId: WorldId, stopId: StopId): Option<Stop>
 }

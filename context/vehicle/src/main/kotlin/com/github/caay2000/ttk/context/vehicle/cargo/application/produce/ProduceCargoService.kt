@@ -5,19 +5,20 @@ import arrow.core.flatMap
 import arrow.core.right
 import com.github.caay2000.ttk.context.shared.domain.CargoId
 import com.github.caay2000.ttk.context.shared.domain.StopId
+import com.github.caay2000.ttk.context.shared.domain.WorldId
 import com.github.caay2000.ttk.context.vehicle.cargo.domain.Cargo
-import com.github.caay2000.ttk.context.vehicle.stop.domain.Stop
-import com.github.caay2000.ttk.context.vehicle.stop.domain.StopRepository
+import com.github.caay2000.ttk.context.vehicle.world.domain.World
+import com.github.caay2000.ttk.context.vehicle.world.domain.WorldRepository
 
-class ProduceCargoService(private val stopRepository: StopRepository) {
+class ProduceCargoService(private val worldRepository: WorldRepository) {
 
-    fun invoke(stopId: StopId, cargoId: CargoId, targetId: StopId): Either<Throwable, Unit> =
-        findStop(stopId)
-            .flatMap { stop -> stop.produceCargo(Cargo.create(cargoId, stopId, targetId)).right() }
-            .flatMap { stop -> stop.save() }
+    fun invoke(worldId: WorldId, stopId: StopId, cargoId: CargoId, targetStopId: StopId): Either<Throwable, Unit> =
+        findWorld(worldId)
+            .flatMap { world -> world.produceCargo(stopId, Cargo.create(cargoId, stopId, targetStopId)).right() }
+            .flatMap { world -> world.save() }
 
-    private fun findStop(stopId: StopId): Either<Throwable, Stop> =
-        stopRepository.get(stopId).toEither { ProduceCargoServiceException.StopNotFound(stopId) }
+    private fun findWorld(worldId: WorldId): Either<Throwable, World> =
+        worldRepository.get(worldId).toEither { ProduceCargoServiceException.WorldNotFound(worldId) }
 
-    private fun Stop.save() = stopRepository.save(this).map { }
+    private fun World.save() = worldRepository.save(this).map { }
 }

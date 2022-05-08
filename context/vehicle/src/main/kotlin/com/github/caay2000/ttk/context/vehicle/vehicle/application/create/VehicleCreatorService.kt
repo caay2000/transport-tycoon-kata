@@ -12,15 +12,15 @@ import com.github.caay2000.ttk.context.vehicle.configuration.application.find.Fi
 import com.github.caay2000.ttk.context.vehicle.configuration.application.find.FindVehicleConfigurationQueryResponse
 import com.github.caay2000.ttk.context.vehicle.configuration.domain.VehicleConfiguration
 import com.github.caay2000.ttk.context.vehicle.stop.domain.Stop
-import com.github.caay2000.ttk.context.vehicle.stop.domain.StopRepository
 import com.github.caay2000.ttk.context.vehicle.vehicle.domain.Vehicle
 import com.github.caay2000.ttk.context.vehicle.vehicle.domain.VehicleRepository
+import com.github.caay2000.ttk.context.vehicle.world.domain.WorldRepository
 import com.github.caay2000.ttk.lib.eventbus.query.QueryBus
 
 class VehicleCreatorService(
     private val queryBus: QueryBus,
     private val vehicleRepository: VehicleRepository,
-    private val stopRepository: StopRepository
+    private val worldRepository: WorldRepository
 ) {
 
     // TODO vehicle creator should be created here in vehicle context, not projected from world context
@@ -35,11 +35,11 @@ class VehicleCreatorService(
             .flatMap { response -> if (response.success) response.data.right() else VehicleCreatorServiceException.VehicleConfigurationNotFound(vehicleType).left() }
             .flatMap { data -> VehicleConfiguration.create(data!!.type, data.loadTime, data.speed, data.capacity).right() }
 
-    private fun findStop(stopId: StopId): Either<Throwable, Stop> =
-        stopRepository.get(stopId).toEither { VehicleCreatorServiceException.StopNotFound(stopId) }
+    private fun findStop(worldId: WorldId, stopId: StopId): Either<Throwable, Stop> =
+        worldRepository.getStop(worldId, stopId).toEither { VehicleCreatorServiceException.StopNotFound(stopId) }
 
     private fun createVehicle(configuration: VehicleConfiguration, worldId: WorldId, stopId: StopId, id: VehicleId, type: VehicleType) =
-        findStop(stopId)
+        findStop(worldId, stopId)
             .flatMap { stop -> Vehicle.create(configuration, worldId, id, type, stop).right() }
 
     private fun Vehicle.save() = vehicleRepository.save(this).map { }

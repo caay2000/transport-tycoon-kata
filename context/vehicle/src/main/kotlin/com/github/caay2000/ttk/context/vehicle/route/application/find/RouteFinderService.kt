@@ -12,21 +12,22 @@ import com.github.caay2000.ttk.context.shared.domain.Distance
 import com.github.caay2000.ttk.context.shared.domain.StopId
 import com.github.caay2000.ttk.context.shared.domain.VehicleId
 import com.github.caay2000.ttk.context.shared.domain.VehicleType
+import com.github.caay2000.ttk.context.shared.domain.WorldId
 import com.github.caay2000.ttk.context.vehicle.stop.domain.Stop
-import com.github.caay2000.ttk.context.vehicle.stop.domain.StopRepository
 import com.github.caay2000.ttk.context.vehicle.vehicle.domain.Vehicle
 import com.github.caay2000.ttk.context.vehicle.vehicle.domain.VehicleRepository
 import com.github.caay2000.ttk.context.vehicle.vehicle.domain.VehicleStatus
+import com.github.caay2000.ttk.context.vehicle.world.domain.WorldRepository
 
 class RouteFinderService(
     private val vehicleRepository: VehicleRepository,
-    private val stopRepository: StopRepository
+    private val worldRepository: WorldRepository
 ) {
 
     fun invoke(vehicleId: VehicleId): Either<Throwable, RouteFinderResponse> =
         findVehicle(vehicleId)
             .flatMap { vehicle -> vehicle.guardVehicleIsIdle() }
-            .flatMap { vehicle -> getStop(vehicle.initialStop.id) }
+            .flatMap { vehicle -> getStop(vehicle.worldId, vehicle.initialStop.id) }
             .flatMap { stop -> stop.guardStopHasCargo() }
             .flatMap { stop -> stop.findRoute(vehicleId) }
             .mapLeft { error -> error.mapError() }
@@ -39,8 +40,8 @@ class RouteFinderService(
         if (this.status != VehicleStatus.IDLE) RouteFinderServiceException.VehicleInvalidStatus(this.id, this.status, VehicleStatus.IDLE).left()
         else this.right()
 
-    private fun getStop(stopId: StopId): Either<Throwable, Stop> = stopRepository.get(stopId)
-        .toEither { RouteFinderServiceException.StopNotFound(stopId) }
+    private fun getStop(worldId: WorldId, stopId: StopId): Either<Throwable, Stop> =
+        worldRepository.getStop(worldId, stopId).toEither { RouteFinderServiceException.StopNotFound(stopId) }
 
     private fun Stop.guardStopHasCargo(): Either<Throwable, Stop> =
         if (this.cargo.none { it.reserved.not() }) RouteFinderServiceException.StopHasNoCargo(this.id).left()
@@ -53,10 +54,11 @@ class RouteFinderService(
                     RouteFinderResponse(cargo.id, cargo.sourceId, cargo.targetId, cargo.targetId, this.distanceTo(cargo.targetId)).right()
                 } else {
                     option.eager<StopId> {
-                        val target = stopRepository.get(cargo.targetId).bind()
+                        val world = worldRepository.get(worldId).bind()
+                        val target = world.getStop(cargo.targetId)
                         val vehicle = vehicleRepository.get(vehicleId).bind()
                         if (target.name == "WAREHOUSE_A" && vehicle.type == VehicleType.TRUCK) {
-                            stopRepository.findByName("PORT").bind().id
+                            world.stops.find { it.name == "PORT" }!!.id
                         } else {
                             cargo.targetId
                         }
