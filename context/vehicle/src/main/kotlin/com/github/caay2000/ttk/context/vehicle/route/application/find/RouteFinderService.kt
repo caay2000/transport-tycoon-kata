@@ -4,6 +4,7 @@ import arrow.core.Either
 import arrow.core.computations.ResultEffect.bind
 import arrow.core.computations.option
 import arrow.core.flatMap
+import arrow.core.getOrElse
 import arrow.core.left
 import arrow.core.right
 import arrow.core.toOption
@@ -50,11 +51,12 @@ class RouteFinderService(
     private fun Stop.findRoute(vehicleId: VehicleId): Either<Throwable, RouteFinderResponse> =
         this.cargo.first { it.reserved.not() }.right()
             .flatMap { cargo ->
+                val world = worldRepository.get(this.worldId).getOrElse { throw RouteFinderServiceException.WorldNotFound(worldId) }
                 if (this.name != "FACTORY") {
-                    RouteFinderResponse(cargo.id, cargo.sourceId, cargo.targetId, cargo.targetId, this.distanceTo(cargo.targetId)).right()
+                    val distance = world.distance(this.id, cargo.targetId)
+                    RouteFinderResponse(cargo.id, cargo.sourceId, cargo.targetId, cargo.targetId, distance).right()
                 } else {
                     option.eager<StopId> {
-                        val world = worldRepository.get(worldId).bind()
                         val target = world.getStop(cargo.targetId)
                         val vehicle = vehicleRepository.get(vehicleId).bind()
                         if (target.name == "WAREHOUSE_A" && vehicle.type == VehicleType.TRUCK) {
@@ -62,8 +64,10 @@ class RouteFinderService(
                         } else {
                             cargo.targetId
                         }
-                    }.flatMap { targetStopId -> RouteFinderResponse(cargo.id, cargo.sourceId, cargo.targetId, targetStopId, this.distanceTo(targetStopId)).toOption() }
-                        .toEither { RuntimeException("") }
+                    }.flatMap { targetStopId ->
+                        val distance = world.distance(this.id, targetStopId)
+                        RouteFinderResponse(cargo.id, cargo.sourceId, cargo.targetId, targetStopId, distance).toOption()
+                    }.toEither { RouteFinderServiceException.Unknown(RuntimeException("Error handling route finder")) }
                 }
             }
 
@@ -74,16 +78,4 @@ class RouteFinderService(
         val routeTargetStopId: StopId,
         val routeTargetStopDistance: Distance
     )
-
-    // THIS LOGIC IS MISSING
-//
-//    when (initialStop.name == "FACTORY") && cargo!!.targetId
-//    stopRepository.findByName("FACTORY")
-//    .flatMap { stop -> }
-//
-// //        val world = stopRepository.findByName().get(this.worldId).getOrElse { throw RuntimeException("WorldNotFound") }
-//    return when {
-//        initialStop == world.getStop("FACTORY") && cargo!!.targetStopName == "WAREHOUSE_A" -> world.getStop("PORT")
-//        else -> world.getStop(cargo!!.targetStopName)
-//    }
 }

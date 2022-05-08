@@ -86,7 +86,7 @@ sealed class Vehicle(
     }
 
     fun unloadCargo(): Vehicle {
-        this.task = VehicleTask.UnloadCargoTask(this.loadTime, this.cargo!!, (task as VehicleTask.OnRouteTask).targetStopId)
+        this.task = VehicleTask.UnloadCargoTask(this.loadTime, this.cargo!!, (task as VehicleTask.OnRouteTask).targetStopId, (task as VehicleTask.OnRouteTask).duration)
         this.pushEvent(
             VehicleUnloadingEvent(
                 this.worldId.uuid,
@@ -111,7 +111,6 @@ sealed class Vehicle(
                 currentTask.cargo.targetId.uuid
             )
         )
-
         return this
     }
 
@@ -124,8 +123,8 @@ sealed class Vehicle(
 
     fun returnRoute(): Vehicle {
         val currentTask = (this.task as VehicleTask.UnloadCargoTask)
-        val distance = this.initialStop.distanceTo(currentTask.stopId)
-        this.task = VehicleTask.ReturnBackRouteTask(distance, this.speed)
+//        val distance = this.initialStop.distanceTo(currentTask.stopId)
+        this.task = VehicleTask.ReturnBackRouteTask(currentTask.distance, this.speed)
         return this
     }
 }

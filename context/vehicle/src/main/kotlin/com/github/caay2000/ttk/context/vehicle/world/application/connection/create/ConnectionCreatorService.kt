@@ -7,6 +7,7 @@ import com.github.caay2000.ttk.context.shared.domain.Distance
 import com.github.caay2000.ttk.context.shared.domain.StopId
 import com.github.caay2000.ttk.context.shared.domain.VehicleType
 import com.github.caay2000.ttk.context.shared.domain.WorldId
+import com.github.caay2000.ttk.context.vehicle.world.domain.Connection
 import com.github.caay2000.ttk.context.vehicle.world.domain.World
 import com.github.caay2000.ttk.context.vehicle.world.domain.WorldRepository
 
@@ -20,7 +21,7 @@ class ConnectionCreatorService(private val worldRepository: WorldRepository) {
         allowedVehicleTypes: Set<VehicleType>
     ): Either<ConnectionCreatorServiceException, Unit> =
         findWorld(worldId)
-            .flatMap { world -> world.createConnection(sourceStopId, targetStopId, distance, allowedVehicleTypes).right() }
+            .flatMap { world -> world.createConnection(Connection(sourceStopId, targetStopId, distance, allowedVehicleTypes)).right() }
             .flatMap { world -> world.save() }
             .mapLeft { error -> error.mapError() }
 

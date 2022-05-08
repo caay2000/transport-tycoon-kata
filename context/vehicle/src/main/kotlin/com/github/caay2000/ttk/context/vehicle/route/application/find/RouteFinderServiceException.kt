@@ -2,12 +2,14 @@ package com.github.caay2000.ttk.context.vehicle.route.application.find
 
 import com.github.caay2000.ttk.context.shared.domain.StopId
 import com.github.caay2000.ttk.context.shared.domain.VehicleId
+import com.github.caay2000.ttk.context.shared.domain.WorldId
 import com.github.caay2000.ttk.context.vehicle.vehicle.domain.VehicleStatus
 
 sealed class RouteFinderServiceException : Throwable {
     constructor(message: String) : super(message)
     constructor(cause: Throwable) : super(cause)
 
+    data class WorldNotFound(val worldId: WorldId) : RouteFinderServiceException("world ${worldId.rawId} not found")
     data class StopNotFound(val stopId: StopId) : RouteFinderServiceException("stop ${stopId.rawId} not found")
     data class StopHasNoCargo(val stopId: StopId) : RouteFinderServiceException("stop ${stopId.rawId} has no cargo")
     data class VehicleNotFound(val vehicleId: VehicleId) : RouteFinderServiceException("vehicle ${vehicleId.rawId} not found")
