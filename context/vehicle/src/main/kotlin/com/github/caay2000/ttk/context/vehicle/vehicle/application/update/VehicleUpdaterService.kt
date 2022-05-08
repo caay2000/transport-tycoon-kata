@@ -6,12 +6,12 @@ import arrow.core.right
 import com.github.caay2000.ttk.context.shared.domain.VehicleId
 import com.github.caay2000.ttk.context.shared.domain.toDomainId
 import com.github.caay2000.ttk.context.shared.event.VehicleUpdatedEvent
-import com.github.caay2000.ttk.context.vehicle.cargo.domain.Cargo
 import com.github.caay2000.ttk.context.vehicle.route.application.find.FindRouteQuery
 import com.github.caay2000.ttk.context.vehicle.route.application.find.FindRouteQueryResponse
 import com.github.caay2000.ttk.context.vehicle.vehicle.domain.Vehicle
 import com.github.caay2000.ttk.context.vehicle.vehicle.domain.VehicleRepository
 import com.github.caay2000.ttk.context.vehicle.vehicle.domain.VehicleStatus
+import com.github.caay2000.ttk.context.vehicle.world.domain.Cargo
 import com.github.caay2000.ttk.lib.eventbus.event.Event
 import com.github.caay2000.ttk.lib.eventbus.event.EventPublisher
 import com.github.caay2000.ttk.lib.eventbus.query.QueryBus

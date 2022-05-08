@@ -9,9 +9,9 @@ import com.github.caay2000.ttk.context.shared.event.VehicleLoadedEvent
 import com.github.caay2000.ttk.context.shared.event.VehicleLoadingEvent
 import com.github.caay2000.ttk.context.shared.event.VehicleUnloadedEvent
 import com.github.caay2000.ttk.context.shared.event.VehicleUnloadingEvent
-import com.github.caay2000.ttk.context.vehicle.cargo.domain.Cargo
 import com.github.caay2000.ttk.context.vehicle.configuration.domain.VehicleConfiguration
-import com.github.caay2000.ttk.context.vehicle.stop.domain.Stop
+import com.github.caay2000.ttk.context.vehicle.world.domain.Cargo
+import com.github.caay2000.ttk.context.vehicle.world.domain.Stop
 import com.github.caay2000.ttk.lib.eventbus.domain.Aggregate
 
 sealed class Vehicle(

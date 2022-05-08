@@ -13,10 +13,10 @@ import com.github.caay2000.ttk.context.shared.domain.StopId
 import com.github.caay2000.ttk.context.shared.domain.VehicleId
 import com.github.caay2000.ttk.context.shared.domain.VehicleType
 import com.github.caay2000.ttk.context.shared.domain.WorldId
-import com.github.caay2000.ttk.context.vehicle.stop.domain.Stop
 import com.github.caay2000.ttk.context.vehicle.vehicle.domain.Vehicle
 import com.github.caay2000.ttk.context.vehicle.vehicle.domain.VehicleRepository
 import com.github.caay2000.ttk.context.vehicle.vehicle.domain.VehicleStatus
+import com.github.caay2000.ttk.context.vehicle.world.domain.Stop
 import com.github.caay2000.ttk.context.vehicle.world.domain.WorldRepository
 
 class RouteFinderService(

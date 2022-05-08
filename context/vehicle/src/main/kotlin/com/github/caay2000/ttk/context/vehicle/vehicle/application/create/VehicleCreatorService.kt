@@ -11,9 +11,9 @@ import com.github.caay2000.ttk.context.shared.domain.WorldId
 import com.github.caay2000.ttk.context.vehicle.configuration.application.find.FindVehicleConfigurationQuery
 import com.github.caay2000.ttk.context.vehicle.configuration.application.find.FindVehicleConfigurationQueryResponse
 import com.github.caay2000.ttk.context.vehicle.configuration.domain.VehicleConfiguration
-import com.github.caay2000.ttk.context.vehicle.stop.domain.Stop
 import com.github.caay2000.ttk.context.vehicle.vehicle.domain.Vehicle
 import com.github.caay2000.ttk.context.vehicle.vehicle.domain.VehicleRepository
+import com.github.caay2000.ttk.context.vehicle.world.domain.Stop
 import com.github.caay2000.ttk.context.vehicle.world.domain.WorldRepository
 import com.github.caay2000.ttk.lib.eventbus.query.QueryBus
 
