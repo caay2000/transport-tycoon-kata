@@ -4,17 +4,18 @@ import arrow.core.getOrHandle
 import com.github.caay2000.ttk.context.shared.domain.VehicleType
 import com.github.caay2000.ttk.context.shared.domain.toDomainId
 import com.github.caay2000.ttk.context.vehicle.VehicleCommand
-import com.github.caay2000.ttk.context.vehicle.stop.domain.StopRepository
+import com.github.caay2000.ttk.context.vehicle.world.domain.WorldRepository
 import com.github.caay2000.ttk.lib.eventbus.command.CommandHandler
 import java.util.UUID
 
-class CreateConnectionCommandHandler(stopRepository: StopRepository) :
+class CreateConnectionCommandHandler(worldRepository: WorldRepository) :
     CommandHandler<CreateConnectionCommand> {
 
-    private val connectionCreatorService = ConnectionCreatorService(stopRepository)
+    private val connectionCreatorService = ConnectionCreatorService(worldRepository)
 
     override fun invoke(command: CreateConnectionCommand) =
         connectionCreatorService.invoke(
+            worldId = command.worldId.toDomainId(),
             sourceStopId = command.sourceStopId.toDomainId(),
             targetStopId = command.targetStopId.toDomainId(),
             distance = command.distance,

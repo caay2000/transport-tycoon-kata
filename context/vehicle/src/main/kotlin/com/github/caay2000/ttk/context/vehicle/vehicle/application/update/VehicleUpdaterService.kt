@@ -9,7 +9,6 @@ import com.github.caay2000.ttk.context.shared.event.VehicleUpdatedEvent
 import com.github.caay2000.ttk.context.vehicle.cargo.domain.Cargo
 import com.github.caay2000.ttk.context.vehicle.route.application.find.FindRouteQuery
 import com.github.caay2000.ttk.context.vehicle.route.application.find.FindRouteQueryResponse
-import com.github.caay2000.ttk.context.vehicle.stop.domain.StopRepository
 import com.github.caay2000.ttk.context.vehicle.vehicle.domain.Vehicle
 import com.github.caay2000.ttk.context.vehicle.vehicle.domain.VehicleRepository
 import com.github.caay2000.ttk.context.vehicle.vehicle.domain.VehicleStatus
@@ -20,8 +19,7 @@ import com.github.caay2000.ttk.lib.eventbus.query.QueryBus
 class VehicleUpdaterService(
     private val eventPublisher: EventPublisher<Event>,
     private val queryBus: QueryBus,
-    private val vehicleRepository: VehicleRepository,
-    private val stopRepository: StopRepository
+    private val vehicleRepository: VehicleRepository
 ) {
 
     fun invoke(vehicleId: VehicleId): Either<VehicleUpdaterServiceException, Unit> =

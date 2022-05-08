@@ -4,8 +4,8 @@ import arrow.core.getOrHandle
 import com.github.caay2000.ttk.context.shared.domain.toDomainId
 import com.github.caay2000.ttk.context.shared.domain.toVehicleType
 import com.github.caay2000.ttk.context.vehicle.VehicleCommand
-import com.github.caay2000.ttk.context.vehicle.stop.domain.StopRepository
 import com.github.caay2000.ttk.context.vehicle.vehicle.domain.VehicleRepository
+import com.github.caay2000.ttk.context.vehicle.world.domain.WorldRepository
 import com.github.caay2000.ttk.lib.eventbus.command.CommandHandler
 import com.github.caay2000.ttk.lib.eventbus.query.QueryBus
 import java.util.UUID
@@ -13,11 +13,11 @@ import java.util.UUID
 class CreateVehicleCommandHandler(
     queryBus: QueryBus,
     vehicleRepository: VehicleRepository,
-    stopRepository: StopRepository
+    worldRepository: WorldRepository
 ) :
     CommandHandler<CreateVehicleCommand> {
 
-    private val vehicleCreatorService = VehicleCreatorService(queryBus, vehicleRepository, stopRepository)
+    private val vehicleCreatorService = VehicleCreatorService(queryBus, vehicleRepository, worldRepository)
 
     override fun invoke(command: CreateVehicleCommand) {
         vehicleCreatorService.invoke(command.worldId.toDomainId(), command.stopId.toDomainId(), command.vehicleId.toDomainId(), command.vehicleType.toVehicleType())

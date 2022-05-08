@@ -4,15 +4,15 @@ import arrow.core.flatMap
 import arrow.core.getOrHandle
 import arrow.core.right
 import com.github.caay2000.ttk.context.shared.domain.toDomainId
-import com.github.caay2000.ttk.context.vehicle.stop.domain.StopRepository
 import com.github.caay2000.ttk.context.vehicle.vehicle.domain.VehicleRepository
+import com.github.caay2000.ttk.context.vehicle.world.domain.WorldRepository
 import com.github.caay2000.ttk.lib.eventbus.query.Query
 import com.github.caay2000.ttk.lib.eventbus.query.QueryHandler
 import java.util.UUID
 
-class FindRouteQueryHandler(vehicleRepository: VehicleRepository, stopRepository: StopRepository) : QueryHandler<FindRouteQuery, FindRouteQueryResponse> {
+class FindRouteQueryHandler(vehicleRepository: VehicleRepository, worldRepository: WorldRepository) : QueryHandler<FindRouteQuery, FindRouteQueryResponse> {
 
-    private val routeFinderService = RouteFinderService(vehicleRepository, stopRepository)
+    private val routeFinderService = RouteFinderService(vehicleRepository, worldRepository)
 
     override fun handle(query: FindRouteQuery): FindRouteQueryResponse =
         routeFinderService.invoke(query.vehicleId.toDomainId())

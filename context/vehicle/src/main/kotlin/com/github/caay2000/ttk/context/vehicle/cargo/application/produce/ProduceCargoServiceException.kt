@@ -1,17 +1,17 @@
 package com.github.caay2000.ttk.context.vehicle.cargo.application.produce
 
-import com.github.caay2000.ttk.context.shared.domain.StopId
+import com.github.caay2000.ttk.context.shared.domain.WorldId
 
 sealed class ProduceCargoServiceException : Throwable {
     constructor(message: String) : super(message)
     constructor(cause: Throwable) : super(cause)
 
-    data class StopNotFound(val stopId: StopId) : ProduceCargoServiceException("stop ${stopId.rawId} not found")
+    data class WorldNotFound(val worldId: WorldId) : ProduceCargoServiceException("world ${worldId.rawId} not found")
     data class Unknown(override val cause: Throwable) : ProduceCargoServiceException(cause)
 }
 
 internal fun Throwable.mapError() =
     when (this) {
-        is ProduceCargoServiceException.StopNotFound -> this
+        is ProduceCargoServiceException.WorldNotFound -> this
         else -> ProduceCargoServiceException.Unknown(this)
     }

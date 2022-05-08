@@ -6,24 +6,26 @@ import arrow.core.right
 import com.github.caay2000.ttk.context.shared.domain.Distance
 import com.github.caay2000.ttk.context.shared.domain.StopId
 import com.github.caay2000.ttk.context.shared.domain.VehicleType
-import com.github.caay2000.ttk.context.vehicle.stop.domain.Stop
-import com.github.caay2000.ttk.context.vehicle.stop.domain.StopRepository
+import com.github.caay2000.ttk.context.shared.domain.WorldId
+import com.github.caay2000.ttk.context.vehicle.world.domain.World
+import com.github.caay2000.ttk.context.vehicle.world.domain.WorldRepository
 
-class ConnectionCreatorService(private val stopRepository: StopRepository) {
+class ConnectionCreatorService(private val worldRepository: WorldRepository) {
 
     fun invoke(
+        worldId: WorldId,
         sourceStopId: StopId,
         targetStopId: StopId,
         distance: Distance,
         allowedVehicleTypes: Set<VehicleType>
     ): Either<ConnectionCreatorServiceException, Unit> =
-        findStop(sourceStopId)
-            .flatMap { stop -> stop.createConnection(targetStopId, distance, allowedVehicleTypes).right() }
-            .flatMap { stop -> stop.save() }
+        findWorld(worldId)
+            .flatMap { world -> world.createConnection(sourceStopId, targetStopId, distance, allowedVehicleTypes).right() }
+            .flatMap { world -> world.save() }
             .mapLeft { error -> error.mapError() }
 
-    private fun findStop(stopId: StopId) = stopRepository.get(stopId)
-        .toEither { ConnectionCreatorServiceException.StopNotFound(stopId) }
+    private fun findWorld(worldId: WorldId): Either<Throwable, World> =
+        worldRepository.get(worldId).toEither { ConnectionCreatorServiceException.WorldNotFound(worldId) }
 
-    private fun Stop.save() = stopRepository.save(this).map { }
+    private fun World.save() = worldRepository.save(this).map { }
 }
