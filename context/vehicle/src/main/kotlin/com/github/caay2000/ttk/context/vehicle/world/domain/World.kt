@@ -5,8 +5,6 @@ import com.github.caay2000.ttk.context.shared.domain.Distance
 import com.github.caay2000.ttk.context.shared.domain.StopId
 import com.github.caay2000.ttk.context.shared.domain.VehicleType
 import com.github.caay2000.ttk.context.shared.domain.WorldId
-import com.github.caay2000.ttk.context.vehicle.cargo.domain.Cargo
-import com.github.caay2000.ttk.context.vehicle.stop.domain.Stop
 
 data class World(val id: WorldId, val stops: Set<Stop>) {
 

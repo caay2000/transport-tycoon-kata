@@ -2,7 +2,7 @@ package com.github.caay2000.ttk.context.vehicle.vehicle.domain
 
 import com.github.caay2000.ttk.context.shared.domain.Distance
 import com.github.caay2000.ttk.context.shared.domain.StopId
-import com.github.caay2000.ttk.context.vehicle.cargo.domain.Cargo
+import com.github.caay2000.ttk.context.vehicle.world.domain.Cargo
 import kotlin.math.roundToInt
 
 internal sealed class VehicleTask(val status: VehicleStatus) {
