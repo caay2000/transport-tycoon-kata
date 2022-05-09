@@ -3,7 +3,7 @@ package com.github.caay2000.ttk.context.world.stop.domain
 import com.github.caay2000.ttk.context.shared.domain.CargoId
 import com.github.caay2000.ttk.context.shared.domain.Distance
 import com.github.caay2000.ttk.context.shared.domain.StopId
-import com.github.caay2000.ttk.context.shared.domain.VehicleType
+import com.github.caay2000.ttk.context.shared.domain.VehicleTypeEnum
 import com.github.caay2000.ttk.context.shared.domain.WorldId
 import com.github.caay2000.ttk.context.shared.event.CargoProducedEvent
 import com.github.caay2000.ttk.context.shared.event.ConnectionCreatedEvent
@@ -21,7 +21,7 @@ data class Stop internal constructor(val worldId: WorldId, val id: StopId, val n
         }
     }
 
-    fun createConnection(targetStopId: StopId, distance: Distance, allowedVehicleTypes: Set<VehicleType>): Stop {
+    fun createConnection(targetStopId: StopId, distance: Distance, allowedVehicleTypes: Set<VehicleTypeEnum>): Stop {
         val stop = this.copy(connections = connections + Connection(this.id, targetStopId, distance, allowedVehicleTypes))
         stop.pushEvent(ConnectionCreatedEvent(this.worldId.uuid, this.id.uuid, targetStopId.uuid, distance, allowedVehicleTypes.map { it.name }.toSet()))
         return stop

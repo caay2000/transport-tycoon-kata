@@ -68,7 +68,7 @@ class VehicleContextConfiguration(
         instantiateQueryHandler(FindVehicleConfigurationQuery::class, FindVehicleConfigurationQueryHandler(vehicleConfigurationRepository))
 
         instantiateCommandHandler(CreateVehicleConfigurationCommand::class, CreateVehicleConfigurationCommandHandler(vehicleConfigurationRepository))
-        instantiateCommandHandler(CreateVehicleCommand::class, CreateVehicleCommandHandler(queryBus, vehicleRepository, worldRepository))
+        instantiateCommandHandler(CreateVehicleCommand::class, CreateVehicleCommandHandler(queryBus, vehicleRepository))
         instantiateCommandHandler(UpdateVehicleCommand::class, UpdateVehicleCommandHandler(eventPublisher, queryBus, vehicleRepository))
         instantiateCommandHandler(CreateStopCommand::class, CreateStopCommandHandler(worldRepository))
         instantiateCommandHandler(CreateConnectionCommand::class, CreateConnectionCommandHandler(worldRepository))

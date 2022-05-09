@@ -46,7 +46,7 @@ class VehicleUpdaterService(
                 if (this.taskFinished && this.status != VehicleStatus.IDLE) {
                     this.executeUpdate()
                 } else {
-                    this.pushEvent(VehicleUpdatedEvent(this.worldId.uuid, this.id.uuid, this.type.name, this.cargo?.id?.uuid, this.status.name))
+                    this.pushEvent(VehicleUpdatedEvent(this.worldId.uuid, this.id.uuid, this.type.type.name, this.cargo?.id?.uuid, this.status.name))
                 }
                 this
             }

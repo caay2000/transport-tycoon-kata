@@ -1,7 +1,7 @@
 package com.github.caay2000.ttk.context.vehicle.configuration.application.create
 
 import arrow.core.getOrHandle
-import com.github.caay2000.ttk.context.shared.domain.VehicleType
+import com.github.caay2000.ttk.context.shared.domain.VehicleTypeEnum
 import com.github.caay2000.ttk.context.vehicle.VehicleCommand
 import com.github.caay2000.ttk.context.vehicle.configuration.domain.VehicleConfigurationRepository
 import com.github.caay2000.ttk.lib.eventbus.command.CommandHandler
@@ -18,7 +18,7 @@ class CreateVehicleConfigurationCommandHandler(vehicleConfigurationRepository: V
     }
 }
 
-data class CreateVehicleConfigurationCommand(val type: VehicleType, val loadTime: Int, val speed: Double, val capacity: Int) :
+data class CreateVehicleConfigurationCommand(val type: VehicleTypeEnum, val loadTime: Int, val speed: Double, val capacity: Int) :
     VehicleCommand {
     override val commandId: UUID = UUID.randomUUID()
 }

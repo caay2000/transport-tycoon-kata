@@ -3,7 +3,7 @@ package com.github.caay2000.ttk.application
 import com.github.caay2000.ttk.application.configuration.ApplicationConfiguration
 import com.github.caay2000.ttk.context.shared.domain.StopId
 import com.github.caay2000.ttk.context.shared.domain.VehicleId
-import com.github.caay2000.ttk.context.shared.domain.VehicleType
+import com.github.caay2000.ttk.context.shared.domain.VehicleTypeEnum
 import com.github.caay2000.ttk.context.shared.domain.WorldId
 import com.github.caay2000.ttk.context.shared.domain.randomDomainId
 import com.github.caay2000.ttk.context.vehicle.configuration.domain.VehicleConfiguration
@@ -40,15 +40,15 @@ class Application(configuration: ApplicationConfiguration) {
         httpWorld(HTTP_CREATE_STOP, worldId.uuid, warehouseAStopId.uuid, "WAREHOUSE_A")
         httpWorld(HTTP_CREATE_STOP, worldId.uuid, warehouseBStopId.uuid, "WAREHOUSE_B")
 
-        httpWorld(HTTP_CREATE_CONNECTION, worldId.uuid, factoryStopId.uuid, portStopId.uuid, 1, setOf(VehicleType.TRUCK.name))
-        httpWorld(HTTP_CREATE_CONNECTION, worldId.uuid, portStopId.uuid, warehouseAStopId.uuid, 4, setOf(VehicleType.BOAT.name))
-        httpWorld(HTTP_CREATE_CONNECTION, worldId.uuid, factoryStopId.uuid, warehouseBStopId.uuid, 5, setOf(VehicleType.TRUCK.name))
+        httpWorld(HTTP_CREATE_CONNECTION, worldId.uuid, factoryStopId.uuid, portStopId.uuid, 1, setOf(VehicleTypeEnum.TRUCK.name))
+        httpWorld(HTTP_CREATE_CONNECTION, worldId.uuid, portStopId.uuid, warehouseAStopId.uuid, 4, setOf(VehicleTypeEnum.BOAT.name))
+        httpWorld(HTTP_CREATE_CONNECTION, worldId.uuid, factoryStopId.uuid, warehouseBStopId.uuid, 5, setOf(VehicleTypeEnum.TRUCK.name))
 
         httpVehicle(HTTP_CONFIGURE_VEHICLE, configurations)
 
-        httpWorld(HTTP_CREATE_VEHICLE, worldId.uuid, factoryStopId.uuid, randomVehicleId(), VehicleType.TRUCK.name)
-        httpWorld(HTTP_CREATE_VEHICLE, worldId.uuid, factoryStopId.uuid, randomVehicleId(), VehicleType.TRUCK.name)
-        httpWorld(HTTP_CREATE_VEHICLE, worldId.uuid, portStopId.uuid, randomVehicleId(), VehicleType.BOAT.name)
+        httpWorld(HTTP_CREATE_VEHICLE, worldId.uuid, factoryStopId.uuid, randomVehicleId(), VehicleTypeEnum.TRUCK.name)
+        httpWorld(HTTP_CREATE_VEHICLE, worldId.uuid, factoryStopId.uuid, randomVehicleId(), VehicleTypeEnum.TRUCK.name)
+        httpWorld(HTTP_CREATE_VEHICLE, worldId.uuid, portStopId.uuid, randomVehicleId(), VehicleTypeEnum.BOAT.name)
 
         val world = httpWorld(HTTP_GET_WORLD, worldId.uuid).body as FindWorldQueryResponse
 

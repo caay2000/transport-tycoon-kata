@@ -5,7 +5,7 @@ import arrow.core.flatMap
 import arrow.core.getOrHandle
 import arrow.core.handleErrorWith
 import arrow.core.right
-import com.github.caay2000.ttk.context.shared.domain.VehicleType
+import com.github.caay2000.ttk.context.shared.domain.VehicleTypeEnum
 import com.github.caay2000.ttk.context.vehicle.configuration.domain.VehicleConfiguration
 import com.github.caay2000.ttk.context.vehicle.configuration.domain.VehicleConfigurationRepository
 import com.github.caay2000.ttk.lib.eventbus.query.Query
@@ -34,7 +34,7 @@ class FindVehicleConfigurationQueryHandler(
     private fun Throwable.failedQueryResponse() = FindVehicleConfigurationQueryResponse(success = false, data = null, error = this.message).right()
 }
 
-data class FindVehicleConfigurationQuery(val vehicleType: VehicleType) : Query {
+data class FindVehicleConfigurationQuery(val vehicleType: VehicleTypeEnum) : Query {
     override val queryId: UUID = randomUUID()
 }
 
@@ -43,5 +43,5 @@ data class FindVehicleConfigurationQueryResponse(
     val data: VehicleConfigurationQueryResponse?,
     val error: String? = null
 ) {
-    data class VehicleConfigurationQueryResponse(val type: VehicleType, val loadTime: Int, val speed: Double, val capacity: Int)
+    data class VehicleConfigurationQueryResponse(val type: VehicleTypeEnum, val loadTime: Int, val speed: Double, val capacity: Int)
 }
