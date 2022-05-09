@@ -1,7 +1,7 @@
 package com.github.caay2000.ttk.integration
 
 import com.github.caay2000.ttk.App
-import com.github.caay2000.ttk.context.shared.domain.VehicleType
+import com.github.caay2000.ttk.context.shared.domain.VehicleTypeEnum
 import com.github.caay2000.ttk.context.vehicle.configuration.domain.VehicleConfiguration
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.TestInstance
@@ -28,8 +28,8 @@ class AppIntegrationTest {
     fun `exercise 1 - route takes the correct steps`(deliveries: String, steps: Int) {
 
         val exercise1Configuration = setOf(
-            VehicleConfiguration.create(VehicleType.TRUCK, 0, 1.0, 1),
-            VehicleConfiguration.create(VehicleType.BOAT, 0, 1.0, 1)
+            VehicleConfiguration.create(VehicleTypeEnum.TRUCK, 0, 1.0, 1),
+            VehicleConfiguration.create(VehicleTypeEnum.BOAT, 0, 1.0, 1)
         )
 
         val result = App().invoke(input = deliveries, vehicleConfiguration = exercise1Configuration)
@@ -52,8 +52,8 @@ class AppIntegrationTest {
     fun `exercise 2 - route takes the correct steps`(deliveries: String, steps: Int) {
 
         val exercise2Configuration = setOf(
-            VehicleConfiguration.create(VehicleType.TRUCK, 1, 1.0, 1),
-            VehicleConfiguration.create(VehicleType.BOAT, 2, 0.666666, 4)
+            VehicleConfiguration.create(VehicleTypeEnum.TRUCK, 1, 1.0, 1),
+            VehicleConfiguration.create(VehicleTypeEnum.BOAT, 2, 0.666666, 4)
         )
 
         val result = App().invoke(input = deliveries, vehicleConfiguration = exercise2Configuration)

@@ -1,7 +1,7 @@
 package com.github.caay2000.ttk.context.vehicle.world.application.connection.create
 
 import arrow.core.getOrHandle
-import com.github.caay2000.ttk.context.shared.domain.VehicleType
+import com.github.caay2000.ttk.context.shared.domain.VehicleTypeEnum
 import com.github.caay2000.ttk.context.shared.domain.toDomainId
 import com.github.caay2000.ttk.context.vehicle.VehicleCommand
 import com.github.caay2000.ttk.context.vehicle.world.domain.WorldRepository
@@ -19,7 +19,7 @@ class CreateConnectionCommandHandler(worldRepository: WorldRepository) :
             sourceStopId = command.sourceStopId.toDomainId(),
             targetStopId = command.targetStopId.toDomainId(),
             distance = command.distance,
-            allowedVehicleTypes = command.allowedVehicleTypes.map { VehicleType.valueOf(it) }.toSet()
+            allowedVehicleTypes = command.allowedVehicleTypes.map { VehicleTypeEnum.valueOf(it) }.toSet()
         ).getOrHandle { throw it }
 }
 
