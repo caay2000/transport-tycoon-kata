@@ -12,7 +12,7 @@ import com.github.caay2000.ttk.context.shared.domain.CargoId
 import com.github.caay2000.ttk.context.shared.domain.Distance
 import com.github.caay2000.ttk.context.shared.domain.StopId
 import com.github.caay2000.ttk.context.shared.domain.VehicleId
-import com.github.caay2000.ttk.context.shared.domain.VehicleType
+import com.github.caay2000.ttk.context.shared.domain.VehicleTypeEnum
 import com.github.caay2000.ttk.context.shared.domain.WorldId
 import com.github.caay2000.ttk.context.vehicle.vehicle.domain.Vehicle
 import com.github.caay2000.ttk.context.vehicle.vehicle.domain.VehicleRepository
@@ -28,7 +28,7 @@ class RouteFinderService(
     fun invoke(vehicleId: VehicleId): Either<Throwable, RouteFinderResponse> =
         findVehicle(vehicleId)
             .flatMap { vehicle -> vehicle.guardVehicleIsIdle() }
-            .flatMap { vehicle -> getStop(vehicle.worldId, vehicle.initialStop.id) }
+            .flatMap { vehicle -> getStop(vehicle.worldId, vehicle.position.idle().stopId) }
             .flatMap { stop -> stop.guardStopHasCargo() }
             .flatMap { stop -> stop.findRoute(vehicleId) }
             .mapLeft { error -> error.mapError() }
@@ -59,7 +59,7 @@ class RouteFinderService(
                     option.eager<StopId> {
                         val target = world.getStop(cargo.targetId)
                         val vehicle = vehicleRepository.get(vehicleId).bind()
-                        if (target.name == "WAREHOUSE_A" && vehicle.type == VehicleType.TRUCK) {
+                        if (target.name == "WAREHOUSE_A" && vehicle.type == VehicleTypeEnum.TRUCK) {
                             world.stops.find { it.name == "PORT" }!!.id
                         } else {
                             cargo.targetId

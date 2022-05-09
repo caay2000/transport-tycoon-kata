@@ -6,7 +6,7 @@ import arrow.core.left
 import arrow.core.right
 import com.github.caay2000.ttk.context.shared.domain.Distance
 import com.github.caay2000.ttk.context.shared.domain.StopId
-import com.github.caay2000.ttk.context.shared.domain.VehicleType
+import com.github.caay2000.ttk.context.shared.domain.VehicleTypeEnum
 import com.github.caay2000.ttk.context.shared.domain.WorldId
 import com.github.caay2000.ttk.context.world.stop.domain.Stop
 import com.github.caay2000.ttk.context.world.stop.domain.StopRepository
@@ -25,12 +25,12 @@ class ConnectionCreatorService(
         sourceStopId: StopId,
         targetStopId: StopId,
         distance: Distance,
-        allowedVehicleTypes: Set<VehicleType>
+        allowedVehicleTypeEnums: Set<VehicleTypeEnum>
     ): Either<ConnectionCreatorServiceException, Unit> =
         guardWorldExists(worldId)
             .flatMap { guardStopsExists(targetStopId) }
             .flatMap { findStop(sourceStopId) }
-            .flatMap { stop -> stop.createConnection(targetStopId, distance, allowedVehicleTypes).right() }
+            .flatMap { stop -> stop.createConnection(targetStopId, distance, allowedVehicleTypeEnums).right() }
             .flatMap { stop -> stop.save() }
             .flatMap { stop -> stop.publishEvents() }
             .mapLeft { error -> error.mapError() }

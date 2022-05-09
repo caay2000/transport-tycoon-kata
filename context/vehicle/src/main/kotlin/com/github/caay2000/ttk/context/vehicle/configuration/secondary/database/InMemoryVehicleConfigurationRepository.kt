@@ -1,7 +1,7 @@
 package com.github.caay2000.ttk.context.vehicle.configuration.secondary.database
 
 import arrow.core.Either
-import com.github.caay2000.ttk.context.shared.domain.VehicleType
+import com.github.caay2000.ttk.context.shared.domain.VehicleTypeEnum
 import com.github.caay2000.ttk.context.vehicle.configuration.domain.VehicleConfiguration
 import com.github.caay2000.ttk.context.vehicle.configuration.domain.VehicleConfigurationRepository
 import com.github.caay2000.ttk.lib.database.InMemoryDatabase
@@ -12,7 +12,7 @@ class InMemoryVehicleConfigurationRepository(private val database: InMemoryDatab
     override fun save(configuration: VehicleConfiguration): Either<Throwable, VehicleConfiguration> =
         Either.catch { database.save(DATABASE_TABLE, configuration.type.name, configuration) as VehicleConfiguration }
 
-    override fun get(type: VehicleType): Either<Throwable, VehicleConfiguration> =
+    override fun get(type: VehicleTypeEnum): Either<Throwable, VehicleConfiguration> =
         Either.catch { database.getById(DATABASE_TABLE, type.name) as VehicleConfiguration }
 
     companion object {

@@ -12,12 +12,11 @@ import java.util.UUID
 
 class CreateVehicleCommandHandler(
     queryBus: QueryBus,
-    vehicleRepository: VehicleRepository,
-    worldRepository: WorldRepository
+    vehicleRepository: VehicleRepository
 ) :
     CommandHandler<CreateVehicleCommand> {
 
-    private val vehicleCreatorService = VehicleCreatorService(queryBus, vehicleRepository, worldRepository)
+    private val vehicleCreatorService = VehicleCreatorService(queryBus, vehicleRepository)
 
     override fun invoke(command: CreateVehicleCommand) {
         vehicleCreatorService.invoke(command.worldId.toDomainId(), command.stopId.toDomainId(), command.vehicleId.toDomainId(), command.vehicleType.toVehicleType())

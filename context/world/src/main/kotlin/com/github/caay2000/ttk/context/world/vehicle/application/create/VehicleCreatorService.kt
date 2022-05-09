@@ -6,7 +6,7 @@ import arrow.core.left
 import arrow.core.right
 import com.github.caay2000.ttk.context.shared.domain.StopId
 import com.github.caay2000.ttk.context.shared.domain.VehicleId
-import com.github.caay2000.ttk.context.shared.domain.VehicleType
+import com.github.caay2000.ttk.context.shared.domain.VehicleTypeEnum
 import com.github.caay2000.ttk.context.shared.domain.WorldId
 import com.github.caay2000.ttk.context.world.vehicle.domain.Vehicle
 import com.github.caay2000.ttk.context.world.world.domain.World
@@ -16,7 +16,7 @@ import com.github.caay2000.ttk.lib.eventbus.event.EventPublisher
 
 class VehicleCreatorService(private val eventPublisher: EventPublisher<Event>, private val worldRepository: WorldRepository) {
 
-    fun invoke(worldId: WorldId, stopId: StopId, vehicleId: VehicleId, vehicleType: VehicleType): Either<VehicleCreatorServiceException, Unit> =
+    fun invoke(worldId: WorldId, stopId: StopId, vehicleId: VehicleId, vehicleType: VehicleTypeEnum): Either<VehicleCreatorServiceException, Unit> =
         findWorld(worldId)
             .flatMap { world -> world.guardStopExists(stopId) }
             .map { world -> world.createVehicle(stopId, Vehicle.create(vehicleId, vehicleType)) }

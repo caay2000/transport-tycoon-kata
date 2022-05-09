@@ -3,7 +3,7 @@ package com.github.caay2000.ttk.context.vehicle.vehicle.domain
 import com.github.caay2000.ttk.context.shared.domain.Distance
 import com.github.caay2000.ttk.context.shared.domain.StopId
 import com.github.caay2000.ttk.context.shared.domain.VehicleId
-import com.github.caay2000.ttk.context.shared.domain.VehicleType
+import com.github.caay2000.ttk.context.shared.domain.VehicleTypeEnum
 import com.github.caay2000.ttk.context.shared.domain.WorldId
 import com.github.caay2000.ttk.context.shared.event.VehicleLoadedEvent
 import com.github.caay2000.ttk.context.shared.event.VehicleLoadingEvent
@@ -11,64 +11,52 @@ import com.github.caay2000.ttk.context.shared.event.VehicleUnloadedEvent
 import com.github.caay2000.ttk.context.shared.event.VehicleUnloadingEvent
 import com.github.caay2000.ttk.context.vehicle.configuration.domain.VehicleConfiguration
 import com.github.caay2000.ttk.context.vehicle.world.domain.Cargo
-import com.github.caay2000.ttk.context.vehicle.world.domain.Stop
 import com.github.caay2000.ttk.lib.eventbus.domain.Aggregate
 
-sealed class Vehicle(
+data class Vehicle(
     val worldId: WorldId,
     val id: VehicleId,
-    val type: VehicleType
+    val type: VehicleType,
+    val task: VehicleTask
 ) : Aggregate() {
 
-    companion object {
-        fun create(configuration: VehicleConfiguration, worldId: WorldId, id: VehicleId, type: VehicleType, stop: Stop) =
-            when (type) {
-                VehicleType.TRUCK -> Truck(configuration, worldId, id, stop)
-                VehicleType.BOAT -> Boat(configuration, worldId, id, stop)
-            }
-    }
 
-    private var task: VehicleTask = VehicleTask.IdleTask
+    companion object {
+        fun create(configuration: VehicleConfiguration, worldId: WorldId, id: VehicleId, type: VehicleTypeEnum, stopId: StopId) =
+            Vehicle(worldId, id, VehicleType(type, configuration.loadTime, configuration.speed), VehicleTask.IdleTask(stopId))
+    }
 
     val taskFinished: Boolean
         get() = task.isFinished()
-
-    abstract val loadTime: Int
-    abstract val speed: Double
-
-    abstract val initialStop: Stop
 
     var cargo: Cargo? = null
 
     val status: VehicleStatus
         get() = task.status
 
-    fun stop() {
-        this.task = VehicleTask.IdleTask
-    }
+//    fun stop() :Vehicle {
+//        this.task = VehicleTask.IdleTask
+//    }
 
-    fun update(): Vehicle {
-        this.task = this.task.update()
-        return this
-    }
+    fun update(): Vehicle = this.copy(task = this.task.update())
+//        this.task =
+//        return this
+//    }
 
     fun loadCargo(
         cargo: Cargo,
         routeTargetStopId: StopId,
         routeTargetStopDistance: Distance
-    ): Vehicle {
-        this.task = VehicleTask.LoadCargoTask(this.loadTime, cargo, routeTargetStopId, routeTargetStopDistance)
-        this.pushEvent(
-            VehicleLoadingEvent(
-                this.worldId.uuid,
-                this.id.uuid,
-                cargo.id.uuid,
-                this.initialStop.id.uuid
-            )
-
-        )
-        return this
-    }
+    ): Vehicle = this.copy(task = VehicleTask.LoadCargoTask(this.type.loadTime, cargo, this.task.idle() routeTargetStopId, routeTargetStopDistance))
+            .also {
+                this.pushEvent(
+                    VehicleLoadingEvent(
+                        this.worldId.uuid,
+                        this.id.uuid,
+                        cargo.id.uuid,
+                        this.position.idle().stopId.uuid
+                    )
+            }
 
     fun finishLoadingCargo(): Vehicle {
         this.cargo = (task as VehicleTask.LoadCargoTask).cargo
@@ -77,7 +65,7 @@ sealed class Vehicle(
                 this.worldId.uuid,
                 this.id.uuid,
                 this.cargo!!.id.uuid,
-                this.initialStop.id.uuid,
+                this.position.idle().stopId.uuid,
                 this.cargo!!.sourceId.uuid,
                 this.cargo!!.targetId.uuid
             )
@@ -116,7 +104,7 @@ sealed class Vehicle(
 
     fun startRoute(): Vehicle {
         if (this.task is VehicleTask.LoadCargoTask) {
-            this.task = (this.task as VehicleTask.LoadCargoTask).toOnRouteTask(this.initialStop.id, this.speed)
+            this.task = (this.task as VehicleTask.LoadCargoTask).toOnRouteTask(this.position.idle().stopId, this.speed)
         }
         return this
     }
@@ -133,22 +121,22 @@ enum class VehicleStatus {
     IDLE, ON_ROUTE, LOADING, UNLOADING, RETURNING
 }
 
-data class Boat(
-    val configuration: VehicleConfiguration,
-    val idWorld: WorldId,
-    val vehicleId: VehicleId,
-    override val initialStop: Stop
-) : Vehicle(idWorld, vehicleId, VehicleType.BOAT) {
-    override val loadTime: Int = configuration.loadTime
-    override val speed: Double = configuration.speed
-}
+//data class Boat(
+//    val configuration: VehicleConfiguration,
+//    val idWorld: WorldId,
+//    val vehicleId: VehicleId,
+//    val stopId: StopId
+//) : Vehicle(idWorld, vehicleId, VehicleType.BOAT, VehicleTask.IdleTask(stopId)) {
+//    override val loadTime: Int = configuration.loadTime
+//    override val speed: Double = configuration.speed
+//}
 
-data class Truck(
-    val configuration: VehicleConfiguration,
-    val idWorld: WorldId,
-    val vehicleId: VehicleId,
-    override val initialStop: Stop
-) : Vehicle(idWorld, vehicleId, VehicleType.TRUCK) {
-    override val loadTime: Int = configuration.loadTime
-    override val speed: Double = configuration.speed
-}
+//data class Truck(
+//    val configuration: VehicleConfiguration,
+//    val idWorld: WorldId,
+//    val vehicleId: VehicleId,
+//    val stopId: StopId
+//) : Vehicle(idWorld, vehicleId, VehicleType.TRUCK, VehicleTask.IdleTask(stopId)) {
+//    override val loadTime: Int = configuration.loadTime
+//    override val speed: Double = configuration.speed
+//}

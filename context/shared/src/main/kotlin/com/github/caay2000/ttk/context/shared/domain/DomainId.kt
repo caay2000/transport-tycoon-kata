@@ -13,6 +13,7 @@ data class WorldId(override val uuid: UUID = UUID.randomUUID()) : DomainId(uuid)
 data class StopId(override val uuid: UUID = UUID.randomUUID()) : DomainId(uuid)
 data class VehicleId(override val uuid: UUID = UUID.randomUUID()) : DomainId(uuid)
 data class CargoId(override val uuid: UUID = UUID.randomUUID()) : DomainId(uuid)
+data class ProgressId(override val uuid: UUID = UUID.randomUUID()) : DomainId(uuid)
 
 inline fun <reified T : DomainId> randomDomainId() =
     UUID.randomUUID().toDomainId<T>()

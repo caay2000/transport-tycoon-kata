@@ -5,14 +5,14 @@ import com.github.caay2000.ttk.context.shared.domain.StopId
 import com.github.caay2000.ttk.context.vehicle.world.domain.Cargo
 import kotlin.math.roundToInt
 
-internal sealed class VehicleTask(val status: VehicleStatus) {
+sealed class VehicleTask(val status: VehicleStatus) {
     abstract val duration: Int
     abstract val progress: Int
 
     fun isFinished() = duration <= progress
     abstract fun update(): VehicleTask
 
-    object IdleTask : VehicleTask(VehicleStatus.IDLE) {
+    data class IdleTask(val stopId: StopId) : VehicleTask(VehicleStatus.IDLE) {
         override val duration: Int = 0
         override val progress: Int = 0
 
@@ -23,10 +23,11 @@ internal sealed class VehicleTask(val status: VehicleStatus) {
         override val duration: Int,
         override val progress: Int,
         val cargo: Cargo,
+        val sourceStopId: StopId,
         val targetStopId: StopId,
         val targetStopDistance: Distance
     ) : VehicleTask(VehicleStatus.LOADING) {
-        constructor(duration: Int, cargo: Cargo, targetStopId: StopId, targetStopDistance: Distance) : this(duration, 0, cargo, targetStopId, targetStopDistance)
+        constructor(duration: Int, cargo: Cargo, sourceStopId: StopId, targetStopId: StopId, targetStopDistance: Distance) : this(duration, 0, cargo, sourceStopId, targetStopId, targetStopDistance)
 
         fun toOnRouteTask(currentStopId: StopId, speed: Double): OnRouteTask = OnRouteTask((this.targetStopDistance / speed).roundToInt(), currentStopId, this.targetStopId)
         override fun update(): VehicleTask = this.copy(progress = progress + 1)

@@ -5,7 +5,7 @@ import arrow.core.flatMap
 import arrow.core.right
 import com.github.caay2000.ttk.context.shared.domain.Distance
 import com.github.caay2000.ttk.context.shared.domain.StopId
-import com.github.caay2000.ttk.context.shared.domain.VehicleType
+import com.github.caay2000.ttk.context.shared.domain.VehicleTypeEnum
 import com.github.caay2000.ttk.context.shared.domain.WorldId
 import com.github.caay2000.ttk.context.vehicle.world.domain.Connection
 import com.github.caay2000.ttk.context.vehicle.world.domain.World
@@ -18,7 +18,7 @@ class ConnectionCreatorService(private val worldRepository: WorldRepository) {
         sourceStopId: StopId,
         targetStopId: StopId,
         distance: Distance,
-        allowedVehicleTypes: Set<VehicleType>
+        allowedVehicleTypes: Set<VehicleTypeEnum>
     ): Either<ConnectionCreatorServiceException, Unit> =
         findWorld(worldId)
             .flatMap { world -> world.createConnection(Connection(sourceStopId, targetStopId, distance, allowedVehicleTypes)).right() }
