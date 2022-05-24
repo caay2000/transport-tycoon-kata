@@ -38,8 +38,4 @@ data class World(val id: WorldId, val stops: Set<Stop>, val map: Map) {
     fun unloadCargo(stopId: StopId, cargo: Cargo): World =
         this.getStop(stopId).unloadCargo(cargo)
             .let { stop -> this.copy(stops = this.stops.filter { it.id != stop.id }.toSet() + stop) }
-
-//    fun createConnection(stopId: StopId, targetStopId: StopId, distance: Distance, allowedVehicleTypes: Set<VehicleType>): World =
-//        this.getStop(stopId).createConnection(targetStopId, distance, allowedVehicleTypes)
-//            .let { stop -> this.copy(stops = this.stops.filter { it.id != stop.id }.toSet() + stop) }
 }

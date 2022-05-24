@@ -20,7 +20,9 @@ class Map {
         return this
     }
 
+    fun route(sourceStop: StopId, targetStop: StopId): Set<Connection> =
+        DijkstraShortestPath.findPathBetween(map, sourceStop, targetStop).edgeList.toSet()
+
     fun distance(sourceStop: StopId, targetStop: StopId): Distance =
-        DijkstraShortestPath.findPathBetween(map, sourceStop, targetStop).edgeList
-            .fold(0) { distance, connection -> distance + connection.distance }
+        route(sourceStop, targetStop).fold(0) { distance, connection -> distance + connection.distance }
 }
