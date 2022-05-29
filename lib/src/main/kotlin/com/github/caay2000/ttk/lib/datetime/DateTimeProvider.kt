@@ -4,4 +4,5 @@ interface DateTimeProvider {
 
     fun now(): DateTime
     fun inc()
+    fun hash(): String
 }
