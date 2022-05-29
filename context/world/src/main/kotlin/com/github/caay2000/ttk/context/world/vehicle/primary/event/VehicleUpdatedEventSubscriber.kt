@@ -10,6 +10,6 @@ import com.github.caay2000.ttk.lib.eventbus.event.EventSubscriber
 class VehicleUpdatedEventSubscriber(private val commandBus: CommandBus<Command>, private val dateTimeProvider: DateTimeProvider) : EventSubscriber<VehicleUpdatedEvent> {
 
     override fun handle(event: VehicleUpdatedEvent) {
-        commandBus.publish(UpdateVehicleCommand(event.worldId, event.vehicleId, event.cargoId, event.status, event.taskFinished, dateTimeProvider.hash()))
+        commandBus.publish(UpdateVehicleCommand(event.worldId, event.vehicleId, event.cargoId, event.status, dateTimeProvider.hash()))
     }
 }

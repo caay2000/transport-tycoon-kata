@@ -28,10 +28,10 @@ data class World(val id: WorldId, val stops: Set<Stop>, val vehicles: Set<Vehicl
         return world
     }
 
-    fun updateVehicle(vehicleId: VehicleId, cargoId: CargoId?, taskFinished: Boolean, dateTimeHash: String): World {
+    fun updateVehicle(vehicleId: VehicleId, cargoId: CargoId?, dateTimeHash: String): World {
         val vehicle = this.vehicles.first { it.id == vehicleId }
         val world = copy(vehicles = vehicles.filter { it.id != vehicleId }.toSet())
-        val updatedVehicle = vehicle.copy(cargoId = cargoId, taskFinished = taskFinished, updated = UUID.fromString(dateTimeHash))
+        val updatedVehicle = vehicle.copy(cargoId = cargoId, updated = UUID.fromString(dateTimeHash))
         return world.copy(vehicles = world.vehicles + updatedVehicle)
     }
 

@@ -44,11 +44,10 @@ class VehicleUpdaterService(
                     VehicleStatus.UNLOADING -> this.updateUnloading()
                     VehicleStatus.RETURNING -> this.updateReturning()
                 }
-
-//                } else {
-                this.pushEvent(VehicleUpdatedEvent(this.worldId.uuid, this.id.uuid, this.type.type.name, this.cargo?.id?.uuid, this.status.name, this.taskFinished))
-                if (this.taskFinished && this.status != VehicleStatus.IDLE) {
+                if (taskFinished) {
                     this.pushEvent(VehiclePendingUpdateEvent(this.worldId.uuid, this.id.uuid))
+                } else {
+                    this.pushEvent(VehicleUpdatedEvent(this.worldId.uuid, this.id.uuid, this.type.type.name, this.cargo?.id?.uuid, this.status.name))
                 }
                 this
             }
