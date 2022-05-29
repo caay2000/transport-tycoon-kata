@@ -4,11 +4,15 @@ import com.github.caay2000.ttk.context.shared.domain.Distance
 import com.github.caay2000.ttk.context.shared.domain.StopId
 import com.github.caay2000.ttk.context.shared.domain.VehicleId
 import com.github.caay2000.ttk.context.shared.domain.WorldId
+import com.github.caay2000.ttk.context.shared.domain.toDomainId
 import com.github.caay2000.ttk.context.shared.event.VehicleLoadedEvent
 import com.github.caay2000.ttk.context.shared.event.VehicleLoadingEvent
+import com.github.caay2000.ttk.context.shared.event.VehiclePendingUpdateEvent
 import com.github.caay2000.ttk.context.shared.event.VehicleUnloadedEvent
 import com.github.caay2000.ttk.context.shared.event.VehicleUnloadingEvent
+import com.github.caay2000.ttk.context.shared.event.VehicleUpdatedEvent
 import com.github.caay2000.ttk.context.vehicle.configuration.domain.VehicleConfiguration
+import com.github.caay2000.ttk.context.vehicle.route.application.find.FindRouteQueryResponse
 import com.github.caay2000.ttk.context.vehicle.world.domain.Cargo
 import com.github.caay2000.ttk.lib.eventbus.domain.Aggregate
 
@@ -26,7 +30,7 @@ data class Vehicle(
 
     private var task: VehicleTask = VehicleTask.IdleTask
 
-    val taskFinished: Boolean
+    private val taskFinished: Boolean
         get() = task.isFinished()
 
     var cargo: Cargo? = null
@@ -34,20 +38,82 @@ data class Vehicle(
     val status: VehicleStatus
         get() = task.status
 
-    fun stop() {
-        this.task = VehicleTask.IdleTask
-    }
-
-    fun update(): Vehicle {
+    fun update(route: FindRouteQueryResponse.RouteQueryResponse?): Vehicle {
         this.task = this.task.update()
+        when (this.status) {
+            VehicleStatus.IDLE -> this.updateIdle(route)
+            VehicleStatus.LOADING -> this.updateLoading()
+            VehicleStatus.ON_ROUTE -> this.updateOnRoute()
+            VehicleStatus.UNLOADING -> this.updateUnloading()
+            VehicleStatus.RETURNING -> this.updateReturning()
+        }
         return this
     }
 
-    fun loadCargo(
-        cargo: Cargo,
-        routeTargetStopId: StopId,
-        routeTargetStopDistance: Distance
-    ): Vehicle {
+    private fun updateIdle(route: FindRouteQueryResponse.RouteQueryResponse?): Vehicle {
+        route?.let {
+            this.loadCargo(it.toCargo(), it.routeTargetStopId.toDomainId(), it.routeTargetStopDistance)
+        }
+        if (this.taskFinished) {
+            this.pushEvent(VehiclePendingUpdateEvent(this.worldId.uuid, this.id.uuid))
+        } else {
+            this.pushEvent(VehicleUpdatedEvent(this.worldId.uuid, this.id.uuid, this.type.type.name, this.cargo?.id?.uuid, this.status.name))
+        }
+        return this
+    }
+
+    private fun updateLoading(): Vehicle {
+        if (this.taskFinished) {
+            this.finishLoadingCargo()
+            this.startRoute()
+        }
+        if (this.taskFinished) {
+            this.pushEvent(VehiclePendingUpdateEvent(this.worldId.uuid, this.id.uuid))
+        } else {
+            this.pushEvent(VehicleUpdatedEvent(this.worldId.uuid, this.id.uuid, this.type.type.name, this.cargo?.id?.uuid, this.status.name))
+        }
+        return this
+    }
+
+    private fun updateOnRoute(): Vehicle {
+        if (this.taskFinished) {
+            this.unloadCargo()
+        }
+        if (this.taskFinished) {
+            this.pushEvent(VehiclePendingUpdateEvent(this.worldId.uuid, this.id.uuid))
+        } else {
+            this.pushEvent(VehicleUpdatedEvent(this.worldId.uuid, this.id.uuid, this.type.type.name, this.cargo?.id?.uuid, this.status.name))
+        }
+        return this
+    }
+
+    private fun updateUnloading(): Vehicle {
+        if (this.taskFinished) {
+            this.finishUnloadingCargo()
+            this.returnRoute()
+        }
+        if (this.taskFinished) {
+            this.pushEvent(VehiclePendingUpdateEvent(this.worldId.uuid, this.id.uuid))
+        } else {
+            this.pushEvent(VehicleUpdatedEvent(this.worldId.uuid, this.id.uuid, this.type.type.name, this.cargo?.id?.uuid, this.status.name))
+        }
+        return this
+    }
+
+    private fun updateReturning(): Vehicle {
+        if (this.taskFinished) {
+            this.stop()
+            this.pushEvent(VehiclePendingUpdateEvent(this.worldId.uuid, this.id.uuid))
+        } else {
+            this.pushEvent(VehicleUpdatedEvent(this.worldId.uuid, this.id.uuid, this.type.type.name, this.cargo?.id?.uuid, this.status.name))
+        }
+        return this
+    }
+
+    private fun FindRouteQueryResponse.RouteQueryResponse.toCargo(): Cargo =
+        Cargo.create(this.cargoId.toDomainId(), this.cargoSourceStopId.toDomainId(), this.cargoTargetStopId.toDomainId())
+
+    private fun loadCargo(cargo: Cargo, routeTargetStopId: StopId, routeTargetStopDistance: Distance): Vehicle {
         this.task = VehicleTask.LoadCargoTask(this.type.loadTime, cargo, routeTargetStopId, routeTargetStopDistance)
         this.pushEvent(
             VehicleLoadingEvent(
@@ -61,7 +127,7 @@ data class Vehicle(
         return this
     }
 
-    fun finishLoadingCargo(): Vehicle {
+    private fun finishLoadingCargo(): Vehicle {
         this.cargo = (task as VehicleTask.LoadCargoTask).cargo
         this.pushEvent(
             VehicleLoadedEvent(
@@ -76,7 +142,7 @@ data class Vehicle(
         return this
     }
 
-    fun unloadCargo(): Vehicle {
+    private fun unloadCargo(): Vehicle {
         this.task = VehicleTask.UnloadCargoTask(this.type.loadTime, this.cargo!!, (task as VehicleTask.OnRouteTask).targetStopId, (task as VehicleTask.OnRouteTask).duration)
         this.pushEvent(
             VehicleUnloadingEvent(
@@ -89,7 +155,7 @@ data class Vehicle(
         return this
     }
 
-    fun finishUnloadingCargo(): Vehicle {
+    private fun finishUnloadingCargo(): Vehicle {
         this.cargo = null
         val currentTask = this.task as VehicleTask.UnloadCargoTask
         this.pushEvent(
@@ -105,14 +171,18 @@ data class Vehicle(
         return this
     }
 
-    fun startRoute(): Vehicle {
+    private fun startRoute(): Vehicle {
         if (this.task is VehicleTask.LoadCargoTask) {
             this.task = (this.task as VehicleTask.LoadCargoTask).toOnRouteTask(this.depotStopId, this.type.speed)
         }
         return this
     }
 
-    fun returnRoute(): Vehicle {
+    private fun stop() {
+        this.task = VehicleTask.IdleTask
+    }
+
+    private fun returnRoute(): Vehicle {
         val currentTask = (this.task as VehicleTask.UnloadCargoTask)
         this.task = VehicleTask.ReturnBackRouteTask(currentTask.distance, this.type.speed)
         return this
