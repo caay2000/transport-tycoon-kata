@@ -18,7 +18,8 @@ data class VehicleUpdatedEvent(
     override val vehicleId: UUID,
     val type: String,
     val cargoId: UUID?,
-    val status: String
+    val status: String,
+    val taskFinished: Boolean
 ) : VehicleEvent()
 
 data class VehicleLoadingEvent(

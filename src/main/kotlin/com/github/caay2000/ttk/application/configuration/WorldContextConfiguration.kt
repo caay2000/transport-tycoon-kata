@@ -61,7 +61,7 @@ class WorldContextConfiguration(commandBus: CommandBus<Command>, eventPublisher:
 //        instantiateCommandHandler(UpdateVehicleCommand::class, UpdateVehicleCommandHandler(eventPublisher, worldRepository))
 
         instantiateEventSubscriber(WorldUpdatedEvent::class, WorldUpdatedEventSubscriber(commandBus))
-        instantiateEventSubscriber(VehicleUpdatedEvent::class, VehicleUpdatedEventSubscriber(commandBus))
+        instantiateEventSubscriber(VehicleUpdatedEvent::class, VehicleUpdatedEventSubscriber(commandBus, dateTimeProvider))
         instantiateEventSubscriber(VehicleLoadedEvent::class, VehicleLoadedEventSubscriber(commandBus))
         instantiateEventSubscriber(VehicleUnloadedEvent::class, VehicleUnloadedEventSubscriber(commandBus))
 

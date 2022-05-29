@@ -1,7 +1,6 @@
 package com.github.caay2000.ttk.context.vehicle.route.application.find
 
 import arrow.core.Either
-import arrow.core.computations.ResultEffect.bind
 import arrow.core.flatMap
 import arrow.core.left
 import arrow.core.right
@@ -16,6 +15,7 @@ import com.github.caay2000.ttk.context.vehicle.vehicle.domain.VehicleStatus
 import com.github.caay2000.ttk.context.vehicle.world.domain.Stop
 import com.github.caay2000.ttk.context.vehicle.world.domain.World
 import com.github.caay2000.ttk.context.vehicle.world.domain.WorldRepository
+import com.github.caay2000.ttk.lib.context.flatNap
 
 class RouteFinderService(
     private val vehicleRepository: VehicleRepository,
@@ -47,15 +47,13 @@ class RouteFinderService(
 
     private fun Stop.findRoute(vehicleId: VehicleId): Either<Throwable, RouteFinderResponse> =
         worldRepository.get(worldId).toEither { RouteFinderServiceException.WorldNotFound(worldId) }
-            .flatMap { world -> world.findFirstValidRoute(this, vehicleRepository.get(vehicleId).bind()) }
+            .flatNap { vehicleRepository.get(vehicleId) }
+            .flatMap { (world, vehicle) -> world.findFirstValidRoute(this, vehicle) }
 
     private fun World.findFirstValidRoute(stop: Stop, vehicle: Vehicle): Either<Throwable, RouteFinderResponse> =
         Either.catch {
             stop.cargo.first { cargo ->
-                if (cargo.reserved.not()) {
-                    val route = this.map.route(stop.id, cargo.targetId)
-                    route.first().allowedVehicleTypes.contains(vehicle.type.type)
-                } else false
+                cargo.reserved.not() && map.route(stop.id, cargo.targetId).first().allowedVehicleTypes.contains(vehicle.type.type)
             }.let { cargo ->
                 val route = this.map.route(stop.id, cargo.targetId)
                 RouteFinderResponse(cargo.id, cargo.sourceId, cargo.targetId, route.first().targetStopId, map.distance(stop.id, route.first().targetStopId))

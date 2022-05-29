@@ -14,9 +14,9 @@ import com.github.caay2000.ttk.lib.eventbus.event.EventPublisher
 
 class VehicleUpdaterService(private val eventPublisher: EventPublisher<Event>, private val worldRepository: WorldRepository) {
 
-    fun invoke(worldId: WorldId, vehicleId: VehicleId, cargoId: CargoId?): Either<VehicleUpdaterServiceException, Unit> =
+    fun invoke(worldId: WorldId, vehicleId: VehicleId, cargoId: CargoId?, taskFinished: Boolean, dateTimeHash: String): Either<VehicleUpdaterServiceException, Unit> =
         findWorld(worldId)
-            .flatMap { world -> world.vehicleUpdated(vehicleId, cargoId) }
+            .flatMap { world -> world.vehicleUpdated(vehicleId, cargoId, taskFinished, dateTimeHash) }
             .flatMap { world -> world.save() }
             .flatMap { world -> world.checkWorldFullyUpdated() }
             .flatMap { world -> world.publishEvents() }
@@ -25,12 +25,12 @@ class VehicleUpdaterService(private val eventPublisher: EventPublisher<Event>, p
     private fun findWorld(worldId: WorldId) = worldRepository.get(worldId)
         .toEither { VehicleUpdaterServiceException.WorldNotFoundException(worldId) }
 
-    private fun World.vehicleUpdated(vehicleId: VehicleId, cargoId: CargoId?): Either<Throwable, World> =
-        this.updateVehicle(vehicleId, cargoId).right()
+    private fun World.vehicleUpdated(vehicleId: VehicleId, cargoId: CargoId?, taskFinished: Boolean, dateTimeHash: String): Either<Throwable, World> =
+        this.updateVehicle(vehicleId, cargoId, taskFinished, dateTimeHash).right()
 
     private fun World.checkWorldFullyUpdated(): Either<Throwable, World> {
         val updated = this.vehicles.first().updated
-        val worldUpdated = this.vehicles.all { it.updated == updated }
+        val worldUpdated = this.vehicles.all { it.updated == updated && it.taskFinished.not() }
         if (worldUpdated) {
             this.pushEvent(WorldUpdatedEvent(this.id.uuid, this.isCompleted()))
         }

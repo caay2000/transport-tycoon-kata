@@ -15,10 +15,17 @@ class UpdateVehicleCommandHandler(eventPublisher: EventPublisher<Event>, worldRe
     private val vehicleUpdaterService = VehicleUpdaterService(eventPublisher, worldRepository)
 
     override fun invoke(command: UpdateVehicleCommand) =
-        vehicleUpdaterService.invoke(command.worldId.toDomainId(), command.vehicleId.toDomainId(), command.cargoId?.toDomainId())
+        vehicleUpdaterService.invoke(command.worldId.toDomainId(), command.vehicleId.toDomainId(), command.cargoId?.toDomainId(), command.taskFinished, command.dateTimeHash)
             .getOrHandle { throw it }
 }
 
-data class UpdateVehicleCommand(override val worldId: UUID, val vehicleId: UUID, val cargoId: UUID?, val status: String) : WorldCommand {
+data class UpdateVehicleCommand(
+    override val worldId: UUID,
+    val vehicleId: UUID,
+    val cargoId: UUID?,
+    val status: String,
+    val taskFinished: Boolean,
+    val dateTimeHash: String
+) : WorldCommand {
     override val commandId: UUID = UUID.randomUUID()
 }

@@ -10,6 +10,7 @@ import com.github.caay2000.ttk.context.shared.event.WorldCreatedEvent
 import com.github.caay2000.ttk.context.world.stop.domain.Stop
 import com.github.caay2000.ttk.context.world.vehicle.domain.Vehicle
 import com.github.caay2000.ttk.lib.eventbus.domain.Aggregate
+import java.util.UUID
 
 data class World(val id: WorldId, val stops: Set<Stop>, val vehicles: Set<Vehicle>) : Aggregate() {
 
@@ -27,10 +28,10 @@ data class World(val id: WorldId, val stops: Set<Stop>, val vehicles: Set<Vehicl
         return world
     }
 
-    fun updateVehicle(vehicleId: VehicleId, cargoId: CargoId?): World {
+    fun updateVehicle(vehicleId: VehicleId, cargoId: CargoId?, taskFinished: Boolean, dateTimeHash: String): World {
         val vehicle = this.vehicles.first { it.id == vehicleId }
         val world = copy(vehicles = vehicles.filter { it.id != vehicleId }.toSet())
-        val updatedVehicle = vehicle.copy(cargoId = cargoId, updated = vehicle.updated + 1)
+        val updatedVehicle = vehicle.copy(cargoId = cargoId, taskFinished = taskFinished, updated = UUID.fromString(dateTimeHash))
         return world.copy(vehicles = world.vehicles + updatedVehicle)
     }
 

@@ -14,7 +14,7 @@ internal sealed class VehicleTask(val status: VehicleStatus) {
 
     object IdleTask : VehicleTask(VehicleStatus.IDLE) {
         override val duration: Int = 0
-        override val progress: Int = 0
+        override val progress: Int = -1
 
         override fun update(): VehicleTask = this
     }

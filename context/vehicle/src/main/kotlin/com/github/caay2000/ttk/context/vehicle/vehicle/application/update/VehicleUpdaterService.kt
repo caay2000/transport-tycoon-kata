@@ -5,6 +5,7 @@ import arrow.core.flatMap
 import arrow.core.right
 import com.github.caay2000.ttk.context.shared.domain.VehicleId
 import com.github.caay2000.ttk.context.shared.domain.toDomainId
+import com.github.caay2000.ttk.context.shared.event.VehiclePendingUpdateEvent
 import com.github.caay2000.ttk.context.shared.event.VehicleUpdatedEvent
 import com.github.caay2000.ttk.context.vehicle.route.application.find.FindRouteQuery
 import com.github.caay2000.ttk.context.vehicle.route.application.find.FindRouteQueryResponse
@@ -43,16 +44,18 @@ class VehicleUpdaterService(
                     VehicleStatus.UNLOADING -> this.updateUnloading()
                     VehicleStatus.RETURNING -> this.updateReturning()
                 }
+
+//                } else {
+                this.pushEvent(VehicleUpdatedEvent(this.worldId.uuid, this.id.uuid, this.type.type.name, this.cargo?.id?.uuid, this.status.name, this.taskFinished))
                 if (this.taskFinished && this.status != VehicleStatus.IDLE) {
-                    this.executeUpdate()
-                } else {
-                    this.pushEvent(VehicleUpdatedEvent(this.worldId.uuid, this.id.uuid, this.type.type.name, this.cargo?.id?.uuid, this.status.name))
+                    this.pushEvent(VehiclePendingUpdateEvent(this.worldId.uuid, this.id.uuid))
                 }
                 this
             }
         }
 
     private fun Vehicle.updateIdle(): Either<Throwable, Vehicle> {
+        println("$this status:${this.status}")
         val queryResponse = queryBus.execute<FindRouteQuery, FindRouteQueryResponse>(FindRouteQuery(this.id.uuid))
         if (queryResponse.routeFound) {
             this.loadCargo(queryResponse.toCargo(), queryResponse.route!!.routeTargetStopId.toDomainId(), queryResponse.route.routeTargetStopDistance)
@@ -97,7 +100,7 @@ class VehicleUpdaterService(
             Cargo.create(this.cargoId.toDomainId(), this.cargoSourceStopId.toDomainId(), this.cargoTargetStopId.toDomainId())
         }
 
-    private fun Vehicle.save() = vehicleRepository.save(this).flatMap { this.right() }
+    private fun Vehicle.save() = vehicleRepository.save(this).also { println("saving vehicle $this") }.flatMap { this.right() }
 
     private fun Vehicle.publishEvents() = eventPublisher.publish(this.pullEvents()).right()
 }
