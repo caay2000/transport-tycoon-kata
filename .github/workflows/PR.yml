@@ -31,4 +31,5 @@ jobs:
       - name: Run Build
         run: gradle clean build pitest-github --parallel
         env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
