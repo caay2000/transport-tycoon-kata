@@ -29,7 +29,9 @@ jobs:
           cache: 'gradle'
 
       - name: Run Build
-        run: gradle clean build pitest-github --parallel
+        run: gradle clean build --parallel
+
+      - name: Run Build
+        run: gradle pitest pitestReportAggregate pitest-github --parallel
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
