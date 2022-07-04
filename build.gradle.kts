@@ -3,7 +3,6 @@ plugins {
     kotlin("jvm") version "1.6.10"
     id("info.solidsoft.pitest") version "1.7.4"
     id("org.jlleitschuh.gradle.ktlint") version "10.2.0"
-    id("com.groupcdg.pitest.github") version ("0.1.2")
 }
 
 group = "com.github.caay2000"
@@ -59,8 +58,6 @@ pitest {
     dependencies {
         pitest("com.groupcdg.pitest:pitest-accelerator-junit5:0.1.0")
         pitest("com.groupcdg.pitest:extended-mutators:0.1.2")
-        pitest("com.groupcdg:pitest-git-plugin:0.2.0")
-        pitest("com.groupcdg.pitest.github:com.groupcdg.pitest.github.gradle.plugin:0.1.2")
         pitest("com.groupcdg.pitest:pitest-kotlin-plugin:0.1.1")
     }
 }

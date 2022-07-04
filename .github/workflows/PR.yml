@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.9.0
+        uses: styfle/cancel-workflow-action@0.9.1
         with:
           access_token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -18,8 +18,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 2
 
       - name: Setup Java JDK
         uses: actions/setup-java@v3
@@ -30,8 +28,3 @@ jobs:
 
       - name: Run Build
         run: gradle clean build --parallel
-
-      - name: Run Build
-        run: gradle pitest pitestReportAggregate pitest-github --parallel
-        env:
-          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
