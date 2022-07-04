@@ -1,4 +1,4 @@
-name: gradle-build
+name: Main workflow
 
 on:
   push:
@@ -23,6 +23,7 @@ jobs:
 
   pitest:
     runs-on: ubuntu-latest
+    needs: build
     steps:
       - uses: actions/checkout@v3
 
@@ -34,7 +35,7 @@ jobs:
           cache: 'gradle'
 
       - name: Run Build
-        run: gradle pitest pitestReportAggregate --parallel
+        run: gradle clean pitest pitestReportAggregate --parallel
 
       - name: Publish Pitest Report
         uses: peaceiris/actions-gh-pages@v3
@@ -42,4 +43,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build/reports/pitest
           exclude_assets: '.github,*.xml'
-          full_commit_message: Publishing pitest reports for ${GITHUB_SHA}
+          full_commit_message: Publishing pitest reports for $GITHUB_SHA
