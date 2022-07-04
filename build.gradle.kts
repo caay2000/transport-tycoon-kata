@@ -3,6 +3,7 @@ plugins {
     kotlin("jvm") version "1.6.10"
     id("info.solidsoft.pitest") version "1.7.4"
     id("org.jlleitschuh.gradle.ktlint") version "10.2.0"
+    id("com.groupcdg.pitest.github") version ("0.1.2")
 }
 
 group = "com.github.caay2000"
