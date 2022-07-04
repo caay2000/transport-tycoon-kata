@@ -45,7 +45,7 @@ pitest {
     pitestVersion.set("1.8.0")
     junit5PluginVersion.set("0.16")
     targetClasses.add("com.github.caay2000.ttk.*")
-    excludedTestClasses.add("**.*IntegrationTest")
+//    excludedTestClasses.add("**.*IntegrationTest")
     excludedMethods.addAll("toString")
     outputFormats.addAll("XML", "HTML")
     timestampedReports.set(false)

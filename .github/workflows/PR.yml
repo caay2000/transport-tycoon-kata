@@ -28,3 +28,14 @@ jobs:
 
       - name: Run Build
         run: gradle clean build --parallel
+
+      - name: Run Build
+        run: gradle pitest pitestReportAggregate --parallel
+
+      - name: Publish Pitest Report
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build/reports/pitest
+          exclude_assets: '.github,*.xml'
+          full_commit_message: Publishing pitest reports for ${GITHUB_SHA}
