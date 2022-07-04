@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
 
       - name: Run Build
         run: gradle clean build --parallel
@@ -17,14 +17,22 @@ jobs:
   pitest:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: 11
+          distribution: 'temurin'
+          cache: 'gradle'
 
       - name: Run Build
         run: gradle pitest pitestReportAggregate --parallel
 
       - name: Publish Pitest Report
-        uses: peaceiris/actions-gh-pages@v3.8.0
+        uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build/reports/pitest
+          exclude_assets: '.github,*.xml'
           full_commit_message: Publishing pitest reports for ${GITHUB_SHA}

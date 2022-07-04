@@ -42,16 +42,22 @@ dependencies {
 
 apply(plugin = "info.solidsoft.pitest.aggregator")
 pitest {
-    pitestVersion.set("1.7.5")
-    junit5PluginVersion.set("0.15")
+    pitestVersion.set("1.8.0")
+    junit5PluginVersion.set("0.16")
     targetClasses.add("com.github.caay2000.ttk.*")
     excludedTestClasses.add("**.*IntegrationTest")
-    outputFormats.addAll("XML")
+    excludedMethods.addAll("toString")
+    outputFormats.addAll("XML", "HTML")
     timestampedReports.set(false)
     exportLineCoverage.set(true)
     avoidCallsTo.add("kotlin.jvm.internal")
-    mutators.addAll("DEFAULTS")
+    mutators.addAll("STRONGER", "EXTENDED")
     detectInlinedCode.set(true)
     threads.set(4)
     failWhenNoMutations.set(false)
+    dependencies {
+        pitest("com.groupcdg.pitest:pitest-accelerator-junit5:0.1.0")
+        pitest("com.groupcdg.pitest:extended-mutators:0.1.2")
+        pitest("com.groupcdg.pitest:pitest-kotlin-plugin:0.1.1")
+    }
 }
