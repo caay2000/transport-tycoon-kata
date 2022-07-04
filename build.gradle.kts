@@ -47,7 +47,7 @@ pitest {
     targetClasses.add("com.github.caay2000.ttk.*")
     excludedTestClasses.add("**.*IntegrationTest")
     excludedMethods.addAll("toString")
-    outputFormats.addAll("XML", "HTML", "GITCI")
+    outputFormats.addAll("XML", "HTML")
     timestampedReports.set(false)
     exportLineCoverage.set(true)
     avoidCallsTo.add("kotlin.jvm.internal")
