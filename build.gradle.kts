@@ -17,7 +17,7 @@ repositories {
 }
 
 tasks.withType<Wrapper> {
-    gradleVersion = "7.4.2"
+    gradleVersion = "7.5"
 }
 
 tasks.test {
@@ -25,10 +25,6 @@ tasks.test {
 }
 
 dependencies {
-    implementation(project(":lib"))
-    implementation(project(":context:shared"))
-    implementation(project(":context:world"))
-    implementation(project(":context:vehicle"))
     implementation("org.jgrapht:jgrapht-core:1.5.1")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
     implementation("io.arrow-kt:arrow-core:1.0.1")
@@ -45,7 +41,6 @@ pitest {
     pitestVersion.set("1.8.0")
     junit5PluginVersion.set("0.16")
     targetClasses.add("com.github.caay2000.ttk.*")
-    // excludedTestClasses.add("**.*IntegrationTest")
     excludedMethods.addAll("toString")
     outputFormats.addAll("XML", "HTML")
     timestampedReports.set(false)
