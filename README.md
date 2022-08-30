@@ -1,3 +1,10 @@
+# Project achieved
+
+This project has been cancelled, and it won't be updated again! I just leave it here to be able to review again some 
+interesting snippets (`QueryBus`, `HTTP simulator`, `InMemoryDatabase`, `DDD concepts`) created while working on this kata!
+
+I created a new project related with this kata, you can find it in my repositories (https://github.com/caay2000/transport-madness-kata)
+
 # Transport Tycoon Kata
 
 This is a kata proposed by SoftwarePark. You can find the original
