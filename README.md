@@ -1,4 +1,4 @@
-# Project achieved
+# Project archived
 
 This project has been cancelled, and it won't be updated again! I just leave it here to be able to review again some 
 interesting snippets (`QueryBus`, `HTTP simulator`, `InMemoryDatabase`, `DDD concepts`) created while working on this kata!
